@@ -1,0 +1,214 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$registry = $objectManager->get('Magento\Framework\Registry');
+
+/**
+ * @var $urlManager \Magento\Framework\UrlInterface
+ */
+$urlManager = $objectManager->get(\Magento\Framework\UrlInterface::class);
+
+/**
+ * @var $storeManager \Magento\Store\Model\StoreManagerInterface
+ */
+$storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+
+/**
+ * @var $currentProduct \Magento\Catalog\Model\Product
+ */
+$currentProduct = $registry->registry('current_product');
+
+
+if ($currentProduct && $currentProduct->getId()) {
+    /**
+     * @var $reviewFactory Magento\Review\Model\Review
+     */
+    $reviewFactory = $objectManager->create('Magento\Review\Model\Review');
+
+    $storeId = $storeManager->getStore()->getId();
+    $reviewFactory->getEntitySummary($currentProduct, $storeId);
+
+    $ratingSummary = $currentProduct->getRatingSummary()->getRatingSummary();
+
+    /**
+     * @var $reviewsColFactory \Magento\Review\Model\ResourceModel\Review\CollectionFactory
+     */
+    $reviewsColFactory = $objectManager->get('\Magento\Review\Model\ResourceModel\Review\CollectionFactory');
+
+    $_reviews = $reviewsColFactory->create()->addStoreFilter(
+        $storeManager->getStore()->getId()
+    )->addStatusFilter(
+        \Magento\Review\Model\Review::STATUS_APPROVED
+    )->addEntityFilter(
+        'product',
+        $currentProduct->getId()
+    )->setDateOrder()
+        ->addRateVotes();
+
+    $avg = 0;
+    $avgValue = 0;
+    $ratings = array();
+    $ratingsValue = array();
+    if (count($_reviews) > 0) {
+        foreach ($_reviews->getItems() as $_review): ?>
+            <?php foreach ($_review->getRatingVotes() as $_vote): ?>
+                <?php
+                $ratings[] = $_vote->getPercent();
+                $ratingsValue[] = $_vote->getValue();
+                ?>
+            <?php endforeach; ?>
+        <?php endforeach;
+        $avg = array_sum($ratings) / count($ratings);
+        $avgValue = array_sum($ratingsValue) / count($ratingsValue);
+        $rating = $avg;
+    }
+    ?>
+
+    <div class="content">
+        <div class="common-score">
+
+
+            <?php if ($avg > 0) { ?>
+                <div class="ratings">
+                    <div class="rating-box">
+                        <div class="rating"><?php echo round($avgValue, 1); ?></div>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <?php if (isset($rating)) { ?>
+                <div class="rating-summary">
+                    <span class="label"><span><?php /* @escapeNotVerified */ /*echo __('Rating')*/ ?></span></span>
+                    <div class="rating-result" title="<?php /* @escapeNotVerified */ echo $rating; ?>%">
+                        <span style="width:<?php /* @escapeNotVerified */ echo $rating; ?>%"><span><span itemprop="ratingValue"><?php /* @escapeNotVerified */ echo $rating; ?></span>% of <span itemprop="bestRating">100</span></span></span>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <?php if(count($_reviews) > 0) { ?>
+            <div class="reviews-count">
+                <span><?php echo count($_reviews) . ' ' .  __('reviews'); ?></span>
+            </div>
+            <?php } ?>
+
+        </div>
+
+        <div class="reviews-summary">
+            <?php
+            if (count($_reviews) > 0) {
+                $summaryRatings = array();
+                foreach ($_reviews->getItems() as $_review): ?>
+                    <?php foreach ($_review->getRatingVotes() as $_vote): ?>
+                        <?php
+                        $ratingCode = $_vote->getRatingCode();
+                        if (isset($summaryRatings[$ratingCode])) {
+                            $summaryRatings[$ratingCode]['value'] += $_vote->getValue();
+                            $summaryRatings[$ratingCode]['percent'] += $_vote->getPercent();
+                        } else {
+                            $summaryRatings[$ratingCode] = array(
+                                'value' => $_vote->getValue(),
+                                'percent' => $_vote->getPercent(),
+                            );
+                        }
+                        ?>
+                    <?php endforeach; ?>
+                <?php endforeach;
+
+                if(count($summaryRatings) > 0) {
+                    foreach ($summaryRatings as $ratingLabel => $ratingData) {
+                        $ratingPercent = round($ratingData['percent'] / count($_reviews), 1);
+                        $ratingScore = round($ratingData['value'] / count($_reviews), 1);
+                        ?>
+                        <div class="rating-summary item">
+                            <span class="label rating-label"><span><?php echo $ratingLabel; ?></span></span>
+                            <span class="score rating-score"><span><?php echo $ratingScore; ?></span></span>
+                            <div class="rating-result" title="<?php echo $ratingPercent ?>%">
+                                <?php /* <span style="width:<?php echo $ratingPercent ?>%">
+                                    <span><?php echo $ratingPercent ?>%</span>
+                                </span> */ ?>
+
+                                <div class="rating-bg"></div>
+
+                                <div class="rating-line rating-line-one"></div>
+                                <div class="rating-line rating-line-two"></div>
+                                <div class="rating-line rating-line-three"></div>
+                                <div class="rating-line rating-line-four"></div>
+                                <div class="rating-line rating-line-five"></div>
+
+
+
+                                <div class="rating-overlay" style="width:<?php echo $ratingPercent ?>%">
+                                    <?php /* <div class="rating-line rating-line-one"></div>
+                                    <div class="rating-line rating-line-two"></div>
+                                    <div class="rating-line rating-line-three"></div>
+                                    <div class="rating-line rating-line-four"></div>
+                                    <div class="rating-line rating-line-five"></div> */ ?>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    <?php }
+                }
+
+                /*$avg = array_sum($ratings) / count($ratings);
+                $avgValue = array_sum($ratingsValue) / count($ratingsValue);
+                $rating = $avg;*/
+            }
+            ?>
+        </div>
+
+        <div class="write-review">
+
+            <button class="action primary write-review-btn">
+                <span>
+                    <?php echo __('Write a Review') ?>
+                </span>
+            </button>
+
+        </div>
+    </div>
+
+    <script>
+        require(
+            [
+                'jquery',
+                'Magento_Ui/js/modal/modal'
+            ],
+            function($, modal) {
+
+                var modalAddReviewObj = $('.product-reviews-wrap .review-add');
+                if (typeof modalAddReviewObj !== 'undefined' && modalAddReviewObj.length > 0) {
+
+                    var options = {
+                        type: 'popup',
+                        responsive: true,
+                        innerScroll: true,
+                        //TODO Set title title: 'popup modal title',
+                        autoOpen: false,
+                        buttons: [],
+                        clickableOverlay: true,
+                        focus: ''
+                        /*buttons: [{
+                         text: $.mage.__('Continue'),
+                         class: '',
+                         click: function () {
+                         this.closeModal();
+                         }
+                         }]*/
+                    };
+
+                    modal(options, modalAddReviewObj);
+
+                    /* Add on click listener to show add review block */
+                    $('body').delegate('.product-reviews-wrap .write-review .write-review-btn', 'click', function (e) {
+                        modalAddReviewObj.modal('openModal');
+                    });
+                    /* END Add on click listener to show add review block */
+                }
+            }
+        );
+    </script>
+
+
+<?php } ?>
+

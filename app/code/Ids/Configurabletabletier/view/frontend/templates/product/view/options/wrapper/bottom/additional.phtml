@@ -1,0 +1,88 @@
+<?php
+$_product = $block->getProduct();
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$helper = $objectManager->get(\Ids\Configurabletabletier\Helper\Data::class);
+/* @var $helper \Ids\Configurabletabletier\Helper\Data */
+$attributeSets = $helper->geAttributeSetsFromConfig();
+$productAttributeSetId = $_product->getAttributeSetId();
+
+if ($helper->isModuleActive()) {
+    ?>
+    <div class="det_qty" style="text-align: center;font-size: 13px; width: 100%; padding:5px 0; margin-bottom: 15px; color: #C1C1C1;display: block;float: left;clear: both;">
+        Final Price based on total quantities will be calculated in shopping cart.
+    </div>
+    <?php
+} ?>
+
+
+<?php
+$customOptionsDataToUseForChangeImg = array();
+
+$customOptions = $objectManager->get(\Magento\Catalog\Model\Product\Option::class)->getProductOptionCollection($_product);
+if ($customOptions && $customOptions->getSize() > 0) {
+    foreach ($customOptions as $customOption) {
+        $optionId = (int)$customOption->getData('option_id');
+        $optionUseForChangeImg = (int)$customOption->getData(\Ids\Configurabletabletier\Plugin\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions::FIELD_USE_FOR_CHANGE_IMG_NAME);
+
+        if ($optionId > 0 && $optionUseForChangeImg == 1) {
+            $customOptionsDataToUseForChangeImg[$optionId] = array(
+                'option_id' => $optionId,
+            );
+        }
+    }
+}
+
+
+if (count($customOptionsDataToUseForChangeImg) > 0) { ?>
+
+    <script type="text/javascript">
+        require(['jquery', 'mage/gallery/gallery'], function ($, gallery) {
+
+            $('[data-gallery-role=gallery-placeholder]').on('gallery:loaded', function () {
+
+                $(this).on('fotorama:ready', function () {
+                    var api = $(this).data('gallery');
+
+                    <?php foreach ($customOptionsDataToUseForChangeImg as $customOptionsDataItemId => $customOptionsDataItem) { ?>
+
+                    /* Add on change listener to drop-down custom options */
+                    $('body').delegate('.product-custom-option.admin__control-select[name="options[<?php echo $customOptionsDataItemId; ?>]"]', 'change', function (e) {
+                        onChangeCustomOptionSelectHandler($(this));
+                    });
+                    /* END Add on change listener to drop-down custom options */
+
+                    <?php } ?>
+
+
+                    function onChangeCustomOptionSelectHandler(item) {
+                        //TODO Delete var optionValue = $(this).val().trim();
+                        //TODO Delete var optionValueText = $(this).find("option:selected").text().replace(/\s/g, "");
+                        var optionValueText = item.find("option:selected").text().trim();
+
+                        $images = api.fotorama.data;
+
+                        if ($images) {
+                            $.each($images, function (key, value) {
+                                if (typeof value === 'object' && 'caption' in value && 'i' in value && 'isMain' in value) {
+
+                                    if (value.caption === optionValueText) {
+                                        api.seek(value.i);
+                                    }
+                                    /* TODO
+                                     else if (value.isMain === true || value.i === 1) {
+                                     api.seek(value.i);
+                                     }*/
+                                }
+                            });
+                        }
+                    }
+
+                });
+
+            });
+        });
+    </script>
+
+    <?php
+} ?>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Magento_Backend::idssoft" title="IDS" translate="title" module="Magento_Backend" sortOrder="9999" resource="Magento_Backend::idssoft"/>
+        <add id="Ids_Configurabletabletier::configurabletabletier" title="Configurable table tier" module="Ids_Configurabletabletier" sortOrder="500" resource="Wplg_Import::configurabletabletier" parent="Magento_Backend::idssoft"/>
+        <add id="Ids_Configurabletabletier::configurabletabletier_configuration" title="Configuration" module="Ids_Configurabletabletier" sortOrder="999" parent="Ids_Configurabletabletier::configurabletabletier" action="adminhtml/system_config/edit/section/idsconfigurabletabletier" resource="Ids_Configurabletabletier::config_configurabletabletier"/>
+    </menu>
+</config>

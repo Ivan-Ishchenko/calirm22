@@ -1,0 +1,23 @@
+.page-title-wrapper .page-title {
+    color: @color-gray;
+    margin-bottom: 10px;
+}
+
+/* TODO
+.columns .column.main {
+    width: 100%;
+}*/
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .page-title-wrapper {
+        .page-title {
+            font-size: 24px;
+        }
+    }
+
+}

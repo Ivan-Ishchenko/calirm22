@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <body>
+
+        <referenceBlock name="paypal.partner.right.logo" remove="true"/>
+
+        <referenceBlock name="category.image" remove="true"/>
+
+        <!--<referenceContainer name="content">
+            <container name="before.products.category.filter" htmlTag="div" htmlClass="before-products-category-filter" before="category.products">
+                <block class="Magento\Framework\View\Element\Template" name="authorization-link-custom" template="Magento_Theme::catalog/category/before_products_category_filter.phtml" />
+            </container>
+        </referenceContainer>-->
+
+        <referenceBlock name="product_list_toolbar">
+            <action method="setDefaultGridPerPage">
+                <argument name="limit" xsi:type="string">all</argument>
+            </action>
+            <action method="setDefaultListPerPage">
+                <argument name="limit" xsi:type="string">all</argument>
+            </action>
+        </referenceBlock>
+
+        <move element="page.main.title" destination="content" before="-" />
+
+        <move element="category.description" destination="content.bottom" />
+
+    </body>
+</page>

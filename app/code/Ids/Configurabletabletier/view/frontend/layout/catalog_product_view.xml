@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.addtocart.additional">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Ids_Configurabletabletier::product/view/addtocart.phtml</argument>
+            </action>
+        </referenceBlock>
+
+        <referenceBlock name="product.info.form.options">
+            <block
+                    class="Ids\Configurabletabletier\Block\Product\View\Type\Configurable\Options\Wrapper\Bottom\Additional"
+                    name="ids.configurabletabletier.product.info.options.wrapper.bottom.additional" as="ids_configurable_options_wrapper_bottom_additional"
+                    after="product.info.options.wrapper.bottom"
+                    template="Ids_Configurabletabletier::product/view/options/wrapper/bottom/additional.phtml"/>
+        </referenceBlock>
+
+        <referenceContainer name="product.info.main">
+            <block class="Magento\Framework\View\Element\Template" name="ids.configurabletabletier.product.price.tier" template="Ids_Configurabletabletier::product/price/tier_prices.phtml" after="product.price.tier" />
+        </referenceContainer>
+
+    </body>
+</page>

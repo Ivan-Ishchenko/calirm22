@@ -1,0 +1,1519 @@
+<?php
+$_product = $block->getProduct();
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$helper = $objectManager->get(\Ids\Configurabletabletier\Helper\Data::class); /* @var $helper \Ids\Configurabletabletier\Helper\Data */
+$attributeSets = $helper->geAttributeSetsFromConfig();
+$productAttributeSetId = $_product->getAttributeSetId();
+
+
+$priceInfo = $_product->getPriceInfo();
+$configurableProductBasePrice = $priceInfo->getPrice('final_price')->getAmount()->getValue();
+
+if($helper->isModuleActive() && in_array($productAttributeSetId, $attributeSets)) { ?>
+
+    <div class="ids-configurable-table">
+
+        <div style="float:right; margin-right: 30px;">
+            <a class="inline det_chart_txt" href="#inline_content">
+                <!-- <img src="<?php echo $this->getSkinUrl('images/chart_images/size_chart.png'); ?>" border="0" style="vertical-align: middle; margin-bottom: 3px;">-->
+                <strong>Size Chart</strong>
+                <!-- <img src="<?php echo $this->getSkinUrl('images/chart_images/popup_icon.png'); ?>">--> </a>
+        </div>
+        <div class="sdet_txt_2331">Enter quantity in boxes below</div>
+
+        <?php
+        //TODO Moved to top $_product = $block->getProduct();
+
+    //TODO $arrayUtils = new \Magento\Framework\Stdlib\ArrayUtils;
+
+
+    //$_attributes = $arrayUtils->decorateArray($block->getAllowAttributes());
+    //$_attributes = $arrayUtils->decorateArray($_product->getAllowAttributes());
+    //$_attributes = $_product->getTypeInstance()->getConfigurableAttributesAsArray($_product);
+        $_attributes = $_product->getTypeInstance()->getConfigurableAttributeCollection($_product);
+        ?>
+
+
+        <?php //TODO Add configuration !!! if(0 == strcmp(Mage::getModel('eav/entity_attribute_set')->load($_product->getAttributeSetId())->getAttributeSetName(),Mage::getStoreConfig('ivvyru_confchart/backend/attrset'))) :?>
+
+        <?php /* TODO Delete
+                $_subproducts = Mage::getModel('catalog/product_type_configurable')
+                ->getUsedProducts(null,$_product);*/
+
+        $_subproducts = $_product->getTypeInstance()->getUsedProducts($_product);
+        /* TODO Delete
+        foreach ($childProducts as $childProduct) {
+            $productRelationsDataForExport[] = array($configurableProduct->getSku(), $childProduct->getSku());
+        }*/
+
+        ?>
+
+
+        <?php $_size = false;
+        /* @var $_size Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute */
+
+        if ($_attributes) {
+            foreach ($_attributes as $_attr) {
+
+                //if ($_attr->getProductAttribute()->getAttributeCode() == 'gown_size')
+                if ($_attr->getProductAttribute()->getAttributeCode() == 'gown_size')
+
+                    $_size = $_attr;
+
+            }
+        }
+        ?>
+
+        <?php $_is_fullfit_required = false;
+
+        foreach ($_subproducts as $_s)
+
+            if ($_s->getResource()->getAttribute('regular_fullfit')->getFrontend()->getValue($_s) == 'Fullfit') {
+
+                $_is_fullfit_required = true;
+
+                break;
+
+            } ?>
+
+        <div id="superattr">
+
+
+            <div class="btn_cont_det">
+
+                <!--  <?php if ($_is_fullfit_required): ?><span style="width: 101px;">Fullfit(Plus Size)&nbsp;&nbsp;</span><?php endif; ?> -->
+
+                <span class="chart_head_1">Quantity</span>
+
+                <span class="chart_head_2">Gown Size </span>
+
+                <span class="chart_head_3">Height (Chest Size)</span>
+
+            </div>
+
+
+            <?php foreach ($_size->getOptions() as $_s): ?>
+
+                <?php $_s['pricing_value'] = ''; //TODO Get value?>
+
+                <div class="det_qty">
+
+                    <ul class="qty_navdet2">
+
+                        <?php foreach ($_subproducts as $_sub) { ?>
+
+                            
+
+
+                            <?php //TODO if ($_sub->getGownSize() == $_s["value_index"] && $_sub->getResource()->getAttribute('regular_fullfit')->getFrontend()->getValue($_sub) == 'Regular') : ?>
+                            <?php if ($_sub->getGownSize() == $_s["value_index"]) : ?>
+
+                                <li style="width: 45%; margin-left: 3%; text-align: left;"><?php echo $_sub->getResource()->getAttribute('gown_size_us')->getFrontend()->getValue($_sub); ?>
+                                    &nbsp;
+                                </li>
+
+                                <li style="width: 27%;  margin-left: 2%; text-align: left;">
+                                    <strong><?php echo $_s["store_label"]; ?><?php if ($_s['pricing_value'] != "") {
+
+                                            echo '(+$' . number_format($_s['pricing_value'], 2, '.', '') . ')';
+                                        } ?></strong>
+                                </li>
+
+                                <!--<li style="/*width:110px*/width: 22%;"><?php if ($_sub->isSaleable()) : ?><input type="text" name="subproduct[<?php echo $_sub->getId(); ?>][qty]" value="0" onchange="getCurrentPrice(); " class="txt" />
+
+                   <div style="display:none;" id="subproduct[<?php echo $_sub->getId(); ?>][qty]"><?php if ($_s['pricing_value'] == "") {
+                                    echo "0";
+                                } else {
+                                    echo $_s['pricing_value'];
+                                } ?></div>
+
+                    <?php else: ?>X</li><?php endif; ?>  -->
+
+                                <li style="width: 22%;">
+                                <?php if ($_sub->isSaleable()) : ?><input type="text"
+                                                                          name="subproduct[<?php echo $_sub->getId(); ?>][qty]"
+                                                                          value="0" <?php /* TODO onchange="getCurrentPrice();" */ ?>
+                                                                          class="txt" />
+
+                                    <div style="display:none;" id="subproduct[<?php echo $_sub->getId(); ?>][qty]">
+                                        <?php if ($_s['pricing_value'] == "") {
+                                            echo "0";
+                                        } else {
+                                            echo $_s['pricing_value'];
+                                        } ?>
+                                    </div>
+
+                                <?php else: ?>
+
+
+                                    <?php if ($_is_fullfit_required): ?>
+
+                                        <?php $_is_fullfit_found = false; ?>
+
+                                        <?php foreach ($_subproducts as $_subsub): ?>
+
+                                            <?php if ($_subsub->getGownSize() == $_s["value_index"] && $_subsub->getResource()->getAttribute('regular_fullfit')->getFrontend()->getValue($_subsub) == 'Fullfit' && $_subsub->isSaleable() && !$_is_fullfit_found): ?>
+
+                                                <input type="text"
+                                                       name="subproduct[<?php echo $_subsub->getId(); ?>][qty]"
+                                                       value="0" <?php /* TODO onchange="getCurrentPrice();" */ ?> class="txt"/>
+
+                                                <div style="display:none;"
+                                                     id="subproduct[<?php echo $_subsub->getId(); ?>][qty]"><?php if ($_s['pricing_value'] == "") {
+                                                        echo "0";
+                                                    } else {
+                                                        echo $_s['pricing_value'];
+                                                    } ?></div>
+
+
+                                                <?php $_is_fullfit_found = true; ?>
+
+                                            <?php endif; ?>
+
+                                        <?php endforeach; ?><?php endif; ?></li>
+
+                                    <!-- <li style="width:100px;"><?php foreach ($_subproducts as $_subsub): ?>
+
+                      <?php if ($_subsub->getGownSize() == $_s["value_index"] && $_subsub->getResource()->getAttribute('regular_fullfit')->getFrontend()->getValue($_subsub) == 'Fullfit' && $_subsub->isSaleable() && !$_is_fullfit_found): ?>
+
+                      <input type="text" name="subproduct[<?php echo $_subsub->getId(); ?>][qty]" value="0" onchange="getCurrentPrice();" class="txt" />
+
+                      <div style="display:none;" id="subproduct[<?php echo $_subsub->getId(); ?>][qty]"><?php if ($_s['pricing_value'] == "") {
+                                        echo "0";
+                                    } else {
+                                        echo $_s['pricing_value'];
+                                    } ?></div>
+
+
+
+                      <?php $_is_fullfit_found = true; ?>
+
+                      <?php endif; ?>
+
+                   <?php endforeach; ?><?php if (!$_is_fullfit_found): ?>X<?php endif; ?></li> -->
+
+                                <?php endif; ?>
+
+                            <?php endif; ?>
+
+                        <?php } ?>
+
+                    </ul>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        </div>
+
+    </div>
+
+    <?php /* TODO
+
+                <div id="bss_configurablegridview" class="cart table-wrapper">
+                    <input type="hidden" name="configurable_grid_table" value="Yes">
+                    <table class="configurable-product-table cart items data table">
+                        <thead>
+                        <tr class="first last">
+                            <th class="col attributes">Height (Chest Size)</th>
+                            <th class="col  attributes">Gown Size</th>
+                            <th class="col qty">Quantity</th>
+                            <th class="no-display hidden"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="cart item">
+
+                        <tr class="item-info">
+
+                            <td class="col qty first-attr bss-swatch" attribute-code="color" attribute-value="49"
+                                attribute-id="93">
+
+                                <input type="hidden" name="bss_super_attribute[0][93]" value="49"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute color" attribute-code="color" attribute-id="93">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option image" option-type="2" option-id="49"
+                                             option-label="Black"
+                                             option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg"
+                                             option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg"
+                                        "="" style="background:
+                                        url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg)
+                                        no-repeat center; background-size: initial;">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col qty first-attr bss-swatch" attribute-code="size" attribute-value="168"
+                                attribute-id="141">
+
+                                <input type="hidden" name="bss_super_attribute[0][141]" value="168"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute size" attribute-code="size" attribute-id="141">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option text" option-type="0" option-id="168" option-label="S"
+                                             option-tooltip-thumb="" option-tooltip-value="S">S
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col qty">
+                                <input type="text"
+                                       class="qty_att_product input-text qty validate-not-negative-number required-entry validate-digits"
+                                       id="super_group_qty_0" value="0" name="config_table_qty[0]" index="0">
+                                <input type="hidden" class="unit-price" value="52">
+                            </td>
+                            <td class="no-display hidden">
+                                <input type="hidden" value="" name="quote_item_id[0]">
+                            </td>
+                        </tr>
+
+                        <tr class="item-info">
+
+                            <td class="col qty first-attr bss-swatch" attribute-code="color" attribute-value="49"
+                                attribute-id="93">
+
+                                <input type="hidden" name="bss_super_attribute[1][93]" value="49"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute color" attribute-code="color" attribute-id="93">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option image" option-type="2" option-id="49"
+                                             option-label="Black"
+                                             option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg"
+                                             option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg"
+                                        "="" style="background:
+                                        url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg)
+                                        no-repeat center; background-size: initial;">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col qty first-attr bss-swatch" attribute-code="size" attribute-value="170"
+                                attribute-id="141">
+
+                                <input type="hidden" name="bss_super_attribute[1][141]" value="170"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute size" attribute-code="size" attribute-id="141">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option text" option-type="0" option-id="170" option-label="L"
+                                             option-tooltip-thumb="" option-tooltip-value="L">L
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td class="col qty">
+                                <input type="text"
+                                       class="qty_att_product input-text qty validate-not-negative-number required-entry validate-digits"
+                                       id="super_group_qty_1" value="0" name="config_table_qty[1]" index="1">
+                                <input type="hidden" class="unit-price" value="54">
+                            </td>
+                            <td class="no-display hidden">
+                                <input type="hidden" value="" name="quote_item_id[1]">
+                            </td>
+                        </tr>
+
+                        <tr class="item-info">
+
+                            <td class="col qty first-attr bss-swatch" attribute-code="color" attribute-value="52"
+                                attribute-id="93">
+
+                                <input type="hidden" name="bss_super_attribute[2][93]" value="52"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute color" attribute-code="color" attribute-id="93">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option image" option-type="2" option-id="52"
+                                             option-label="Gray"
+                                             option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg"
+                                             option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg"
+                                        "="" style="background:
+                                        url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg)
+                                        no-repeat center; background-size: initial;">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col qty first-attr bss-swatch" attribute-code="size" attribute-value="167"
+                                attribute-id="141">
+
+                                <input type="hidden" name="bss_super_attribute[2][141]" value="167"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute size" attribute-code="size" attribute-id="141">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option text selected" option-type="0" option-id="167"
+                                             option-label="XS"
+                                             option-tooltip-thumb="" option-tooltip-value="XS">XS
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td class="col qty">
+                                <input type="text"
+                                       class="qty_att_product input-text qty validate-not-negative-number required-entry validate-digits"
+                                       id="super_group_qty_2" value="0" name="config_table_qty[2]" index="2">
+                                <input type="hidden" class="unit-price" value="47">
+                            </td>
+                            <td class="no-display hidden">
+                                <input type="hidden" value="" name="quote_item_id[2]">
+                            </td>
+                        </tr>
+
+                        <tr class="item-info">
+
+                            <td class="col qty first-attr bss-swatch" attribute-code="color" attribute-value="52"
+                                attribute-id="93">
+
+                                <input type="hidden" name="bss_super_attribute[3][93]" value="52"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute color" attribute-code="color" attribute-id="93">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option image" option-type="2" option-id="52"
+                                             option-label="Gray"
+                                             option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg"
+                                             option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg"
+                                        "="" style="background:
+                                        url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg)
+                                        no-repeat center; background-size: initial;">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col qty first-attr bss-swatch" attribute-code="size" attribute-value="168"
+                                attribute-id="141">
+
+                                <input type="hidden" name="bss_super_attribute[3][141]" value="168"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute size" attribute-code="size" attribute-id="141">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option text" option-type="0" option-id="168" option-label="S"
+                                             option-tooltip-thumb=""
+                                             option-tooltip-value="S">S
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td class="col qty">
+                                <input type="text"
+                                       class="qty_att_product input-text qty validate-not-negative-number required-entry validate-digits"
+                                       id="super_group_qty_3" value="0" name="config_table_qty[3]" index="3">
+                                <input type="hidden" class="unit-price" value="54">
+                            </td>
+                            <td class="no-display hidden">
+                                <input type="hidden" value="" name="quote_item_id[3]">
+                            </td>
+                        </tr>
+
+                        <tr class="item-info">
+
+                            <td class="col qty first-attr bss-swatch" attribute-code="color" attribute-value="52"
+                                attribute-id="93">
+
+                                <input type="hidden" name="bss_super_attribute[4][93]" value="52"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute color" attribute-code="color" attribute-id="93">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option image" option-type="2" option-id="52"
+                                             option-label="Gray"
+                                             option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg"
+                                             option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg"
+                                        "="" style="background:
+                                        url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-gray_main.jpg)
+                                        no-repeat center; background-size: initial;">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col qty first-attr bss-swatch" attribute-code="size" attribute-value="171"
+                                attribute-id="141">
+
+                                <input type="hidden" name="bss_super_attribute[4][141]" value="171"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute size" attribute-code="size" attribute-id="141">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option text" option-type="0" option-id="171"
+                                             option-label="XL"
+                                             option-tooltip-thumb=""
+                                             option-tooltip-value="XL">XL
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="col qty">
+                                <input type="text"
+                                       class="qty_att_product input-text qty validate-not-negative-number required-entry validate-digits"
+                                       id="super_group_qty_4" value="0" name="config_table_qty[4]" index="4">
+                                <input type="hidden" class="unit-price" value="54">
+                            </td>
+                            <td class="no-display hidden">
+                                <input type="hidden" value="" name="quote_item_id[4]">
+                            </td>
+                        </tr>
+
+                        <tr class="item-info">
+
+                            <td class="col qty first-attr bss-swatch" attribute-code="color" attribute-value="53"
+                                attribute-id="93">
+
+                                <input type="hidden" name="bss_super_attribute[5][93]" value="53"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute color" attribute-code="color" attribute-id="93">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option image" option-type="2" option-id="53"
+                                             option-label="Green"
+                                             option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg"
+                                             option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg"
+                                        "="" style="background:
+                                        url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg)
+                                        no-repeat center; background-size: initial;">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col qty first-attr bss-swatch" attribute-code="size" attribute-value="167"
+                                attribute-id="141">
+
+                                <input type="hidden" name="bss_super_attribute[5][141]" value="167"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute size" attribute-code="size" attribute-id="141">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option text" option-type="0" option-id="167"
+                                             option-label="XS"
+                                             option-tooltip-thumb="" option-tooltip-value="XS">XS
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td class="col qty">
+                                <input type="text"
+                                       class="qty_att_product input-text qty validate-not-negative-number required-entry validate-digits"
+                                       id="super_group_qty_5" value="0" name="config_table_qty[5]" index="5">
+                                <input type="hidden" class="unit-price" value="32">
+                            </td>
+                            <td class="no-display hidden">
+                                <input type="hidden" value="" name="quote_item_id[5]">
+                            </td>
+                        </tr>
+
+                        <tr class="item-info">
+
+                            <td class="col qty first-attr bss-swatch" attribute-code="color" attribute-value="53"
+                                attribute-id="93">
+
+                                <input type="hidden" name="bss_super_attribute[6][93]" value="53"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute color" attribute-code="color" attribute-id="93">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option image" option-type="2" option-id="53"
+                                             option-label="Green"
+                                             option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg"
+                                             option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg"
+                                        "="" style="background:
+                                        url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg)
+                                        no-repeat center; background-size: initial;">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col qty first-attr bss-swatch" attribute-code="size" attribute-value="170"
+                                attribute-id="141">
+
+                                <input type="hidden" name="bss_super_attribute[6][141]" value="170"
+                                       class="swatch-attribute">
+                                <div class="swatch-attribute size" attribute-code="size" attribute-id="141">
+                                    <div class="swatch-attribute-options clearfix">
+                                        <div class="swatch-option text" option-type="0" option-id="170" option-label="L"
+                                             option-tooltip-thumb=""
+                                             option-tooltip-value="L">L
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td class="col qty">
+                                <input type="text"
+                                       class="qty_att_product input-text qty validate-not-negative-number required-entry validate-digits"
+                                       id="super_group_qty_6" value="0" name="config_table_qty[6]" index="6">
+                                <input type="hidden" class="unit-price" value="54">
+                            </td>
+                            <td class="no-display hidden">
+                                <input type="hidden" value="" name="quote_item_id[6]">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- <input type="text" class="required-entry check-configuable-product" /> -->
+                    <img title="Reset" class="v-middle reset-configurablegridview" alt="reset"
+                         src="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/static/frontend/Magento/luma/en_US/Bss_ConfiguableGridView/images/ico_reset.png">
+                </div>
+
+                <script>
+                    var configuable_qty_price_array = [{"0": 52, "old": 52}, {"0": 54, "old": 54}, {
+                        "0": 47,
+                        "old": 57
+                    }, {
+                        "0": 54,
+                        "old": 54
+                    }, {"0": 54, "old": 54}, {"0": 32, "old": 32}, {"0": 54, "old": 54}];
+                    var old_configuable_qty_price_array = [{"0": 52, "old": 52}, {"0": 54, "old": 54}, {
+                        "0": 47,
+                        "old": 57
+                    }, {
+                        "0": 54,
+                        "old": 54
+                    }, {"0": 54, "old": 54}, {"0": 32, "old": 32}, {"0": 54, "old": 54}];
+                    var bss_optionAmount = '';
+                    var bss_configurablegridview_timer;
+
+                    require(['jquery', 'bss/swatch'], function ($) {
+                        var jsonSwatchConfig = {
+                                "93": {
+                                    "49": {
+                                        "type": 2,
+                                        "value": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/30x20\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-black_main.jpg",
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/110x90\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-black_main.jpg",
+                                        "label": "Black"
+                                    },
+                                    "52": {
+                                        "type": 2,
+                                        "value": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/30x20\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_main.jpg",
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/110x90\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_main.jpg",
+                                        "label": "Gray"
+                                    },
+                                    "53": {
+                                        "type": 2,
+                                        "value": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/30x20\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-green_main.jpg",
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/110x90\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-green_main.jpg",
+                                        "label": "Green"
+                                    }
+                                },
+                                "141": {
+                                    "167": {"type": "0", "value": "XS", "label": "XS"},
+                                    "168": {"type": "0", "value": "S", "label": "S"},
+                                    "170": {"type": "0", "value": "L", "label": "L"},
+                                    "171": {"type": "0", "value": "XL", "label": "XL"}
+                                }
+                            },
+                            jsonAttrLabelConfig = {
+                                "93": {"49": {"label": "Black"}, "52": {"label": "Gray"}, "53": {"label": "Green"}},
+                                "141": {
+                                    "168": {"label": "S"},
+                                    "170": {"label": "L"},
+                                    "167": {"label": "XS"},
+                                    "171": {"label": "XL"}
+                                }
+                            };
+                        $('.item-info .bss-swatch').swatch({
+                            jsonConfig: {
+                                "attributes": {
+                                    "93": {
+                                        "id": "93",
+                                        "code": "color",
+                                        "label": "Color",
+                                        "options": [{"id": "49", "label": "Black", "products": ["151", "157"]}, {
+                                            "id": "52",
+                                            "label": "Gray",
+                                            "products": ["149", "152", "161"]
+                                        }, {"id": "53", "label": "Green", "products": ["150", "159"]}],
+                                        "position": "0"
+                                    },
+                                    "141": {
+                                        "id": "141",
+                                        "code": "size",
+                                        "label": "Size",
+                                        "options": [{"id": "168", "label": "S", "products": ["151", "152"]}, {
+                                            "id": "170",
+                                            "label": "L",
+                                            "products": ["157", "159"]
+                                        }, {"id": "167", "label": "XS", "products": ["149", "150"]}, {
+                                            "id": "171",
+                                            "label": "XL",
+                                            "products": ["161"]
+                                        }],
+                                        "position": "0"
+                                    }
+                                },
+                                "template": "$<%- data.price %>",
+                                "optionPrices": {
+                                    "151": {
+                                        "oldPrice": {"amount": "52"},
+                                        "basePrice": {"amount": "52"},
+                                        "finalPrice": {"amount": "52"}
+                                    },
+                                    "157": {
+                                        "oldPrice": {"amount": "54"},
+                                        "basePrice": {"amount": "54"},
+                                        "finalPrice": {"amount": "54"}
+                                    },
+                                    "149": {
+                                        "oldPrice": {"amount": "57"},
+                                        "basePrice": {"amount": "47"},
+                                        "finalPrice": {"amount": "47"}
+                                    },
+                                    "152": {
+                                        "oldPrice": {"amount": "54"},
+                                        "basePrice": {"amount": "54"},
+                                        "finalPrice": {"amount": "54"}
+                                    },
+                                    "161": {
+                                        "oldPrice": {"amount": "54"},
+                                        "basePrice": {"amount": "54"},
+                                        "finalPrice": {"amount": "54"}
+                                    },
+                                    "150": {
+                                        "oldPrice": {"amount": "32"},
+                                        "basePrice": {"amount": "32"},
+                                        "finalPrice": {"amount": "32"}
+                                    },
+                                    "159": {
+                                        "oldPrice": {"amount": "54"},
+                                        "basePrice": {"amount": "54"},
+                                        "finalPrice": {"amount": "54"}
+                                    }
+                                },
+                                "prices": {
+                                    "oldPrice": {"amount": "32"},
+                                    "basePrice": {"amount": "32"},
+                                    "finalPrice": {"amount": "32"}
+                                },
+                                "productId": "163",
+                                "chooseText": "Choose an Option...",
+                                "images": {
+                                    "151": [{
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-black_main.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-black_main.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-black_main.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": true
+                                    }],
+                                    "157": [{
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-black_main.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-black_main.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-black_main.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": true
+                                    }],
+                                    "149": [{
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_alt1.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_alt1.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_alt1.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": false
+                                    }, {
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_main.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_main.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_main.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": true
+                                    }, {
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_back.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_back.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_back.jpg",
+                                        "caption": null,
+                                        "position": "2",
+                                        "isMain": false
+                                    }],
+                                    "152": [{
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_alt1.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_alt1.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_alt1.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": false
+                                    }, {
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_main.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_main.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_main.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": true
+                                    }, {
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_back.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_back.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_back.jpg",
+                                        "caption": null,
+                                        "position": "2",
+                                        "isMain": false
+                                    }],
+                                    "161": [{
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_alt1.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_alt1.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_alt1.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": false
+                                    }, {
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_main.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_main.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_main.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": true
+                                    }, {
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-gray_back.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_back.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-gray_back.jpg",
+                                        "caption": null,
+                                        "position": "2",
+                                        "isMain": false
+                                    }],
+                                    "150": [{
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-green_main.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-green_main.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-green_main.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": true
+                                    }],
+                                    "159": [{
+                                        "thumb": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/thumbnail\/88x110\/beff4985b56e3afdbeabfc89641a4582\/m\/h\/mh07-green_main.jpg",
+                                        "img": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/700x560\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-green_main.jpg",
+                                        "full": "http:\/\/demom2.bsscommerce.com\/magento2-configurable-product-grid-table-view\/pub\/media\/catalog\/product\/cache\/1\/image\/e9c3970ab036de70892d86c6d221abfe\/m\/h\/mh07-green_main.jpg",
+                                        "caption": null,
+                                        "position": "1",
+                                        "isMain": true
+                                    }]
+                                },
+                                "index": {
+                                    "151": {"93": "49", "141": "168"},
+                                    "157": {"93": "49", "141": "170"},
+                                    "149": {"93": "52", "141": "167"},
+                                    "152": {"93": "52", "141": "168"},
+                                    "161": {"93": "52", "141": "171"},
+                                    "150": {"93": "53", "141": "167"},
+                                    "159": {"93": "53", "141": "170"}
+                                }
+                            },
+                            jsonSwatchConfig: jsonSwatchConfig,
+                            mediaCallback: 'http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/swatches/ajax/media/',
+                            onlyMainImg: 'true',
+                            magentoVersion: '2.1.1',
+                        });
+
+                        $(document).ready(function () {
+                            var configuable_array_price = new Array();
+                            var configuable_price_old = '32';
+                            var old_subtotal = 0;
+                            var configuable_currency_symbol = '$';
+                            var configuable_currency_symbol_position = configuable_price_old.indexOf(configuable_currency_symbol);
+                            var showTotalDetailed = '1';
+
+                            if (jQuery('.price-box .special-price:first').length > 0) {
+                                var isSpecial = true;
+                                var configuable_array_price_old = new Array();
+                                var configuable_price_regular_old = '57';
+                            } else {
+                                var isSpecial = false;
+                            }
+
+                            if (showTotalDetailed) {
+                                var totalDetailTable = '<div class="total-area"><div class="qty-detail"></div><div class="qty-total"><span class="label"><b>Total Qty:</b></span><span class="value">0</span></div><div class="price-total"><span class="label"><b>Total:</b></span><span class="value">$0.00</span></div></div>';
+                                $('#product-options-wrapper').append(totalDetailTable);
+                            }
+
+                            function convertPriceConfiguableProduct(price) {
+                                price = parseFloat(price).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+                                if (configuable_currency_symbol_position > 0) {
+                                    return price += configuable_currency_symbol;
+                                }
+
+                                return price = configuable_currency_symbol + price;
+                            };
+
+                            $('#bss_configurablegridview .qty_att_product').change(function () {
+                                confi_qty_value = parseInt($(this).val());
+
+                                if (showTotalDetailed) {
+                                    var totalDetail = [];
+                                }
+
+                                if (confi_qty_value > 0) {
+                                    for (var key in configuable_qty_price_array[$(this).attr('index')]) {
+                                        if (confi_qty_value >= key) confi_price_value = configuable_qty_price_array[$(this).attr('index')][key];
+                                    }
+                                    configuable_array_price[$(this).attr('index')] = parseFloat(confi_qty_value * confi_price_value);
+
+                                    if (isSpecial) {
+                                        configuable_array_price_old[$(this).attr('index')] = parseFloat(confi_qty_value * configuable_qty_price_array[$(this).attr('index')]['old']);
+                                    }
+
+                                    if ($(this).parent().parent().find('.subtotal').length > 0) {
+                                        $(this).parent().parent().find('.subtotal').text(convertPriceConfiguableProduct(configuable_array_price[$(this).attr('index')]));
+                                    }
+                                }
+                                else {
+                                    delete configuable_array_price[$(this).attr('index')];
+                                    if (isSpecial) {
+                                        delete configuable_array_price_old[$(this).attr('index')];
+                                    }
+                                    if ($(this).parent().parent().find('.subtotal').length > 0) {
+                                        $(this).parent().parent().find('.subtotal').text(convertPriceConfiguableProduct(old_subtotal));
+                                    }
+                                }
+
+                                configuble_sum_total = parseFloat(configuable_array_price.reduce(function (a, b) {
+                                    return a + b;
+                                }, 0));
+                                if (isSpecial) {
+                                    configuble_sum_total_old = parseFloat(configuable_array_price_old.reduce(function (a, b) {
+                                        return a + b;
+                                    }, 0));
+                                }
+
+                                if (showTotalDetailed) {
+                                    $('#bss_configurablegridview .qty_att_product').each(function () {
+                                        var eachQty = parseInt($(this).val());
+
+                                        var firstAttr = $(this).parent().parent().find('.first-attr');
+                                        var firstId = firstAttr.attr('attribute-id');
+                                        var firstValue = firstAttr.attr('attribute-value');
+
+                                        if (eachQty > 0) {
+                                            if (typeof totalDetail[firstId + firstValue] == 'undefined') {
+                                                totalDetail[firstId + firstValue] = [];
+                                                totalDetail[firstId + firstValue]['id'] = firstValue;
+                                                totalDetail[firstId + firstValue]['qty'] = parseInt(eachQty);
+                                                if (jsonSwatchConfig && jsonSwatchConfig[firstId] && jsonSwatchConfig[firstId][firstValue]) {
+                                                    totalDetail[firstId + firstValue]['attr'] = jsonSwatchConfig[firstId][firstValue];
+                                                }
+                                                totalDetail[firstId + firstValue]['label'] = jsonAttrLabelConfig[firstId][firstValue];
+                                            } else {
+                                                totalDetail[firstId + firstValue]['qty'] += parseInt(eachQty);
+                                            }
+                                        }
+                                    });
+
+                                    var rows = '';
+                                    var totalQty = 0;
+                                    for (key in totalDetail) {
+                                        if (parseInt(totalDetail[key]['qty']) > 0) {
+                                            id = totalDetail[key]['id'];
+                                            var html = '';
+                                            if (totalDetail[key]['attr']) {
+                                                type = parseInt(totalDetail[key]['attr'].type, 10);
+                                                value = totalDetail[key]['attr'].hasOwnProperty('value') ? totalDetail[key]['attr'].value : '';
+                                                thumb = totalDetail[key]['attr'].hasOwnProperty('thumb') ? totalDetail[key]['attr'].thumb : '';
+                                                label = totalDetail[key]['attr'].hasOwnProperty('label') ? totalDetail[key]['attr'].label : '';
+                                                attr =
+                                                    ' option-type="' + type + '"' +
+                                                    ' option-id="' + id + '"' +
+                                                    ' option-label="' + label + '"' +
+                                                    ' option-tooltip-thumb="' + thumb + '"' +
+                                                    ' option-tooltip-value="' + value + '"';
+
+                                                if (type === 0) {
+                                                    // Text
+                                                    html += '<div class="swatch-option text" ' + attr + '>' + (value ? value : label) +
+                                                        '</div>';
+                                                } else if (type === 1) {
+                                                    // Color
+                                                    html += '<div class="swatch-option color" ' + attr +
+                                                        '" style="background: ' + value +
+                                                        ' no-repeat center; background-size: initial;">' + '' +
+                                                        '</div>';
+                                                } else if (type === 2) {
+                                                    // Image
+                                                    html += '<div class="swatch-option image" ' + attr +
+                                                        '" style="background: url(' + value + ') no-repeat center; background-size: initial;">' + '' +
+                                                        '</div>';
+                                                } else if (type === 3) {
+                                                    // Clear
+                                                    html += '<div' + attr + '></div>';
+                                                } else {
+                                                    // Defaualt
+                                                    html += '<div' + attr + '>' + label + '</div>';
+                                                }
+                                            } else {
+                                                html += '<div>' + totalDetail[key]['label']['label'] + '</div>';
+                                            }
+
+                                            rows += '<tr><td>' + html + '</td><td class="a-right">' + totalDetail[key]['qty'] + '</td></tr>';
+                                            totalQty += parseInt(totalDetail[key]['qty']);
+                                        }
+                                    }
+
+                                    if (rows != '') {
+                                        var table = '<table id="qty-selected-detail-table">' + rows + '</table>';
+                                        jQuery('.total-area .qty-detail').html(table);
+                                    } else {
+                                        jQuery('.total-area .qty-detail').html("");
+                                    }
+
+                                    $('.total-area .qty-total .value').text(totalQty);
+                                    $('.total-area .price-total .value').text(convertPriceConfiguableProduct(configuble_sum_total));
+                                }
+                            });
+
+                            $('.reset-configurablegridview').click(function () {
+                                if (bss_optionAmount !== '') {
+                                    var new_configuable_price_old = parseFloat(configuable_price_old) + parseFloat(bss_optionAmount);
+                                } else {
+                                    var new_configuable_price_old = configuable_price_old;
+                                }
+                                ;
+
+                                configuable_array_price = new Array();
+                                configuable_array_price_old = new Array();
+                                $('#bss_configurablegridview .qty_att_product').each(function () {
+                                    $(this).val(0);
+                                    if ($(this).parent().parent().find('.subtotal').length > 0) {
+                                        $(this).parent().parent().find('.subtotal').text(convertPriceConfiguableProduct(old_subtotal));
+                                    }
+                                });
+
+                                $('.total-area .qty-detail').html("");
+                                $('.total-area .qty-total .value').text(0);
+                                $('.total-area .price-total .value').text(convertPriceConfiguableProduct(0));
+                            });
+                        });
+                    });
+                </script>
+
+
+                <script>
+                    require([
+                        "jquery",
+                        "jquery/ui"
+                    ], function ($) {
+
+//<![CDATA[
+                        $.extend(true, $, {
+                            calendarConfig: {
+                                dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                                dayNamesMin: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                                monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                                monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                infoTitle: "About the calendar",
+                                firstDay: 0,
+                                closeText: "Close",
+                                currentText: "Go Today",
+                                prevText: "Previous",
+                                nextText: "Next",
+                                weekHeader: "WK",
+                                timeText: "Time",
+                                hourText: "Hour",
+                                minuteText: "Minute",
+                                dateFormat: $.datepicker.RFC_2822,
+                                showOn: "button",
+                                showAnim: "",
+                                changeMonth: true,
+                                changeYear: true,
+                                buttonImageOnly: null,
+                                buttonImage: null,
+                                showButtonPanel: true,
+                                showWeek: true,
+                                timeFormat: '',
+                                showTime: false,
+                                showHour: false,
+                                showMinute: false
+                            }
+                        });
+
+                        enUS = {
+                            "m": {
+                                "wide": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                                "abbr": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                            }
+                        }; // en_US locale reference
+//]]>
+
+                    });
+                </script>
+
+            <div class="total-area">
+                <div class="qty-detail">
+                    <table id="qty-selected-detail-table">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="swatch-option image" option-type="2" option-id="49" option-label="Black"
+                                     option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg"
+                                     option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg"
+                                "="" style="background:
+                                url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-black_main.jpg)
+                                no-repeat center; background-size: initial;">
+                            </td>
+                            <td class="a-right">10</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="swatch-option image" option-type="2" option-id="53" option-label="Green"
+                                     option-tooltip-thumb="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/110x90/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg"
+                                     option-tooltip-value="http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg"
+                                "="" style="background:
+                                url(http://demom2.bsscommerce.com/magento2-configurable-product-grid-table-view/pub/media/catalog/product/cache/1/image/30x20/beff4985b56e3afdbeabfc89641a4582/m/h/mh07-green_main.jpg)
+                                no-repeat center; background-size: initial;">
+                            </td>
+                            <td class="a-right">10</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="qty-total"><span class="label"><b>Total Qty:</b></span><span class="value">20</span></div>
+                <div class="price-total"><span class="label"><b>Total:</b></span><span class="value">$840.00</span>
+                </div>
+            </div>
+        */ ?>
+
+
+    <style>
+        .det_qty {
+            /*background: none repeat scroll 0 0 #EDEDED;
+            border-bottom: 1px solid #D7D7D7;*/
+            border-top: 1px solid #FFFFFF;
+            /*height: 35px;*/
+            width: 100%;
+            display: inline-block;
+        }
+
+        #superattr .det_qty,
+        .det_qty2 .qty_navdet li {
+            background: #EDEDED;
+        }
+
+        .qty_navdet {
+            list-style: none outside none;
+            margin: 0;
+            padding: 0;
+            clear: both;
+            display: inline-block;
+            width: 100%;
+            vertical-align: middle;
+        }
+
+        .qty_navdet li {
+            color: #000000;
+            float: left;
+            font-size: 12px;
+            /*height: 35px;
+            line-height: 35px;*/
+            width: calc(100% / 9 - 2px) !important;
+            display: inline-block;
+            text-align: center;
+            padding: 10px 0px;
+            border: 1px solid #D7D7D7;
+        }
+
+        .det_qty.det_qty1 {
+            background: none;
+            border-top: none;
+        }
+
+        .qty_navdet li span {
+            color: #000000;
+            float: left;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+        }
+
+        .det_subtxt1 {
+            color: #666666;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .det_subtxt1 span {
+            color: #010489;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .btn_cont_det {
+            height: 30px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn_cont_det span {
+            background: none repeat scroll 0 0 #CB9D16;
+            color: #FFFFFF;
+            float: right;
+            font-size: 12px;
+            font-weight: bold;
+            height: 30px;
+            line-height: 30px;
+            padding: 0;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn_cont_det span:hover {
+            background: none repeat scroll 0 0 #333333;
+        }
+
+        .qty_navdet2 {
+            list-style: none outside none;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            width: 100%;
+            vertical-align: middle;
+        }
+
+        .qty_navdet2 li {
+            color: #000000;
+            float: left;
+            font-size: 12px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            width: 122px;
+        }
+
+        .qty_navdet2 li input {
+            margin-top: 5px;
+            width: 60px;
+        }
+
+        .btn_cont_det a:hover {
+            background: none repeat scroll 0 0 #333333;
+        }
+
+        .det_txt_233 {
+            color: #666666;
+            float: left;
+            font-size: 12px;
+            line-height: 18px;
+            margin-top: 10px;
+            clear: both;
+            width: 90%;
+            text-align: justify;
+        }
+
+        .sdet_txt_2331 {
+            color: #0033FF;
+            font-size: 14px;
+        }
+
+        .det_txt_short_disc {
+            color: #0033FF;
+            font-size: 14px;
+        }
+
+        .detail_pro_cont {
+            float: right;
+            height: auto;
+            margin-right: 3px;
+        }
+
+        .detail_head_h {
+            /*border-bottom: 1px solid #D7D7D7;
+            height: 66px;*/
+            display: inline-block;
+            clear: both;
+            width: 100%;
+        }
+
+        .det_line {
+            margin-bottom: 0px;
+        }
+
+        .price_line_first h3 {
+            font-size: 23px;
+        }
+
+        .price_line_first {
+            margin: 20px 0px;
+        }
+
+        .btn_cont_det span {
+            padding: 0px;
+        }
+
+        .btn_cont_det .chart_head_1 {
+            width: 30%;
+        }
+
+        .btn_cont_det .chart_head_2 {
+            width: 30%;
+        }
+
+        .btn_cont_det .chart_head_3 {
+            width: 40%;
+        }
+    </style>
+
+
+
+    <script>
+        <?php
+        //$objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+        //$productForm = $objectManager->create('Magento\Catalog\Block\Product\View');
+        $productForm = $block->getLayout()->getBlock('product.info');
+
+        /*if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        if($ip == '185.43.236.25') {
+            echo '<pre>';
+            var_dump($productForm->getJsonConfig());
+            echo '</pre>';
+            exit;
+        }*/
+
+        ?>
+        require([
+            'jquery',
+            'priceBox'
+        ], function($){
+            var dataPriceBoxSelector = '[data-role=priceBox]',
+                dataProductIdSelector = '[data-product-id=<?php echo $productForm->escapeHtml($_product->getId())?>]',
+                priceBoxes = $(dataPriceBoxSelector + dataProductIdSelector);
+
+            priceBoxes = priceBoxes.filter(function(index, elem){
+                return !$(elem).find('.price-from').length;
+            });
+
+            priceBoxes.priceBox({'priceConfig': <?php /* @escapeNotVerified */ echo $productForm->getJsonConfig() ?>});
+
+            //console.log(priceBoxes);
+        });
+    </script>
+
+
+
+    <script>
+        require([
+            "jquery",
+            'priceUtils',
+            'priceBox'
+        ], function ($) {
+
+            //'use strict';
+
+            var p = jQuery.noConflict();
+
+            /*p.widget('mage.configurable', {
+                //console.log('4444');
+            });*/
+
+
+            p(document).ready(function(){
+
+                //console.log(globalOptions);
+
+                p('.txt').on('change', function() {
+                    getCurrentPrice();
+                })
+
+                /*p('.txt').live('change', function() {
+
+                    calculateSum();
+                    getCurrentPrice();
+
+                });*/
+
+            });
+
+            function calculateSum() {
+
+                p(".txt").each(function() {
+
+                    if(this.value !=0 )
+
+                    {
+
+                        var link_name = p(this).attr('name');
+
+                        var qt=parseInt(this.value);
+
+                        var total=0;
+
+                        myDivObj = document.getElementById(link_name);
+
+                        var float_num = parseFloat(myDivObj.innerHTML);
+
+                        var hva = float_num.toFixed(2);
+
+                        if(qt>0)
+                        {
+                            var total= total + (Math.round(((hva) * qt)*100)/100);
+
+                            p(document).ready(function(){
+
+                            });
+
+                        }
+
+                    }
+
+                });
+
+            }
+
+
+
+
+        function getalltotal()
+        {
+            var total=0;
+            p(".txt").each(function() {
+
+                if(this.value !=0 )
+
+                {
+                    var link_name = p(this).attr('name');
+
+                    var qt=parseInt(this.value);
+
+
+
+                    myDivObj = document.getElementById(link_name);
+
+                    var float_num = parseFloat(myDivObj.innerHTML);
+
+                    var hva = float_num.toFixed(2);
+                    if(qt>0)
+
+                    {
+
+                        total = total + (Math.round(((hva) * qt)*100)/100);
+                    }
+                }
+            });
+            return total;
+        }
+
+        function getCurrentPrice(){
+
+
+            var  totaloptionprices = getalltotal();
+
+            //alert(totaloptionprices);
+            var qty = 0;
+
+            var inputs = document.getElementById('superattr').getElementsByTagName('input');
+
+            for (var i=inputs.length; i-- > 0;) {
+
+                var v= inputs[i].value.split(',').join('.').split(' ').join('');
+
+                if (isNaN(+v))
+
+                    alert(inputs[i].value+' is not a readable number');
+
+                else
+
+                    qty+= +v;
+
+            }
+
+            //alert(qty);
+            var priceArr = new Array();
+            priceArr[0] = <?php echo $_product->getFinalPrice(); ?>;
+            <?php foreach ($_product->getTierPrice() as $t): ?>
+                priceArr[<?php echo $t['price_qty']; ?>] = <?php echo $t['price']; ?>;
+
+            //  alert(priceArr[<?php echo $t['price_qty']; ?>]);
+            //alert(<?php echo $t['price']; ?>);
+            <?php endforeach; ?>
+            //alert(priceArr);
+
+            if(priceArr[1] == undefined)
+
+                priceArr[1] = <?php echo $_product->getFinalPrice(); ?>;
+
+            <?php /*//TODO
+            if(qty == 0 || qty == 1){
+
+                optionsPrice.changePrice('options',0);
+
+                optionsPrice.reload();
+
+                var p_base_price = <?php echo $_product->getPrice() ?>;
+
+                var optPr = optionsPrice.getOptionPrices();
+                var sbtot = (qty == 0 ? 0 :  (p_base_price + optPr[0] + optPr[3] + totaloptionprices));
+
+                document.getElementById('subtotalprice').innerHTML = '$' + sbtot.toFixed(2) ;
+
+                return;
+            }*/ ?>
+
+            var prev = 0;
+
+            for (var item in priceArr)
+                if(qty > item)
+                {
+                    <?php
+                    $spi = 0;
+                    $prevqty = 0;
+                    $tierpriceval = $_product->getTierPrice();
+
+                    foreach($tierpriceval as $t):?>
+                    <?php if ($spi==0)
+                {
+                    $prevqty =$t['price_qty'];
+                    $spi++;
+                    if ((count($tierpriceval))>1)
+                        continue;
+                    else {
+                        echo " if (qty>=".$t['price_qty'].")" ;
+                        echo " prev=". $t['price_qty'].";";
+                    }
+                }
+
+                    if ((count($tierpriceval)) > ($spi + 1)){
+                        if ($prevqty>0){
+                            echo " if (qty>=".$prevqty." && qty<=".$t['price_qty']."){" ;
+                            echo " prev=". $prevqty."; }";
+                        }
+                        $prevqty =$t['price_qty'];
+                    }
+                    else{
+                        if ($prevqty>0){
+                            echo " if (qty>=".$prevqty." && qty<=".$t['price_qty']."){" ;
+                            echo " prev=". $prevqty."; }";
+                        }
+                        $prevqty =$t['price_qty'];
+                        echo " if (qty>=".$t['price_qty'].")" ;
+                        echo " prev=". $t['price_qty'].";";
+                    }
+                    $spi++;
+                    ?>
+
+                    <?php endforeach;?>
+                }
+
+            //TODO console.log(qty);
+            //TODO console.log(prev);
+
+            //TODO console.log(priceArr);
+
+            //TODO var finalPrice = (qty * priceArr[prev]).toFixed(2);
+            //TODO console.log(finalPrice);
+
+
+            /* TODO
+            if (Number(priceArr[prev])>0){
+                optionsPrice.changePrice('options', priceArr[prev] - priceArr[0]);
+            }else{
+
+                optionsPrice.changePrice('options', priceArr[1] - priceArr[1]);
+            }
+            optionsPrice.reload();
+
+            var optPr = optionsPrice.getOptionPrices();
+            var sbtot = Math.round((((optionsPrice.productPrice + optPr[0] + optPr[3]) * qty) + totaloptionprices) *100)/100;
+            document.getElementById('subtotalprice').innerHTML = '$' + sbtot.toFixed(2);*/
+
+        }
+
+        });
+    </script>
+
+
+
+    <?php
+} ?>

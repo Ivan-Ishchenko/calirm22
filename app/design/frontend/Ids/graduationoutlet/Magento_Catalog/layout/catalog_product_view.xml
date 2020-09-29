@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <body>
+
+        <move element="page.main.title" destination="product.info.media" before="-"/>
+        <move element="product.info.review" destination="product.info.media" after="page.main.title"/>
+
+        <referenceBlock name="product.info.sku" remove="true"/>
+
+        <!-- Remove "product.info.overview" (short description) -->
+        <referenceBlock name="product.info.overview" remove="true"/>
+
+        <referenceContainer name="product.info.media">
+            <container name="ids.product.info.sku.wrapper" label="Product auxiliary info" htmlTag="div" htmlClass="ids-product-info-sku-wrapper" before="-">
+                <block class="Magento\Catalog\Block\Product\View\Description" name="ids.product.info.sku" template="product/view/attribute.phtml">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getSku</argument>
+                        <argument name="at_code" xsi:type="string">sku</argument>
+                        <argument name="css_class" xsi:type="string">sku</argument>
+                        <argument name="at_label" xsi:type="string">default</argument>
+                        <argument name="add_attribute" xsi:type="string">itemprop="sku"</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+
+        <!-- Add custom reviews block -->
+        <referenceContainer name="content">
+            <container name="ids.product.reviews" htmlTag="div" htmlClass="product-reviews-wrap" after="product.info.details">
+                <block class="Magento\Framework\View\Element\Template" name="ids.product.reviews.wrapper" template="Magento_Theme::catalog/product/reviews.phtml"/>
+            </container>
+        </referenceContainer>
+
+        <move element="product.review.form" destination="ids.product.reviews" after="-"/>
+
+        <move element="ids.product.reviews" destination="reviews.tab" before="-"/>
+
+        <referenceBlock name="product.info.details">
+            <block class="Magento\Catalog\Block\Product\View" name="ids.shipping-handling.tab" template="Magento_Catalog::product/view/shipping-handling-tab.phtml" group="detailed_info">
+                <arguments>
+                    <argument translate="true" name="title" xsi:type="string"><![CDATA[Shipping & Handling]]></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+    </body>
+</page>

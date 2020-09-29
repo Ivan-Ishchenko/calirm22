@@ -1,0 +1,1459 @@
+<?php
+
+$PHP_SELF = '';
+
+
+if(isset($_REQUEST['submit']))
+{
+
+$customized =$_REQUEST['customized'];
+
+$email="graduationoutlet@gmail.com";
+//$to = "graduationoutlet@gmail.com";
+//$to ="sanjaytests@gmail.com";//$to ="pmmealways@hotmail.com";
+
+//$headers .= 'From: <'.$_REQUEST['pemail'].'>' . "\r\n";$headers .= 'From: <'.$email.'>' . "\r\n";
+$headers = '';
+$headers .= 	"MIME-Version: 1.0\r\n"."Content-Type: text/html; charset=\"iso-8859-1\"\r\n"."Content-Transfer-Encoding: 7bit\r\n";
+  
+if($_REQUEST['customized']=="Intertwined honor cord")
+{
+$subject = "Custom quote request - Intertwined honor cord"; 
+$message = '<html>
+        <head>
+        </head>
+        <title>http://www.graduationoutlet.com</title>
+        <body>
+            <table cellspacing="0" cellpadding="8" border="0" width="400">
+                   <tr>
+                          <td colspan="2"></td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                           <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Colors required :</strong></td>
+                           <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['colors_required'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Quantity required :</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['quantity_required'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Date needed by : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['date_needed_by'].'</td>
+                   </tr>
+                   <tr>
+                     <td colspan="2" style="padding:0px;">
+                      <img src="images/whitespace.gif" alt="" width="100%" height="1" /></td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Name : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pname'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Phone Number : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pnumber'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Email : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pemail'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Preferred Need by Date : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pdate'].'</td>
+                   </tr>
+            </table>
+      </body>
+     </html>';
+     
+}
+else if($_REQUEST['customized']==="Stole/ Sash")
+{
+$subject = "Custom quote request - Stole/ Sash";
+ $message = '<html>
+        <head>
+        </head>
+        <title>http://www.graduationoutlet.com</title>
+        <body>
+            <table cellspacing="0" cellpadding="8" border="0" width="400">
+                   <tr>
+                          <td colspan="2"></td>
+                   </tr>
+                      <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Print Color : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['print_color'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Quantity: </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['quantity'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Stole Color:</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['stolecolor'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Number of sides needing printing: </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['numberofside'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Need Artwork or Logo printed ?:</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['needart'].'</td>
+                   </tr>
+                    <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Text- Left Side (of person wearing):</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['textleft'].'</td>
+                   </tr>
+                    <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Text-Right Side (of person wearing):</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['textright'].'</td>
+                   </tr>   
+                   <tr>
+                     <td colspan="2" style="padding:0px;">
+                      <img src="images/whitespace.gif" alt="" width="100%" height="1" /></td>
+                   </tr>
+                   
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Name : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pname'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Phone Number : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pnumber'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Email : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pemail'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Preferred Need by Date:</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pdate'].'</td>
+                   </tr>
+                   
+            </table>
+      </body>
+     </html>';
+
+}
+else if($_REQUEST['customized']=="Diploma Cover")
+{
+  $subject = "Custom quote request - Diploma Cover"; 
+   $message = '<html>
+        <head>
+        </head>
+        <title>http://www.graduationoutlet.com</title>
+        <body>
+            <table cellspacing="0" cellpadding="8" border="0" width="400">
+                   <tr>
+                          <td colspan="2"></td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                           <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>School Seal required :</strong></td>
+                           <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['school'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Total Number of lines to be printed:</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['total_number'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Text to be printed: </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['textbeprint'].'</td>
+                   </tr>
+                       <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Quantity required:</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['quantity_required'].'</td>
+                   </tr>
+                    <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Date needed by :</strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['date_needed_by'].'</td>
+                   </tr>
+                   <tr>
+                     <td colspan="2" style="padding:0px;">
+                      <img src="images/whitespace.gif" alt="" width="100%" height="1" /></td>
+                   </tr>
+                   
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Name : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pname'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Phone Number : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pnumber'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Email : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pemail'].'</td>
+                   </tr>
+                   <tr bgcolor="#eeeeee">
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;"><strong>Preferred Need by Date : </strong></td>
+                         <td style="font-family:Verdana, Arial; font-size:11px; color:#333333;">'.$_REQUEST['pdate'].'</td>
+                   </tr>
+            </table>
+      </body>
+     </html>';
+
+}     //graduationoutlet@gmail.com
+$to = "graduationoutlet@gmail.com";$headers .= 'From: <'.$email.'>' . "\r\n";$headers .= 	"MIME-Version: 1.0\r\n"."Content-Type: text/html; charset=\"iso-8859-1\"\r\n"."Content-Transfer-Encoding: 7bit\r\n";
+if(mail($to,$subject,$message,$headers))
+{
+?>
+<script type="text/javascript">
+    
+  alert("Thank you for your request. A representative will contact you shortly to discuss details and pricing.");  
+
+</script>
+<?php 
+}
+else
+{
+?>
+<script type="text/javascript">
+  alert("Could not process. Please contact the Administrator!");  
+  
+</script>
+<?php
+}
+}
+?> 
+<script type="text/javascript">
+    function ChangeDropdowns(value){
+      if(value=="Intertwined honor cord"){
+          document.getElementById('intertwined').style.display='block';
+          document.getElementById('diploma').style.display='none';
+          document.getElementById('stole').style.display='none';
+          document.getElementById('nodisplay').style.display='none'; 
+           
+      }
+      else if(value=="Stole/ Sash")
+      {
+          document.getElementById('stole').style.display='block';
+          document.getElementById('intertwined').style.display='none';
+          document.getElementById('diploma').style.display='none';
+          document.getElementById('nodisplay').style.display='none'; 
+      }
+      else if(value=="Diploma Cover")
+      {    
+           document.getElementById('diploma').style.display='block';                      
+           document.getElementById('intertwined').style.display='none';
+           document.getElementById('stole').style.display='none';
+           document.getElementById('nodisplay').style.display='none'; 
+      }
+      else
+      {   document.getElementById('nodisplay').style.display='block'; 
+          document.getElementById('intertwined').style.display='none';
+          document.getElementById('diploma').style.display='none';
+          document.getElementById('stole').style.display='none';
+      }
+  }
+</script>
+<script language="JavaScript" type="text/javascript">
+function validateForm()
+{
+       
+       /* name validation */
+      var x=document.forms["request"]["pname"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Name.");
+        return false;
+      }
+      var x=document.forms["request"]["pnumber"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Number.");
+        return false;
+      }
+     
+      /* Email address must be validate */
+      var x=document.forms["request"]["pemail"].value
+      var atpos=x.indexOf("@");
+      var dotpos=x.lastIndexOf(".");
+      if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+      {
+      alert("Please Enter E-Mail.");
+      return false;
+      }
+      var x=document.forms["request"]["pdate"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Date.");
+        return false;
+      } 
+     
+     
+} /* function must be close */
+
+function validateForm2()
+{
+       
+       /* name validation */
+      var x=document.forms["request2"]["pname"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Name.");
+        return false;
+      }
+      var x=document.forms["request2"]["pnumber"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Number.");
+        return false;
+      }
+     
+      /* Email address must be validate */
+      var x=document.forms["request2"]["pemail"].value
+      var atpos=x.indexOf("@");
+      var dotpos=x.lastIndexOf(".");
+      if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+      {
+      alert("Please Enter E-Mail.");
+      return false;
+      }
+      var x=document.forms["request2"]["pdate"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Date.");
+        return false;
+      } 
+     
+     
+} /* function must be close */
+function validateForm3()
+{
+       
+       /* name validation */
+      var x=document.forms["request3"]["pname"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Name.");
+        return false;
+      }
+      var x=document.forms["request3"]["pnumber"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Number.");
+        return false;
+      }
+     
+      /* Email address must be validate */
+      var x=document.forms["request3"]["pemail"].value
+      var atpos=x.indexOf("@");
+      var dotpos=x.lastIndexOf(".");
+      if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+      {
+      alert("Please Enter E-Mail.");
+      return false;
+      }
+      var x=document.forms["request3"]["pdate"].value  
+      if (x==null || x=="")
+      {
+        alert("Please Enter Date.");
+        return false;
+      } 
+     
+     
+} /* function must be close */
+</script>   
+    <form name="request" id="request" method="post" action="<?php echo $PHP_SELF;?>" onsubmit="return validateForm()"> 
+    
+    <div class="fieldset">
+        <h2 class="legend">What item do you need customized</h2>
+         <ul class="form-list">
+              <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                      <label class="required" for="firstname">What item do you need customized</label>
+                    </div>
+                 <div class="field name-lastname">
+                        <select id="customized" name="customized"  onchange="ChangeDropdowns(this.value);">
+                               <option value="" selected="selected">--- Please select----</option>
+                                <option value="Intertwined honor cord">Intertwined honor cord</option>
+                                <option value="Stole/ Sash">Stole/ Sash</option>
+                                <option value="Diploma Cover">Diploma Cover</option>
+                         </select>
+                 </div>
+               </div>
+                </li>
+             
+         </ul>
+    </div>
+    <!--- intertwined start---->
+    <div id="intertwined" class="intertwined" style="display:none;">         
+    <div class="fieldset">
+        <h2 class="legend">Intertwined honor cord</h2>
+          <ul class="form-list">
+            <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Colors required    :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="colors_required" name="colors_required">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+                  <div class="customer-name">
+                      <div class="field name-firstname">
+                          <label for="Quantity required">Quantity required:</label>
+                          <div class="input-box">
+                              <input type="text" class="input-text" id="quantity_required" name="quantity_required">
+                          </div>
+                      </div>
+                  </div>
+              </li>
+             <li class="fields">
+                 <div class="customer-name">
+                     <div class="field name-firstname">
+                         <label for="Date needed by">Date needed by :</label>
+                         <div class="input-box">
+                             <input type="text" class="input-text" id="date_needed_by" name="date_needed_by">
+                         </div>
+                     </div>
+                 </div>
+              </li>
+              
+               
+         </ul>
+        </div>
+        
+        <div class="fieldset">
+        <h2 class="legend">Personal Information</h2>
+         <ul class="form-list">
+            <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Name   :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pname" name="pname">
+                       </div>
+                   </div>
+                </div>
+             </li>
+             <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Contact Phone Number :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pnumber" name="pnumber">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Email :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pemail" name="pemail">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Preferred Need by Date :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pdate" name="pdate">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+                    <div class="input-box">
+                      <button class="button" title="Submit" name="submit" id="submit" type="submit"><span><span>Submit</span></span></button>
+                    </div>
+              </li>
+            </ul>
+        </div>
+     </div>
+         <!--- intertwined end---->
+ </form>        
+       <!--- Stole/ Sash start---->
+       
+  <form name="request2" id="request2" method="post" action="<?php echo $PHP_SELF;?>" onsubmit="return validateForm2()">
+  <input type="hidden" id="customized" name="customized" value="Stole/ Sash">     
+    <div id="stole" class="stole" style="display:none;">         
+    <div class="fieldset">
+        <h2 class="legend">Stole/ Sash</h2>
+          <ul class="form-list">
+            <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="School Seal required">Print Color :</label>
+                       <div class="input-box">
+                           <input type="text" id="print_color" class="input-text" name="print_color">
+                       </div>
+                   </div>
+                   <div class="field name-lastname">
+                        <label for="Total Number of lines to be printed">Stole Color:</label>
+                   <div class="input-box">
+                    <select name="stolecolor" id="stolecolor">
+                            <option value="Black">Black</option>
+                            <option value="Dark Green">Dark Green</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Light Blue">Light Blue</option>
+                            <option value="Maroon">Maroon</option>
+                            <option value="Medium Green">Medium Green</option>
+                            <option value="Navy Blue">Navy Blue</option>
+                            <option value="Purple">Purple</option>
+                            <option value="Red">Red</option>
+                            <option value="Royal Blue">Royal Blue</option>
+                            <option value="Silver">Silver</option>
+                            <option value="White">White</option>
+                    </select>
+                    </div>
+                   </div>
+         </div>
+      </li>
+       <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                    <label for="Text to be printed">Quantity:</label>
+                   <div class="input-box">
+                        <select id="quantity" name="quantity">
+                                <option value="001 [Add $13.00]">001 [Add $13.00]</option>
+                                <option value="002 [Add $13.00]">002 [Add $13.00]</option>
+                                <option value="003 [Add $13.00]">003 [Add $13.00]</option>
+                                <option value="004 [Add $13.00]">004 [Add $13.00]</option>
+                                <option value="005 [Add $13.00]">005 [Add $13.00]</option>
+                                <option value="006 [Add $13.00]">006 [Add $13.00]</option>
+                                <option value="007 [Add $13.00]">007 [Add $13.00]</option>
+                                <option value="008 [Add $13.00]">008 [Add $13.00]</option>
+                                <option value="009 [Add $13.00]">009 [Add $13.00]</option>
+                                <option value="010 [Add $13.00]">010 [Add $13.00]</option>
+                                <option value="011 [Add $13.00]">011 [Add $13.00]</option>
+                                <option value="012 [Add $13.00]">012 [Add $13.00]</option>
+                                <option value="013 [Add $13.00]">013 [Add $13.00]</option>
+                                <option value="014 [Add $13.00]">014 [Add $13.00]</option>
+                                <option value="015 [Add $13.00]">015 [Add $13.00]</option>
+                                <option value="016 [Add $13.00]">016 [Add $13.00]</option>
+                                <option value="017 [Add $13.00]">017 [Add $13.00]</option>
+                                <option value="018 [Add $13.00]">018 [Add $13.00]</option>
+                                <option value="019 [Add $13.00]">019 [Add $13.00]</option>
+                                <option value="020 [Add $13.00]">020 [Add $13.00]</option>
+                                <option value="021 [Add $13.00]">021 [Add $13.00]</option>
+                                <option value="022 [Add $13.00]">022 [Add $13.00]</option>
+                                <option value="023 [Add $13.00]">023 [Add $13.00]</option>
+                                <option value="024 [Add $13.00]">024 [Add $13.00]</option>
+                                <option value="025 [Add $5.00">025 [Add $5.00]</option>
+                                <option value="025 [Add $5.00">025 [Add $5.00]</option>
+                                <option value="025 [Add $5.00">025 [Add $5.00]</option>
+                                <option value="026 [Add $5.00">026 [Add $5.00]</option>
+                                <option value="026 [Add $5.00">026 [Add $5.00]</option>
+                                <option value="026 [Add $5.00">026 [Add $5.00]</option>
+                                <option value="027 [Add $5.00]">027 [Add $5.00]</option>
+                                <option value="027 [Add $5.00]">027 [Add $5.00]</option>
+                                <option value="027 [Add $5.00]">027 [Add $5.00]</option>
+                                <option value="028 [Add $5.00]">028 [Add $5.00]</option>
+                                <option value="028 [Add $5.00]">028 [Add $5.00]</option>
+                                <option value="028 [Add $5.00]">028 [Add $5.00]</option>
+                                <option value="029 [Add $5.00]">029 [Add $5.00]</option>
+                                <option value="029 [Add $5.00]">029 [Add $5.00]</option>
+                                <option value="029 [Add $5.00]">029 [Add $5.00]</option>
+                                <option value="030 [Add $5.00]">030 [Add $5.00]</option>
+                                <option value="030 [Add $5.00]">030 [Add $5.00]</option>
+                                <option value="030 [Add $5.00]">030 [Add $5.00]</option>
+                                <option value="031 [Add $5.00]">031 [Add $5.00]</option>
+                                <option value="031 [Add $5.00]">031 [Add $5.00]</option>
+                                <option value="031 [Add $5.00]">031 [Add $5.00]</option>
+                                <option value="032 [Add $5.00]">032 [Add $5.00]</option>
+                                <option value="032 [Add $5.00]">032 [Add $5.00]</option>
+                                <option value="032 [Add $5.00]">032 [Add $5.00]</option>
+                                <option value="033 [Add $5.00]">033 [Add $5.00]</option>
+                                <option value="033 [Add $5.00]">033 [Add $5.00]</option>
+                                <option value="033 [Add $5.00]">033 [Add $5.00]</option>
+                                <option value="034 [Add $5.00]">034 [Add $5.00]</option>
+                                <option value="034 [Add $5.00]">034 [Add $5.00]</option>
+                                <option value="034 [Add $5.00]">034 [Add $5.00]</option>
+                                <option value="035 [Add $5.00]">035 [Add $5.00]</option>
+                                <option value="035 [Add $5.00]">035 [Add $5.00]</option>
+                                <option value="035 [Add $5.00]">035 [Add $5.00]</option>
+                                <option value="036 [Add $5.00]">036 [Add $5.00]</option>
+                                <option value="036 [Add $5.00]">036 [Add $5.00]</option>
+                                <option value="036 [Add $5.00]">036 [Add $5.00]</option>
+                                <option value="037 [Add $5.00]">037 [Add $5.00]</option>
+                                <option value="037 [Add $5.00]">037 [Add $5.00]</option>
+                                <option value="037 [Add $5.00]">037 [Add $5.00]</option>
+                                <option value="038 [Add $5.00]">038 [Add $5.00]</option>
+                                <option value="038 [Add $5.00]">038 [Add $5.00]</option>
+                                <option value="038 [Add $5.00]">038 [Add $5.00]</option>
+                                <option value="039 [Add $5.00]">039 [Add $5.00]</option>
+                                <option value="039 [Add $5.00]">039 [Add $5.00]</option>
+                                <option value="039 [Add $5.00]">039 [Add $5.00]</option>
+                                <option value="040 [Add $5.00]">040 [Add $5.00]</option>
+                                <option value="040 [Add $5.00]">040 [Add $5.00]</option>
+                                <option value="040 [Add $5.00]">040 [Add $5.00]</option>
+                                <option value="041 [Add $5.00]">041 [Add $5.00]</option>
+                                <option value="041 [Add $5.00]">041 [Add $5.00]</option>
+                                <option value="041 [Add $5.00]">041 [Add $5.00]</option>
+                                <option value="042 [Add $5.00]">042 [Add $5.00]</option>
+                                <option value="042 [Add $5.00]">042 [Add $5.00]</option>
+                                <option value="042 [Add $5.00]">042 [Add $5.00]</option>
+                                <option value="043 [Add $5.00]">043 [Add $5.00]</option>
+                                <option value="043 [Add $5.00]">043 [Add $5.00]</option>
+                                <option value="043 [Add $5.00]">043 [Add $5.00]</option>
+                                <option value="044 [Add $5.00]">044 [Add $5.00]</option>
+                                <option value="044 [Add $5.00]">044 [Add $5.00]</option>
+                                <option value="044 [Add $5.00]">044 [Add $5.00]</option>
+                                <option value="045 [Add $5.00]">045 [Add $5.00]</option>
+                                <option value="045 [Add $5.00]">045 [Add $5.00]</option>
+                                <option value="045 [Add $5.00]">045 [Add $5.00]</option>
+                                <option value="046 [Add $5.00]">046 [Add $5.00]</option>
+                                <option value="046 [Add $5.00]">046 [Add $5.00]</option>
+                                <option value="046 [Add $5.00]">046 [Add $5.00]</option>
+                                <option value="047 [Add $5.00]">047 [Add $5.00]</option>
+                                <option value="047 [Add $5.00]">047 [Add $5.00]</option>
+                                <option value="047 [Add $5.00]">047 [Add $5.00]</option>
+                                <option value="048 [Add $5.00]">048 [Add $5.00]</option>
+                                <option value="048 [Add $5.00]">048 [Add $5.00]</option>
+                                <option value="048 [Add $5.00]">048 [Add $5.00]</option>
+                                <option value="049 [Add $5.00]">049 [Add $5.00]</option>
+                                <option value="049 [Add $5.00]">049 [Add $5.00]</option>
+                                <option value="049 [Add $5.00]">049 [Add $5.00]</option>
+                                <option value="050 [Add $5.00]">050 [Add $5.00]</option>
+                                <option value="8599">050 [Add $5.00]</option>
+                                <option value="7634">050 [Add $5.00]</option>
+                                <option value="7635">051 [Add $4.00]</option>
+                                <option value="8600">051 [Add $4.00]</option>
+                                <option value="9510">051 [Add $4.00]</option>
+                                <option value="9511">052 [Add $4.00]</option>
+                                <option value="8601">052 [Add $4.00]</option>
+                                <option value="7636">052 [Add $4.00]</option>
+                                <option value="7637">053 [Add $4.00]</option>
+                                <option value="8602">053 [Add $4.00]</option>
+                                <option value="9512">053 [Add $4.00]</option>
+                                <option value="9513">054 [Add $4.00]</option>
+                                <option value="8603">054 [Add $4.00]</option>
+                                <option value="7638">054 [Add $4.00]</option>
+                                <option value="7639">055 [Add $4.00]</option>
+                                <option value="8604">055 [Add $4.00]</option>
+                                <option value="9514">055 [Add $4.00]</option>
+                                <option value="9515">056 [Add $4.00]</option>
+                                <option value="8605">056 [Add $4.00]</option>
+                                <option value="7640">056 [Add $4.00]</option>
+                                <option value="7641">057 [Add $4.00]</option>
+                                <option value="8606">057 [Add $4.00]</option>
+                                <option value="9516">057 [Add $4.00]</option>
+                                <option value="9517">058 [Add $4.00]</option>
+                                <option value="8607">058 [Add $4.00]</option>
+                                <option value="7642">058 [Add $4.00]</option>
+                                <option value="7643">059 [Add $4.00]</option>
+                                <option value="8608">059 [Add $4.00]</option>
+                                <option value="9518">059 [Add $4.00]</option>
+                                <option value="9519">060 [Add $4.00]</option>
+                                <option value="8609">060 [Add $4.00]</option>
+                                <option value="7644">060 [Add $4.00]</option>
+                                <option value="7645">061 [Add $4.00]</option>
+                                <option value="8610">061 [Add $4.00]</option>
+                                <option value="9520">061 [Add $4.00]</option>
+                                <option value="9521">062 [Add $4.00]</option>
+                                <option value="8611">062 [Add $4.00]</option>
+                                <option value="7646">062 [Add $4.00]</option>
+                                <option value="7647">063 [Add $4.00]</option>
+                                <option value="8612">063 [Add $4.00]</option>
+                                <option value="9522">063 [Add $4.00]</option>
+                                <option value="9523">064 [Add $4.00]</option>
+                                <option value="8613">064 [Add $4.00]</option>
+                                <option value="7648">064 [Add $4.00]</option>
+                                <option value="7649">065 [Add $4.00]</option>
+                                <option value="8614">065 [Add $4.00]</option>
+                                <option value="9524">065 [Add $4.00]</option>
+                                <option value="9525">066 [Add $4.00]</option>
+                                <option value="8615">066 [Add $4.00]</option>
+                                <option value="7650">066 [Add $4.00]</option>
+                                <option value="7651">067 [Add $4.00]</option>
+                                <option value="8616">067 [Add $4.00]</option>
+                                <option value="9526">067 [Add $4.00]</option>
+                                <option value="9527">068 [Add $4.00]</option>
+                                <option value="8617">068 [Add $4.00]</option>
+                                <option value="7652">068 [Add $4.00]</option>
+                                <option value="7653">069 [Add $4.00]</option>
+                                <option value="8618">069 [Add $4.00]</option>
+                                <option value="9528">069 [Add $4.00]</option>
+                                <option value="9529">070 [Add $4.00]</option>
+                                <option value="8619">070 [Add $4.00]</option>
+                                <option value="7654">070 [Add $4.00]</option>
+                                <option value="7655">071 [Add $4.00]</option>
+                                <option value="8620">071 [Add $4.00]</option>
+                                <option value="9530">071 [Add $4.00]</option>
+                                <option value="9531">072 [Add $4.00]</option>
+                                <option value="8621">072 [Add $4.00]</option>
+                                <option value="7656">072 [Add $4.00]</option>
+                                <option value="7657">073 [Add $4.00]</option>
+                                <option value="8622">073 [Add $4.00]</option>
+                                <option value="9532">073 [Add $4.00]</option>
+                                <option value="9533">074 [Add $4.00]</option>
+                                <option value="8623">074 [Add $4.00]</option>
+                                <option value="7658">074 [Add $4.00]</option>
+                                <option value="7659">075 [Add $4.00]</option>
+                                <option value="8624">075 [Add $4.00]</option>
+                                <option value="9534">075 [Add $4.00]</option>
+                                <option value="9535">076 [Add $4.00]</option>
+                                <option value="8625">076 [Add $4.00]</option>
+                                <option value="7660">076 [Add $4.00]</option>
+                                <option value="7661">077 [Add $4.00]</option>
+                                <option value="8626">077 [Add $4.00]</option>
+                                <option value="9536">077 [Add $4.00]</option>
+                                <option value="9537">078 [Add $4.00]</option>
+                                <option value="8627">078 [Add $4.00]</option>
+                                <option value="7662">078 [Add $4.00]</option>
+                                <option value="7663">079 [Add $4.00]</option>
+                                <option value="8628">079 [Add $4.00]</option>
+                                <option value="9538">079 [Add $4.00]</option>
+                                <option value="9539">080 [Add $4.00]</option>
+                                <option value="8629">080 [Add $4.00]</option>
+                                <option value="7664">080 [Add $4.00]</option>
+                                <option value="7665">081 [Add $3.00]</option>
+                                <option value="8630">081 [Add $3.00]</option>
+                                <option value="9540">081 [Add $3.00]</option>
+                                <option value="9541">082 [Add $3.00]</option>
+                                <option value="8631">082 [Add $3.00]</option>
+                                <option value="7666">082 [Add $3.00]</option>
+                                <option value="7667">083 [Add $3.00]</option>
+                                <option value="8632">083 [Add $3.00]</option>
+                                <option value="9542">083 [Add $3.00]</option>
+                                <option value="9543">084 [Add $3.00]</option>
+                                <option value="8633">084 [Add $3.00]</option>
+                                <option value="7668">084 [Add $3.00]</option>
+                                <option value="7669">085 [Add $3.00]</option>
+                                <option value="8634">085 [Add $3.00]</option>
+                                <option value="9544">085 [Add $3.00]</option>
+                                <option value="9545">086 [Add $3.00]</option>
+                                <option value="8635">086 [Add $3.00]</option>
+                                <option value="7670">086 [Add $3.00]</option>
+                                <option value="7671">087 [Add $3.00]</option>
+                                <option value="8636">087 [Add $3.00]</option>
+                                <option value="9546">087 [Add $3.00]</option>
+                                <option value="9547">088 [Add $3.00]</option>
+                                <option value="8637">088 [Add $3.00]</option>
+                                <option value="7672">088 [Add $3.00]</option>
+                                <option value="7673">089 [Add $3.00]</option>
+                                <option value="8638">089 [Add $3.00]</option>
+                                <option value="9548">089 [Add $3.00]</option>
+                                <option value="9549">090 [Add $3.00]</option>
+                                <option value="8639">090 [Add $3.00]</option>
+                                <option value="7674">090 [Add $3.00]</option>
+                                <option value="7675">091 [Add $3.00]</option>
+                                <option value="8640">091 [Add $3.00]</option>
+                                <option value="9550">091 [Add $3.00]</option>
+                                <option value="9551">092 [Add $3.00]</option>
+                                <option value="8641">092 [Add $3.00]</option>
+                                <option value="7676">092 [Add $3.00]</option>
+                                <option value="7677">093 [Add $3.00]</option>
+                                <option value="8642">093 [Add $3.00]</option>
+                                <option value="9552">093 [Add $3.00]</option>
+                                <option value="9553">094 [Add $3.00]</option>
+                                <option value="8643">094 [Add $3.00]</option>
+                                <option value="7678">094 [Add $3.00]</option>
+                                <option value="7679">095 [Add $3.00]</option>
+                                <option value="8644">095 [Add $3.00]</option>
+                                <option value="9554">095 [Add $3.00]</option>
+                                <option value="9555">096 [Add $3.00]</option>
+                                <option value="8645">096 [Add $3.00]</option>
+                                <option value="7680">096 [Add $3.00]</option>
+                                <option value="7681">097 [Add $3.00]</option>
+                                <option value="8646">097 [Add $3.00]</option>
+                                <option value="9556">097 [Add $3.00]</option>
+                                <option value="9557">098 [Add $3.00]</option>
+                                <option value="8647">098 [Add $3.00]</option>
+                                <option value="7682">098 [Add $3.00]</option>
+                                <option value="7683">099 [Add $3.00]</option>
+                                <option value="8648">099 [Add $3.00]</option>
+                                <option value="9558">099 [Add $3.00]</option>
+                                <option value="9559">100 [Add $3.00]</option>
+                                <option value="8649">100 [Add $3.00]</option>
+                                <option value="7684">100 [Add $3.00]</option>
+                                <option value="7685">101 [Add $3.00]</option>
+                                <option value="8650">101 [Add $3.00]</option>
+                                <option value="9560">101 [Add $3.00]</option>
+                                <option value="9561">102 [Add $3.00]</option>
+                                <option value="8651">102 [Add $3.00]</option>
+                                <option value="7686">102 [Add $3.00]</option>
+                                <option value="7687">103 [Add $3.00]</option>
+                                <option value="8652">103 [Add $3.00]</option>
+                                <option value="9562">103 [Add $3.00]</option>
+                                <option value="9563">104 [Add $3.00]</option>
+                                <option value="8653">104 [Add $3.00]</option>
+                                <option value="7688">104 [Add $3.00]</option>
+                                <option value="7689">105 [Add $3.00]</option>
+                                <option value="8654">105 [Add $3.00]</option>
+                                <option value="9564">105 [Add $3.00]</option>
+                                <option value="9565">106 [Add $3.00]</option>
+                                <option value="8655">106 [Add $3.00]</option>
+                                <option value="7690">106 [Add $3.00]</option>
+                                <option value="7691">107 [Add $3.00]</option>
+                                <option value="8656">107 [Add $3.00]</option>
+                                <option value="9566">107 [Add $3.00]</option>
+                                <option value="9567">108 [Add $3.00]</option>
+                                <option value="8657">108 [Add $3.00]</option>
+                                <option value="7692">108 [Add $3.00]</option>
+                                <option value="7693">109 [Add $3.00]</option>
+                                <option value="8658">109 [Add $3.00]</option>
+                                <option value="9568">109 [Add $3.00]</option>
+                                <option value="9569">110 [Add $3.00]</option>
+                                <option value="8659">110 [Add $3.00]</option>
+                                <option value="7694">110 [Add $3.00]</option>
+                                <option value="7695">111 [Add $3.00]</option>
+                                <option value="8660">111 [Add $3.00]</option>
+                                <option value="9570">111 [Add $3.00]</option>
+                                <option value="9571">112 [Add $3.00]</option>
+                                <option value="8661">112 [Add $3.00]</option>
+                                <option value="7696">112 [Add $3.00]</option>
+                                <option value="7697">113 [Add $3.00]</option>
+                                <option value="8662">113 [Add $3.00]</option>
+                                <option value="9572">113 [Add $3.00]</option>
+                                <option value="9573">114 [Add $3.00]</option>
+                                <option value="8663">114 [Add $3.00]</option>
+                                <option value="7698">114 [Add $3.00]</option>
+                                <option value="7699">115 [Add $3.00]</option>
+                                <option value="8664">115 [Add $3.00]</option>
+                                <option value="9574">115 [Add $3.00]</option>
+                                <option value="9575">116 [Add $1.00]</option>
+                                <option value="8665">116 [Add $1.00]</option>
+                                <option value="7700">116 [Add $1.00]</option>
+                                <option value="7701">117 [Add $1.00]</option>
+                                <option value="8666">117 [Add $1.00]</option>
+                                <option value="9576">117 [Add $1.00]</option>
+                                <option value="9577">118 [Add $1.00]</option>
+                                <option value="8667">118 [Add $1.00]</option>
+                                <option value="7702">118 [Add $1.00]</option>
+                                <option value="7703">119 [Add $1.00]</option>
+                                <option value="8668">119 [Add $1.00]</option>
+                                <option value="9578">119 [Add $1.00]</option>
+                                <option value="9579">120 [Add $1.00]</option>
+                                <option value="8669">120 [Add $1.00]</option>
+                                <option value="7704">120 [Add $1.00]</option>
+                                <option value="7705">121 [Add $1.00]</option>
+                                <option value="8670">121 [Add $1.00]</option>
+                                <option value="9580">121 [Add $1.00]</option>
+                                <option value="9581">122 [Add $1.00]</option>
+                                <option value="8671">122 [Add $1.00]</option>
+                                <option value="7706">122 [Add $1.00]</option>
+                                <option value="7707">123 [Add $1.00]</option>
+                                <option value="8672">123 [Add $1.00]</option>
+                                <option value="9582">123 [Add $1.00]</option>
+                                <option value="9583">124 [Add $1.00]</option>
+                                <option value="8673">124 [Add $1.00]</option>
+                                <option value="7708">124 [Add $1.00]</option>
+                                <option value="7709">125 [Add $1.00]</option>
+                                <option value="8674">125 [Add $1.00]</option>
+                                <option value="9584">125 [Add $1.00]</option>
+                                <option value="9585">126 [Add $1.00]</option>
+                                <option value="8675">126 [Add $1.00]</option>
+                                <option value="7710">126 [Add $1.00]</option>
+                                <option value="7711">127 [Add $1.00]</option>
+                                <option value="8676">127 [Add $1.00]</option>
+                                <option value="9586">127 [Add $1.00]</option>
+                                <option value="9587">128 [Add $1.00]</option>
+                                <option value="8677">128 [Add $1.00]</option>
+                                <option value="7712">128 [Add $1.00]</option>
+                                <option value="7713">129 [Add $1.00]</option>
+                                <option value="8678">129 [Add $1.00]</option>
+                                <option value="9588">129 [Add $1.00]</option>
+                                <option value="9589">130 [Add $1.00]</option>
+                                <option value="8679">130 [Add $1.00]</option>
+                                <option value="7714">130 [Add $1.00]</option>
+                                <option value="7715">131 [Add $1.00]</option>
+                                <option value="8680">131 [Add $1.00]</option>
+                                <option value="9590">131 [Add $1.00]</option>
+                                <option value="9591">132 [Add $1.00]</option>
+                                <option value="8681">132 [Add $1.00]</option>
+                                <option value="7716">132 [Add $1.00]</option>
+                                <option value="7717">133 [Add $1.00]</option>
+                                <option value="8682">133 [Add $1.00]</option>
+                                <option value="9592">133 [Add $1.00]</option>
+                                <option value="9593">134 [Add $1.00]</option>
+                                <option value="8683">134 [Add $1.00]</option>
+                                <option value="7718">134 [Add $1.00]</option>
+                                <option value="7719">135 [Add $1.00]</option>
+                                <option value="8684">135 [Add $1.00]</option>
+                                <option value="9594">135 [Add $1.00]</option>
+                                <option value="9595">136 [Add $1.00]</option>
+                                <option value="8685">136 [Add $1.00]</option>
+                                <option value="7720">136 [Add $1.00]</option>
+                                <option value="7721">137 [Add $1.00]</option>
+                                <option value="8686">137 [Add $1.00]</option>
+                                <option value="9596">137 [Add $1.00]</option>
+                                <option value="9597">138 [Add $1.00]</option>
+                                <option value="8687">138 [Add $1.00]</option>
+                                <option value="7722">138 [Add $1.00]</option>
+                                <option value="7723">139 [Add $1.00]</option>
+                                <option value="8688">139 [Add $1.00]</option>
+                                <option value="9598">139 [Add $1.00]</option>
+                                <option value="9599">140 [Add $1.00]</option>
+                                <option value="8689">140 [Add $1.00]</option>
+                                <option value="7724">140 [Add $1.00]</option>
+                                <option value="7725">141 [Add $1.00]</option>
+                                <option value="8690">141 [Add $1.00]</option>
+                                <option value="9600">141 [Add $1.00]</option>
+                                <option value="9601">142 [Add $1.00]</option>
+                                <option value="8691">142 [Add $1.00]</option>
+                                <option value="7726">142 [Add $1.00]</option>
+                                <option value="7727">143 [Add $1.00]</option>
+                                <option value="8692">143 [Add $1.00]</option>
+                                <option value="9602">143 [Add $1.00]</option>
+                                <option value="9603">144 [Add $1.00]</option>
+                                <option value="8693">144 [Add $1.00]</option>
+                                <option value="7728">144 [Add $1.00]</option>
+                                <option value="7729">145 [Add $1.00]</option>
+                                <option value="8694">145 [Add $1.00]</option>
+                                <option value="9604">145 [Add $1.00]</option>
+                                <option value="9605">146 [Add $1.00]</option>
+                                <option value="8695">146 [Add $1.00]</option>
+                                <option value="7730">146 [Add $1.00]</option>
+                                <option value="7731">147 [Add $1.00]</option>
+                                <option value="8696">147 [Add $1.00]</option>
+                                <option value="9606">147 [Add $1.00]</option>
+                                <option value="9607">148 [Add $1.00]</option>
+                                <option value="8697">148 [Add $1.00]</option>
+                                <option value="7732">148 [Add $1.00]</option>
+                                <option value="7733">149 [Add $1.00]</option>
+                                <option value="8698">149 [Add $1.00]</option>
+                                <option value="9608">149 [Add $1.00]</option>
+                                <option value="9609">150 [Add $1.00]</option>
+                                <option value="8699">150 [Add $1.00]</option>
+                                <option value="7734">150 [Add $1.00]</option>
+                                <option value="7735">151 [Add $1.00]</option>
+                                <option value="8700">151 [Add $1.00]</option>
+                                <option value="9610">151 [Add $1.00]</option>
+                                <option value="9611">152 [Add $1.00]</option>
+                                <option value="8701">152 [Add $1.00]</option>
+                                <option value="7736">152 [Add $1.00]</option>
+                                <option value="7737">153 [Add $1.00]</option>
+                                <option value="8702">153 [Add $1.00]</option>
+                                <option value="9612">153 [Add $1.00]</option>
+                                <option value="9613">154 [Add $1.00]</option>
+                                <option value="8703">154 [Add $1.00]</option>
+                                <option value="7738">154 [Add $1.00]</option>
+                                <option value="7739">155 [Add $1.00]</option>
+                                <option value="8704">155 [Add $1.00]</option>
+                                <option value="9614">155 [Add $1.00]</option>
+                                <option value="9615">156 [Add $1.00]</option>
+                                <option value="8705">156 [Add $1.00]</option>
+                                <option value="7740">156 [Add $1.00]</option>
+                                <option value="7741">157 [Add $1.00]</option>
+                                <option value="8706">157 [Add $1.00]</option>
+                                <option value="9616">157 [Add $1.00]</option>
+                                <option value="9617">158 [Add $1.00]</option>
+                                <option value="8707">158 [Add $1.00]</option>
+                                <option value="7742">158 [Add $1.00]</option>
+                                <option value="7743">159 [Add $1.00]</option>
+                                <option value="8708">159 [Add $1.00]</option>
+                                <option value="9618">159 [Add $1.00]</option>
+                                <option value="9619">160 [Add $1.00]</option>
+                                <option value="8709">160 [Add $1.00]</option>
+                                <option value="7744">160 [Add $1.00]</option>
+                                <option value="7745">161 [Add $1.00]</option>
+                                <option value="8710">161 [Add $1.00]</option>
+                                <option value="9620">161 [Add $1.00]</option>
+                                <option value="9621">162 [Add $1.00]</option>
+                                <option value="8711">162 [Add $1.00]</option>
+                                <option value="7746">162 [Add $1.00]</option>
+                                <option value="7747">163 [Add $1.00]</option>
+                                <option value="8712">163 [Add $1.00]</option>
+                                <option value="9622">163 [Add $1.00]</option>
+                                <option value="9623">164 [Add $1.00]</option>
+                                <option value="8713">164 [Add $1.00]</option>
+                                <option value="7748">164 [Add $1.00]</option>
+                                <option value="7749">165 [Add $1.00]</option>
+                                <option value="8714">165 [Add $1.00]</option>
+                                <option value="9624">165 [Add $1.00]</option>
+                                <option value="9625">166 [Add $1.00]</option>
+                                <option value="8715">166 [Add $1.00]</option>
+                                <option value="7750">166 [Add $1.00]</option>
+                                <option value="7751">167 [Add $1.00]</option>
+                                <option value="8716">167 [Add $1.00]</option>
+                                <option value="9626">167 [Add $1.00]</option>
+                                <option value="9627">168 [Add $1.00]</option>
+                                <option value="8717">168 [Add $1.00]</option>
+                                <option value="7752">168 [Add $1.00]</option>
+                                <option value="7753">169 [Add $1.00]</option>
+                                <option value="8718">169 [Add $1.00]</option>
+                                <option value="9628">169 [Add $1.00]</option>
+                                <option value="9629">170 [Add $1.00]</option>
+                                <option value="8719">170 [Add $1.00]</option>
+                                <option value="7754">170 [Add $1.00]</option>
+                                <option value="7755">171 [Add $1.00]</option>
+                                <option value="8720">171 [Add $1.00]</option>
+                                <option value="9630">171 [Add $1.00]</option>
+                                <option value="9631">172 [Add $1.00]</option>
+                                <option value="8721">172 [Add $1.00]</option>
+                                <option value="7756">172 [Add $1.00]</option>
+                                <option value="7757">173 [Add $1.00]</option>
+                                <option value="8722">173 [Add $1.00]</option>
+                                <option value="9632">173 [Add $1.00]</option>
+                                <option value="9633">174 [Add $1.00]</option>
+                                <option value="8723">174 [Add $1.00]</option>
+                                <option value="7758">174 [Add $1.00]</option>
+                                <option value="7759">175 [Add $1.00]</option>
+                                <option value="8724">175 [Add $1.00]</option>
+                                <option value="9634">175 [Add $1.00]</option>
+                                <option value="9635">176 [Add $1.00]</option>
+                                <option value="8725">176 [Add $1.00]</option>
+                                <option value="7760">176 [Add $1.00]</option>
+                                <option value="7761">177 [Add $1.00]</option>
+                                <option value="8726">177 [Add $1.00]</option>
+                                <option value="9636">177 [Add $1.00]</option>
+                                <option value="9637">178 [Add $1.00]</option>
+                                <option value="8727">178 [Add $1.00]</option>
+                                <option value="7762">178 [Add $1.00]</option>
+                                <option value="7763">179 [Add $1.00]</option>
+                                <option value="8728">179 [Add $1.00]</option>
+                                <option value="9638">179 [Add $1.00]</option>
+                                <option value="9639">180 [Add $1.00]</option>
+                                <option value="8729">180 [Add $1.00]</option>
+                                <option value="7764">180 [Add $1.00]</option>
+                                <option value="7765">181 [Add $1.00]</option>
+                                <option value="8730">181 [Add $1.00]</option>
+                                <option value="9640">181 [Add $1.00]</option>
+                                <option value="9641">182 [Add $1.00]</option>
+                                <option value="8731">182 [Add $1.00]</option>
+                                <option value="7766">182 [Add $1.00]</option>
+                                <option value="7767">183 [Add $1.00]</option>
+                                <option value="8732">183 [Add $1.00]</option>
+                                <option value="9642">183 [Add $1.00]</option>
+                                <option value="9643">184 [Add $1.00]</option>
+                                <option value="8733">184 [Add $1.00]</option>
+                                <option value="7768">184 [Add $1.00]</option>
+                                <option value="7769">185 [Add $1.00]</option>
+                                <option value="8734">185 [Add $1.00]</option>
+                                <option value="9644">185 [Add $1.00]</option>
+                                <option value="9645">186 [Add $1.00]</option>
+                                <option value="8735">186 [Add $1.00]</option>
+                                <option value="7770">186 [Add $1.00]</option>
+                                <option value="7771">187 [Add $1.00]</option>
+                                <option value="8736">187 [Add $1.00]</option>
+                                <option value="9646">187 [Add $1.00]</option>
+                                <option value="9647">188 [Add $1.00]</option>
+                                <option value="8737">188 [Add $1.00]</option>
+                                <option value="7772">188 [Add $1.00]</option>
+                                <option value="7773">189 [Add $1.00]</option>
+                                <option value="8738">189 [Add $1.00]</option>
+                                <option value="9648">189 [Add $1.00]</option>
+                                <option value="9649">190 [Add $1.00]</option>
+                                <option value="8739">190 [Add $1.00]</option>
+                                <option value="7774">190 [Add $1.00]</option>
+                                <option value="7775">191 [Add $1.00]</option>
+                                <option value="8740">191 [Add $1.00]</option>
+                                <option value="9650">191 [Add $1.00]</option>
+                                <option value="9651">192 [Add $1.00]</option>
+                                <option value="8741">192 [Add $1.00]</option>
+                                <option value="7776">192 [Add $1.00]</option>
+                                <option value="7777">193 [Add $1.00]</option>
+                                <option value="8742">193 [Add $1.00]</option>
+                                <option value="9652">193 [Add $1.00]</option>
+                                <option value="9653">194 [Add $1.00]</option>
+                                <option value="8743">194 [Add $1.00]</option>
+                                <option value="7778">194 [Add $1.00]</option>
+                                <option value="7779">195 [Add $1.00]</option>
+                                <option value="8744">195 [Add $1.00]</option>
+                                <option value="9654">195 [Add $1.00]</option>
+                                <option value="9655">196 [Add $1.00]</option>
+                                <option value="8745">196 [Add $1.00]</option>
+                                <option value="7780">196 [Add $1.00]</option>
+                                <option value="7781">197 [Add $1.00]</option>
+                                <option value="8746">197 [Add $1.00]</option>
+                                <option value="9656">197 [Add $1.00]</option>
+                                <option value="9657">198 [Add $1.00]</option>
+                                <option value="8747">198 [Add $1.00]</option>
+                                <option value="7782">198 [Add $1.00]</option>
+                                <option value="7783">199 [Add $1.00]</option>
+                                <option value="8748">199 [Add $1.00]</option>
+                                <option value="9658">199 [Add $1.00]</option>
+                                <option value="9659">200 [Add $1.00]</option>
+                                <option value="8749">200 [Add $1.00]</option>
+                                <option value="7784">200 [Add $1.00]</option>
+                                <option value="7785">201</option>
+                                <option value="8750">201</option>
+                                <option value="9660">201</option>
+                                <option value="9661">202</option>
+                                <option value="8751">202</option>
+                                <option value="7786">202</option>
+                                <option value="7787">203</option>
+                                <option value="8752">203</option>
+                                <option value="9662">203</option>
+                                <option value="9663">204</option>
+                                <option value="8753">204</option>
+                                <option value="7788">204</option>
+                                <option value="7789">205</option>
+                                <option value="8754">205</option>
+                                <option value="9664">205</option>
+                                <option value="9665">206</option>
+                                <option value="8755">206</option>
+                                <option value="7790">206</option>
+                                <option value="7791">207</option>
+                                <option value="8756">207</option>
+                                <option value="9666">207</option>
+                                <option value="9667">208</option>
+                                <option value="8757">208</option>
+                                <option value="7792">208</option>
+                                <option value="7793">209</option>
+                                <option value="8758">209</option>
+                                <option value="9668">209</option>
+                                <option value="9669">210</option>
+                                <option value="8759">210</option>
+                                <option value="7794">210</option>
+                                <option value="7795">211</option>
+                                <option value="8760">211</option>
+                                <option value="9670">211</option>
+                                <option value="9671">212</option>
+                                <option value="8761">212</option>
+                                <option value="7796">212</option>
+                                <option value="7797">213</option>
+                                <option value="8762">213</option>
+                                <option value="9672">213</option>
+                                <option value="9673">214</option>
+                                <option value="8763">214</option>
+                                <option value="7798">214</option>
+                                <option value="7799">215</option>
+                                <option value="8764">215</option>
+                                <option value="9674">215</option>
+                                <option value="9675">216</option>
+                                <option value="8765">216</option>
+                                <option value="7800">216</option>
+                                <option value="7801">217</option>
+                                <option value="8766">217</option>
+                                <option value="9676">217</option>
+                                <option value="9677">218</option>
+                                <option value="8767">218</option>
+                                <option value="7802">218</option>
+                                <option value="7803">219</option>
+                                <option value="8768">219</option>
+                                <option value="9678">219</option>
+                                <option value="9679">220</option>
+                                <option value="8769">220</option>
+                                <option value="7804">220</option>
+                                <option value="7805">221</option>
+                                <option value="8770">221</option>
+                                <option value="9680">221</option>
+                                <option value="9681">222</option>
+                                <option value="8771">222</option>
+                                <option value="7806">222</option>
+                                <option value="7807">223</option>
+                                <option value="8772">223</option>
+                                <option value="9682">223</option>
+                                <option value="9683">224</option>
+                                <option value="8773">224</option>
+                                <option value="7808">224</option>
+                                <option value="7809">225</option>
+                                <option value="8774">225</option>
+                                <option value="9684">225</option>
+                                <option value="9685">226</option>
+                                <option value="8775">226</option>
+                                <option value="7810">226</option>
+                                <option value="7811">227</option>
+                                <option value="8776">227</option>
+                                <option value="9686">227</option>
+                                <option value="9687">228</option>
+                                <option value="8777">228</option>
+                                <option value="7812">228</option>
+                                <option value="7813">229</option>
+                                <option value="8778">229</option>
+                                <option value="9688">229</option>
+                                <option value="9689">230</option>
+                                <option value="8779">230</option>
+                                <option value="7814">230</option>
+                                <option value="7815">231</option>
+                                <option value="8780">231</option>
+                                <option value="9690">231</option>
+                                <option value="9691">232</option>
+                                <option value="8781">232</option>
+                                <option value="7816">232</option>
+                                <option value="7817">233</option>
+                                <option value="8782">233</option>
+                                <option value="9692">233</option>
+                                <option value="9693">234</option>
+                                <option value="8783">234</option>
+                                <option value="7818">234</option>
+                                <option value="7819">235</option>
+                                <option value="8784">235</option>
+                                <option value="9694">235</option>
+                                <option value="9695">236</option>
+                                <option value="8785">236</option>
+                                <option value="7820">236</option>
+                                <option value="7821">237</option>
+                                <option value="8786">237</option>
+                                <option value="9696">237</option>
+                                <option value="9697">238</option>
+                                <option value="8787">238</option>
+                                <option value="7822">238</option>
+                                <option value="7823">239</option>
+                                <option value="8788">239</option>
+                                <option value="9698">239</option>
+                                <option value="9699">240</option>
+                                <option value="8789">240</option>
+                                <option value="7824">240</option>
+                                <option value="7825">241</option>
+                                <option value="8790">241</option>
+                                <option value="9700">241</option>
+                                <option value="9701">242</option>
+                                <option value="8791">242</option>
+                                <option value="7826">242</option>
+                                <option value="7827">243</option>
+                                <option value="8792">243</option>
+                                <option value="9702">243</option>
+                                <option value="9703">244</option>
+                                <option value="8793">244</option>
+                                <option value="7828">244</option>
+                                <option value="7829">245</option>
+                                <option value="8794">245</option>
+                                <option value="9704">245</option>
+                                <option value="9705">246</option>
+                                <option value="8795">246</option>
+                                <option value="7830">246</option>
+                                <option value="7831">247</option>
+                                <option value="8796">247</option>
+                                <option value="9706">247</option>
+                                <option value="9707">248</option>
+                                <option value="8797">248</option>
+                                <option value="7832">248</option>
+                                <option value="7833">249</option>
+                                <option value="8798">249</option>
+                                <option value="9708">249</option>
+                                <option value="9709">250</option>
+                                <option value="8799">250</option>
+                                <option value="7834">250</option>
+                                <option value="7835">251</option>
+                                <option value="8800">251</option>
+                                <option value="9710">251</option>
+                      </select>
+                    </div>
+                   </div> 
+                    <div class="field name-lastname">
+                         <label for="Quantity required">Number of sides needing printing:</label>
+                   <div class="input-box">
+                        <select id="numberofside" name="numberofside">
+                                <option value="Printing on Both Sides [Add $3.00]">Printing on Both Sides [Add $3.00]</option>
+                                <option value="Printing on One Side Only">Printing on One Side Only</option>
+                        </select>
+                    </div>
+                    </div>
+              </li>
+              <li>
+                  <div class="customer-name">
+                      <div class="field name-firstname">
+                          <label for="Date needed by">Need Artwork or Logo printed ? :</label>
+                          <div class="input-box">
+                              <select id="needart" name="needart">
+                                  <option value="No. Only Text.">No. Only Text.</option>
+                                  <option value="Yes. We need our logo / artwork printed. [Add $3.00]">Yes. We need our
+                                      logo / artwork printed. [Add $3.00]
+                                  </option>
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+              </li>
+              <li>
+                  <div class="customer-name">
+                      <div class="field name-firstname">
+                          <label for="Date needed by">Text- Left Side (of person wearing):</label>
+                          <div class="input-box">
+                              <input type="text" class="input-text" id="textleft" name="textleft">
+                          </div>
+                      </div>
+                  </div>
+              </li>
+              <li>
+                  <div class="customer-name">
+                      <div class="field name-firstname">
+                          <label for="Date needed by">Text-Right Side (of person wearing):</label>
+                          <div class="input-box">
+                              <input type="text" class="input-text" id="textright" name="textright">
+                          </div>
+                      </div>
+                  </div>
+              </li>
+         </ul>
+        </div>
+      <div class="fieldset">
+        <h2 class="legend">Personal Information</h2>
+         <ul class="form-list">
+            <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Name   :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pname" name="pname">
+                       </div>
+                   </div>
+                </div>
+             </li>
+             <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Contact Phone Number :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pnumber" name="pnumber">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Email :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pemail" name="pemail">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Preferred Need by Date :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pdate" name="pdate">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+                    <div class="input-box">
+                      <button class="button" title="Submit" name="submit" id="submit" type="submit"><span><span>Submit</span></span></button>
+                    </div>
+              </li>
+            </ul>
+        </div>
+     
+     
+     
+     </div>
+ </form>    
+         <!--- Stole/ Sash end---->
+         
+    
+    <form name="request3" id="request3" method="post" action="<?php echo $PHP_SELF;?>" onsubmit="return validateForm3()"> 
+      <input type="hidden" id="customized" name="customized" value="Diploma Cover">
+      <!--- Diploma start---->
+    <div id="diploma" class="diploma" style="display:none;">         
+    <div class="fieldset">
+        <h2 class="legend">Diploma Cover</h2>
+          <ul class="form-list">
+            <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="School Seal required">School Seal required :</label>
+                       <div class="input-box">
+                          <select id="school" name="school">
+                                         <option value="yes" selected="selected">Yes</option>
+                                         <option value="no">No</option>
+                          </select>
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li>
+                  <div class="customer-name">
+                      <div class="field name-firstname">
+                          <label for="Total Number of lines to be printed">Total Number of lines to be printed:</label>
+                          <div class="input-box">
+                              <input type="text" id="total_number" class="input-text" name="total_number">
+                          </div>
+                      </div>
+                  </div>
+              </li>
+              <li>
+                  <div class="customer-name">
+                      <div class="field name-firstname">
+                          <label for="Text to be printed">Text to be printed:</label>
+                          <div class="input-box">
+                              <input type="text" id="textbeprint" class="input-text" name="textbeprint">
+                          </div>
+                      </div>
+                  </div>
+              </li>
+              <li>
+                  <div class="customer-name">
+                      <div class="field name-firstname">
+                          <label for="Quantity required">Quantity required:</label>
+                          <div class="input-box">
+                              <input type="text" class="input-text" id="quantity_required" name="quantity_required">
+                          </div>
+                      </div>
+                  </div>
+              </li>
+              <li>
+                  <div class="customer-name">
+                      <div class="field name-firstname">
+                          <label for="Date needed by">Date needed by :</label>
+                          <div class="input-box">
+                              <input type="text" class="input-text" id="date_needed_by" name="date_needed_by">
+                          </div>
+                      </div>
+                  </div>
+              </li>
+                   
+         </ul>
+        </div>
+        <div class="fieldset">
+        <h2 class="legend">Personal Information</h2>
+         <ul class="form-list">
+            <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Name   :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pname" name="pname">
+                       </div>
+                   </div>
+                </div>
+             </li>
+             <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Contact Phone Number :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pnumber" name="pnumber">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Email :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pemail" name="pemail">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+               <div class="customer-name">
+                  <div class="field name-firstname">
+                       <label for="Colors required">Preferred Need by Date :</label>
+                       <div class="input-box">
+                          <input type="text" class="input-text" id="pdate" name="pdate">
+                       </div>
+                   </div>
+                </div>
+             </li>
+              <li class="fields">
+                    <div class="input-box">
+                      <button class="button" title="Submit" name="submit" id="submit" type="submit"><span><span>Submit</span></span></button>
+                    </div>
+              </li>
+            </ul>
+        </div>
+        
+     </div>
+         <!--- Diploma end---->
+     </form>    
+               <!--- No Display start---->
+    <div id="nodisplay" class="nodisplay" style="display:none;">         
+    <div class="fieldset">
+         <ul class="form-list">
+            <li class="fields">
+               <div class="customer-name">
+                  
+                  <span style="color: #E76200;  text-align: center;">****** Please select any option ****** </span>
+                  </div>
+             </li>
+              
+         </ul>
+        </div>
+     </div>
+         <!--- Diploma end---->
+
+

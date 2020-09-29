@@ -1,0 +1,177 @@
+<?php
+$_product = false;
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$registry = $objectManager->get(\Magento\Framework\Registry::class);
+/* @var $registry \Magento\Framework\Registry */
+if ($registry->registry('current_product')) {
+    $_product = $registry->registry('current_product');
+}
+
+if ($_product instanceof \Magento\Catalog\Model\Product) { ?>
+
+    <?php /* IDS - Calculate Subtotal */ ?>
+    <?php
+    $priceInfo = $_product->getPriceInfo();
+    $productBasePrice = $priceInfo->getPrice('final_price')->getAmount()->getValue();
+    ?>
+    <script>
+        var idsConfigProductOptionAmount = 0;
+        var idsConfigProductCalcPriceTimer;
+
+        <?php $productForm = $block->getLayout()->getBlock('product.info'); ?>
+        require([
+            'jquery',
+            'priceUtils',
+            'Ids_Configurabletabletier/js/idspricebox'
+        ], function ($, priceUtils) {
+
+            var dataPriceBoxSelector = '[data-role=priceBox]',
+                dataProductIdSelector = '[data-product-id=<?php echo $productForm->escapeHtml($_product->getId())?>]',
+                priceBoxes = $(dataPriceBoxSelector + dataProductIdSelector);
+
+            priceBoxes = priceBoxes.filter(function (index, elem) {
+                return !$(elem).find('.price-from').length;
+            });
+
+            priceBoxes.priceBox({'priceConfig': <?php /* @escapeNotVerified */ echo $productForm->getJsonConfig() ?>});
+
+            /* Add on change listener to qty inputs */
+            $('body').delegate('#superattr .txt, .box-tocart .input-text.qty', 'change', function (e) {
+                if ($(this).val() < 0) {
+                    $(this).val(Math.abs($(this).val()))
+                }
+
+                getCurrentPrice();
+            });
+            /* END Add on change listener to qty inputs */
+
+            /* Add on focus listener to qty inputs */
+            $('body').delegate('#superattr .txt, .box-tocart .input-text.qty', 'focus', function (e) {
+                if ($(this).val() == '0') {
+                    $(this).val('');
+                }
+            });
+            /* END Add on focus listener to qty inputs */
+
+            /* Add on blur listener to qty inputs */
+            $('body').delegate('#superattr .txt, .box-tocart .input-text.qty', 'blur', function (e) {
+                if ($(this).val() == '0') {
+                    $(this).val('');
+                }
+            });
+            /* END Add on blur listener to qty inputs */
+
+            /* Trigger change event for qty input */
+            var boxToCartInputTextQtyObj = $('.box-tocart .input-text.qty');
+            if (typeof boxToCartInputTextQtyObj !== 'undefined' && boxToCartInputTextQtyObj.length > 0) {
+                boxToCartInputTextQtyObj.change();
+            }
+
+            /* END Trigger change event for qty input */
+
+            function getalltotal() {
+                var total = 0;
+                $(".txt").each(function () {
+                    if ($(this).val() !== 0) {
+                        var linkName = $(this).attr('name').replace(/(\[|\])/g, '\\$1');
+                        var qt = parseInt($(this).val());
+                        var qtyObj = $('#' + linkName);
+                        if (typeof qtyObj !== 'undefined' && qtyObj.length > 0) {
+                            var floatNum = parseFloat(qtyObj.text().trim());
+                            var hva = floatNum.toFixed(2);
+                            if (qt > 0) {
+                                total = total + (Math.round(((hva) * qt) * 100) / 100);
+                            }
+                        }
+                    }
+                });
+                return total;
+            }
+
+            function getCurrentPrice() {
+                var totaloptionprices = getalltotal();
+                var qty = 0;
+                var finalPrice = 0;
+
+                var superAttrObj = $('#superattr');
+                var boxToCartInputTextQtyObj = $('.box-tocart .input-text.qty');
+                if (typeof superAttrObj !== 'undefined' && superAttrObj.length > 0) {
+
+                    superAttrObj.find('input').each(function () {
+                        var v = $(this).val().split(',').join('.').split(' ').join('');
+                        if (isNaN(+v))
+                            alert(inputs[i].value + ' is not a readable number');
+                        else
+                            qty += +v;
+                    });
+                } else if (typeof boxToCartInputTextQtyObj !== 'undefined' && boxToCartInputTextQtyObj.length > 0) {
+                    qty = boxToCartInputTextQtyObj.val();
+                }
+
+                var priceArr = [];
+                priceArr[0] = <?php echo $productBasePrice; ?>;
+                <?php foreach ($_product->getTierPrice() as $t) { ?>
+                priceArr[<?php echo $t['price_qty']; ?>] = <?php echo $t['price']; ?>;
+                <?php } ?>
+
+                if (typeof priceArr[1] === 'undefined')
+                    priceArr[1] = <?php echo $_product->getFinalPrice(); ?>;
+
+                var prev = 0;
+
+                if (qty > 0) {
+                    for (var item in priceArr) {
+                        if (qty > item) {
+                            <?php
+                            $spi = 0;
+                            $prevqty = 0;
+                            $tierpriceval = $_product->getTierPrice();
+
+                            foreach($tierpriceval as $t) {?>
+                            <?php if ($spi == 0) {
+                            $prevqty = $t['price_qty'];
+                            $spi++;
+                            if ((count($tierpriceval)) > 1)
+                                continue;
+                            else {
+                                echo " if (qty>=" . $t['price_qty'] . ")";
+                                echo " prev=" . $t['price_qty'] . ";";
+                            }
+                        }
+
+                            if ((count($tierpriceval)) > ($spi + 1)) {
+                                if ($prevqty > 0) {
+                                    echo " if (qty>=" . $prevqty . " && qty<=" . $t['price_qty'] . "){";
+                                    echo " prev=" . $prevqty . "; }";
+                                }
+                                $prevqty = $t['price_qty'];
+                            } else {
+                                if ($prevqty > 0) {
+                                    echo " if (qty>=" . $prevqty . " && qty<=" . $t['price_qty'] . "){";
+                                    echo " prev=" . $prevqty . "; }";
+                                }
+                                $prevqty = $t['price_qty'];
+                                echo " if (qty>=" . $t['price_qty'] . ")";
+                                echo " prev=" . $t['price_qty'] . ";";
+                            }
+                            $spi++;
+                            ?>
+                            <?php } ?>
+                        }
+                    }
+
+                    finalPrice = (qty * priceArr[prev]) + totaloptionprices + (qty * idsConfigProductOptionAmount);
+                }
+
+                var subTotalPriceObj = $('#subtotalprice');
+                if (typeof subTotalPriceObj !== 'undefined' && subTotalPriceObj.length > 0) {
+                    subTotalPriceObj.text(priceUtils.formatPrice(finalPrice));
+                }
+            }
+
+        });
+    </script>
+    <?php /* END IDS - Calculate Subtotal */ ?>
+
+<?php } ?>

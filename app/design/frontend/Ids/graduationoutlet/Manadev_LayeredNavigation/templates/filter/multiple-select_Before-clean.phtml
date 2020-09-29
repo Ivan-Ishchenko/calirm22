@@ -1,0 +1,303 @@
+<?php
+/**
+ * @copyright   Copyright (c) http://www.manadev.com
+ * @license     http://www.manadev.com/license  Proprietary License
+ */
+/** @var $block \Manadev\LayeredNavigation\Blocks\FilterRenderer */
+/** @var $data array */
+/** @var $engineFilter \Manadev\LayeredNavigation\EngineFilter */
+/** @var $filter \Manadev\LayeredNavigation\Models\Filter */
+?>
+
+
+<?php /* IDS - Added */
+$attributeCode = $filter->getData('attribute_code');
+if($attributeCode == 'color') {
+
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    if ($ip === '185.43.236.108') { ?>
+
+        <?php
+
+        /**
+         * Get attribute info by attribute code and entity type
+         */
+        $attributeCodeSwatch = 'color_swatch';
+
+        $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+
+        $entityType = $objectManager->create(
+            \Magento\Eav\Model\Entity::class
+        )->setType(
+            \Magento\Catalog\Model\Product::ENTITY
+        )->getTypeId();
+
+        /*$attributeInfo = $objectManager->get(\Magento\Eav\Model\ResourceModel\Entity\Attribute\Collection::class)
+                                       ->setCodeFilter($attributeCodeSwatch)
+                                       ->getFirstItem();*/
+
+
+        /**
+         * @var $attributeInfo \Magento\Eav\Model\Entity\Attribute
+         */
+        //$attributeInfo = $objectManager->create(\Magento\Catalog\Model\ResourceModel\Eav\Attribute::class)
+        /*$attributeInfo = $objectManager->get(\Magento\Eav\Model\Entity\Attribute::class)
+            ->loadByCode($entityType, $attributeCodeSwatch);*/
+
+
+        $attributeInfo = $objectManager->create(
+            \Magento\Catalog\Model\ResourceModel\Eav\Attribute::class
+        )->loadByCode(
+            $entityType,
+            $attributeCodeSwatch
+        );
+
+        //TODO if ($attribute->getId()) {
+
+
+
+
+
+
+
+
+
+        //$swatchHelper=$objectManager->get(\Magento\Swatches\Helper\Media::class);
+
+        /**
+         * @var $swatchHelper \Magento\Swatches\Helper\Data
+         */
+        $swatchHelper = $objectManager->get(\Magento\Swatches\Helper\Data::class);
+
+
+
+        $allSwatchAttributeOptions = array();
+
+
+        //$eavConfig = $object_Manager->get('\Magento\Eav\Model\Config');
+        //$attribute = $eavConfig->getAttribute('catalog_product', 'color');
+        //$options = $attributeInfo->getData();
+
+        //$attributeOptions = [];
+        //foreach ($this->eavAttribute->getOptions() as $option) {
+        if ($attributeInfo->usesSource()) {
+            $attributeOptions = $attributeInfo->getSource()->getAllOptions();
+            //}
+        }
+
+
+        foreach ($attributeOptions as $key => $option) {
+            //if(isset($option['value'])) {
+                $optionId = trim($option['value']);
+                $optionLabel = trim($option['label']);
+                //$attributeOptionIds[] = $optionId;
+                if(strlen($optionId) > 0 && strlen($optionLabel) > 0) {
+                    $allSwatchAttributeOptions[$optionId] = $optionLabel;
+                }
+            //}
+        }
+
+        //$attributeOptionIds = array_unique($attributeOptionIds);
+
+
+
+        $attributeOptionIds = array_keys($allSwatchAttributeOptions);
+        $swatches = $swatchHelper->getSwatchesByOptionsId($attributeOptionIds);
+
+        /* TODO
+        $data = [
+            'attribute_id' => $attributeInfo->getId(),
+            'attribute_code' => $attributeInfo->getAttributeCode(),
+            'attribute_label' => $attributeInfo->getStoreLabel(),
+            //'options' => $attributeOptions,
+            'options' => $allSwatchAttributeOptions,
+            'swatches' => $swatches,
+        ];*/
+
+        /*$optionsExists = array();
+
+        foreach($options as $option) {
+            $optionsExists[] = $option['label'];
+        }*/
+
+
+//var_dump($attributeInfo->getData()); exit;
+
+        /**
+         * Get all options name and value of the attribute
+         */
+        /*$attributeId = $attributeInfo->getId();
+        $attributeOptionAll = $objectManager->get(\Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection::class)
+            ->setPositionOrder('asc')
+            ->setAttributeFilter($attributeId)
+            ->setStoreFilter()
+            ->load();
+
+        echo '<pre>';
+        print_r($attributeOptionAll);
+        echo '</pre>';*/
+
+        ?>
+
+
+        <div class="swatch-attribute swatch-layered <?php echo $filter->getData('attribute_code') ?>"
+             attribute-code="<?php echo $filter->getData('attribute_code') ?>"
+             attribute-id="<?php echo $filter->getData('attribute_id') ?>"
+             data-mage-init='{ "Manadev_LayeredNavigation/js/SwatchFilterView": {} }'>
+            <div class="swatch-attribute-options clearfix">
+                <?php foreach ($data as $item): ?>
+                    <?php if ($item['is_selected']) : ?>
+                        <a href="<?php echo $block->getRemoveItemUrl($engineFilter, $item) ?>"<?php echo $block->getRemoveItemLinkAttributes($engineFilter, $item) ?> class="swatch-option-link-layered mana-selected">
+                    <?php elseif ($item['count'] > 0) : ?>
+                        <a href="<?php echo $block->getAddItemUrl($engineFilter, $item) ?>"<?php echo $block->getAddItemLinkAttributes($engineFilter, $item) ?> class="swatch-option-link-layered">
+                    <?php else : ?>
+                        <span class="swatch-option-link-layered">
+                    <?php endif; ?>
+
+                    <?php
+                    /* IDS - Added */
+                    //TODO
+                    $item['swatch_type'] = '0';
+                    $item['swatch'] = $item['label'];
+                    if (in_array($item['label'], $allSwatchAttributeOptions)) {
+                        $swatchOptionId = array_search($item['label'], $allSwatchAttributeOptions);
+                        if(isset($swatches[$swatchOptionId])) {
+                            if(isset($swatches[$swatchOptionId]['type'])) {
+                                $item['swatch_type'] = $swatches[$swatchOptionId]['type'];
+                            }
+                            if(isset($swatches[$swatchOptionId]['value'])) {
+                                $item['swatch'] = $swatches[$swatchOptionId]['value'];
+                            }
+                        }
+                    }
+                    /* END IDS - Added */
+                    ?>
+
+                    <?php if (isset($item['swatch_type'])) : ?>
+                        <?php $cssClass = ($item['is_selected'] ? 'selected' : '') . ' ' . ($item['count'] == 0 ? 'disabled' : ''); ?>
+                        <?php switch ($item['swatch_type']) {
+                            case '3': ?>
+                                <div class="swatch-option <?php echo $cssClass ?>"
+                                     option-type="3"
+                                     option-id="<?php echo $item['value'] ?>"
+                                     option-label="<?php echo $item['label'] ?>"
+                                     option-tooltip-thumb=""
+                                     option-tooltip-value=""
+                                ></div>
+                                <?php    break;
+                            case '2':
+                                ?>
+                                <?php $swatchThumbPath = $block->getSwatchPath('swatch_thumb', $item['swatch']); ?>
+                                <?php $swatchImagePath = $block->getSwatchPath('swatch_image', $item['swatch']); ?>
+                                <div class="swatch-option image <?php echo $cssClass ?>"
+                                     option-type="2"
+                                     option-id="<?php echo $item['value'] ?>"
+                                     option-label="<?php echo $item['label'] ?>"
+                                     option-tooltip-thumb="<?php echo $swatchThumbPath ?>"
+                                     option-tooltip-value=""
+                                     style="background: url(<?php echo $swatchImagePath ?>) no-repeat center; background-size: initial;"></div>
+                                <?php    break;
+                            case '1':
+                                ?>
+                                <div class="swatch-option color <?php echo $cssClass ?>"
+                                     option-type="1"
+                                     option-id="<?php echo $item['value'] ?>"
+                                     option-label="<?php echo $item['label'] ?>"
+                                     option-tooltip-thumb=""
+                                     option-tooltip-value="<?php echo $item['swatch'] ?>"
+                                     style="background: <?php echo $item['swatch'] ?> no-repeat center; background-size: initial;"></div>
+                                <?php    break;
+                            case '0':
+                            default:
+                                ?>
+                                <div class="swatch-option text <?php echo $cssClass ?>"
+                                     option-type="0"
+                                     option-id="<?php echo $item['value'] ?>"
+                                     option-label="<?php echo $item['label'] ?>"
+                                     option-tooltip-thumb=""
+                                     option-tooltip-value=""
+                                ><?php echo $item['swatch'] ?></div>
+                                <?php    break;
+                        } ?>
+                    <?php endif; ?>
+                    <?php if ($item['is_selected']) : ?>
+                        </a>
+                    <?php elseif ($item['count'] > 0) : ?>
+                        </a>
+                    <?php else : ?>
+                        </span>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <script>
+            require(["jquery", "jquery/ui", "Magento_Swatches/js/swatch-renderer"], function ($) {
+                $('.swatch-layered.<?php echo $filter->getData('attribute_code') ?>')
+                    .find('[option-type="1"], [option-type="2"], [option-type="0"], [option-type="3"]')
+                    .SwatchRendererTooltip();
+            });
+        </script>
+
+
+    <?php }
+
+
+
+
+} else { ?>
+
+<ol id="<?php echo $block->getFilterName($filter) ?>" class="items 555" data-mage-init='{ "Manadev_LayeredNavigation/js/FilterView": {} }'>
+    <?php foreach ($data as $item): ?>
+        <?php if ($item['is_selected']) : ?>
+            <li class="mana-selected item">
+                <a href="<?php echo $block->getRemoveItemUrl($engineFilter, $item) ?>"<?php echo $block->getRemoveItemLinkAttributes($engineFilter, $item) ?>>
+                    <?php echo $block->escapeItemLabel($engineFilter, $item['label']) ?>
+                    <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
+                        <span class="count"><?php echo $item['count'] ?><span class="filter-count-label">
+                            <?php if ($item['count'] == 1):?>
+                                <?php echo __('item')?>
+                            <?php else : ?>
+                                <?php echo __('items') ?>
+                            <?php endif;?>
+                        </span></span>
+                    <?php endif; ?>
+                </a>
+            </li>
+        <?php elseif ($item['count'] > 0) : ?>
+            <li class="item">
+                <a href="<?php echo $block->getAddItemUrl($engineFilter, $item) ?>"<?php echo $block->getAddItemLinkAttributes($engineFilter, $item) ?>>
+                    <?php echo $block->escapeItemLabel($engineFilter, $item['label']) ?>
+                    <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
+                        <span class="count"><?php echo $item['count'] ?><span class="filter-count-label">
+                            <?php if ($item['count'] == 1):?>
+                                <?php echo __('item')?>
+                            <?php else : ?>
+                                <?php echo __('items') ?>
+                            <?php endif;?>
+                        </span></span>
+                    <?php endif; ?>
+                </a>
+            </li>
+        <?php else : ?>
+            <li class="item">
+                <?php echo $block->escapeItemLabel($engineFilter, $item['label']) ?>
+                <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
+                        <span class="count"><?php echo $item['count'] ?><span class="filter-count-label">
+                            <?php if ($item['count'] == 1):?>
+                                <?php echo __('item')?>
+                            <?php else : ?>
+                                <?php echo __('items') ?>
+                            <?php endif;?>
+                        </span></span>
+                <?php endif; ?>
+            </li>
+        <?php endif; ?>
+    <?php endforeach ?>
+</ol>
+
+<?php } /* END IDS - Added */ ?>

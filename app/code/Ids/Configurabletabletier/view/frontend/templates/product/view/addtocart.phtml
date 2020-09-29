@@ -1,0 +1,99 @@
+<?php
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct(); ?>
+
+<?php
+/* IDS */
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$helper = $objectManager->get(\Ids\Configurabletabletier\Helper\Data::class); /* @var $helper \Ids\Configurabletabletier\Helper\Data */
+$attributeSets = $helper->geAttributeSetsFromConfig();
+$productAttributeSetId = $_product->getAttributeSetId();
+/* END IDS */
+?>
+
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable()): ?>
+    <div class="box-tocart">
+        <div class="fieldset">
+
+            <?php /* IDS */ ?>
+            <?php
+            /* @var $currencysymbol \Magento\Directory\Model\Currency */
+            $currencysymbol = $objectManager->get(\Magento\Directory\Model\Currency::class);
+            ?>
+
+            <div class="price-box">
+                <span><?php echo __('Subtotal'); ?>:&nbsp;</span>
+                <span id="subtotalprice"><?php echo $currencysymbol->format('0.00', array(), false); ?></span>
+            </div>
+
+
+            <div class="actions">
+                <button type="submit"
+                        title="<?php /* @escapeNotVerified */
+                        echo $buttonTitle ?>"
+                        class="action primary tocart"
+                        id="product-addtocart-button">
+                    <span><?php /* @escapeNotVerified */
+                        echo $buttonTitle ?></span>
+                </button>
+                <?php echo $block->getChildHtml('', true) ?>
+            </div>
+
+            <?php if($helper->isModuleActive() && in_array($productAttributeSetId, $attributeSets)) { ?>
+
+                <?php
+            } else {
+                ?>
+                    <?php if ($block->shouldRenderQuantity()): ?>
+                        <div class="field qty">
+                            <label class="label" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+                            <div class="control">
+                                <input type="number"
+                                       name="qty"
+                                       id="qty"
+                                       maxlength="12"
+                                       value="<?php /* @escapeNotVerified */ echo $block->getProductDefaultQty() * 1 ?>"
+                                       title="<?php /* @escapeNotVerified */
+                                       echo __('Qty') ?>" class="input-text qty"
+                                       data-validate="<?php echo $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                                />
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php
+            } ?>
+            <?php /* END IDS */ ?>
+
+        </div>
+    </div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+{
+    "#product_addtocart_form": {
+        "Magento_Catalog/product/view/validation": {
+            "radioCheckboxClosest": ".nested"
+        }
+    }
+}
+
+</script>
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+    <script type="text/x-magento-init">
+{
+    "#product_addtocart_form": {
+        "catalogAddToCart": {
+            "bindSubmit": false
+        }
+    }
+}
+
+    </script>
+<?php endif; ?>
+
+<?php /* IDS - Include js for calculate subtotal */ ?>
+<?php
+echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Ids_Configurabletabletier::product/view/addtocart_js.phtml")->toHtml();
+?>
+<?php /* END IDS - Include js for calculate subtotal */ ?>

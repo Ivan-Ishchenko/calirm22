@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Magento\Checkout\Controller\Cart\Add" type="Ids\Configurabletabletier\Controller\Magento\Checkout\Cart\Add"/>
+
+    <preference for="Magento\Checkout\Controller\Cart\UpdateItemOptions" type="Ids\Configurabletabletier\Controller\Magento\Checkout\Cart\UpdateItemOptions"/>
+
+    <preference for="Magento\Checkout\Controller\Cart\Delete" type="Ids\Configurabletabletier\Controller\Magento\Checkout\Cart\Delete"/>
+
+    <preference for="Magento\Catalog\Model\ResourceModel\Product\Option\Value" type="Ids\Configurabletabletier\Model\Magento\Catalog\Model\ResourceModel\Product\Option\Value"/>
+
+    <preference for="Magento\ConfigurableProduct\Model\Product\Type\Configurable\Price" type="Ids\Configurabletabletier\Model\Magento\ConfigurableProduct\Product\Type\Configurable\Price"/>
+
+    <preference for="Magento\Catalog\Model\Product\Type\Price" type="Ids\Configurabletabletier\Model\Magento\Catalog\Model\Product\Type\Price"/>
+
+    <preference for="Magento\Swatches\Block\Product\Renderer\Configurable" type="Ids\Configurabletabletier\Block\Rewrite\Product\Renderer\Configurable" />
+
+    <type name="Magento\ConfigurableProduct\Ui\DataProvider\Product\Form\Modifier\ConfigurablePrice">
+        <plugin name="ids_configurabletabletier_configurable_price" type="Ids\Configurabletabletier\Plugin\ConfigurableProduct\Ui\DataProvider\Product\Form\Modifier\ConfigurablePrice" sortOrder="1"/>
+    </type>
+
+    <type name="Magento\Catalog\Block\Product\ListProduct">
+        <plugin name="ids.configurabletabletier.block.product.list" type="Ids\Configurabletabletier\Plugin\Block\Product\ListProduct"/>
+    </type>
+
+    <!-- Change image as selected custom option in shopping cart -->
+    <type name="Magento\Checkout\Block\Cart\Item\Renderer">
+        <plugin name="ids.configurabletabletier.block.cart.image.item.renderer" type="Ids\Configurabletabletier\Plugin\Block\Cart\Image"/>
+    </type>
+
+    <!-- Change image as selected custom option in mini shopping cart -->
+    <type name="Magento\Checkout\CustomerData\AbstractItem">
+        <plugin name="ids.configurabletabletier.minicart.image.changer" type="Ids\Configurabletabletier\Plugin\Minicart\Image"/>
+    </type>
+
+</config>

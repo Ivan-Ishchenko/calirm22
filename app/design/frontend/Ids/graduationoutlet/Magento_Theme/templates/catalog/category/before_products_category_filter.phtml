@@ -1,0 +1,25 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+/* Show Sort by in the top */
+/**
+ * @var $blockNavigation  \Magento\Catalog\Block\Navigation
+ */
+$blockNavigation = $objectManager->get(\Magento\Catalog\Block\Navigation::class);
+
+$_categories = $blockNavigation->getCurrentChildCategories();
+$_count = is_array($_categories) ? count($_categories) : $_categories->count();
+if ($_count) { ?>
+    <ol class="items sort-by">
+        <li class="label"><?php echo __('Sort by:')->render(); ?></li>
+        <?php foreach ($_categories as $_category) {
+            if ($_category->getIsActive()) { ?>
+                <li class="item">
+                    <a href="<?php echo $blockNavigation->getCategoryUrl($_category) ?>"<?php if ($blockNavigation->isCategoryActive($_category)): ?> class="current"<?php endif; ?>><?php echo $blockNavigation->escapeHtml($_category->getName()) ?></a>
+                    <?php /* <span class="count"><?php echo $_category->getProductCount() ?></span> */ ?>
+                </li>
+            <?php } ?>
+        <?php } ?>
+    </ol>
+<?php }
+/* END Show Sort by in the top */ ?>

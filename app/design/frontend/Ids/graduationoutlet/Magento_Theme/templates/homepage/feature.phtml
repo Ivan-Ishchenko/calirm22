@@ -1,0 +1,41 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$obj = $objectManager->get(\Magento\Catalog\Helper\Category::class); /* @var $obj \Magento\Catalog\Helper\Category */
+
+$store_cats = $obj->getStoreCategories();
+?>
+
+<!--Product Box Start-->
+<div class="box_container">
+    <?php $i = 1; ?>
+    <?php foreach ($store_cats as $cat) { ?>
+        <div class="pro_box">
+
+            <div class="pro_box_in">
+                    <span>
+                        <a href="<?php echo $obj->getCategoryUrl($cat); ?>"><?php echo $cat->getName(); ?></a>
+                    </span>
+            </div>
+            <div class="pro_data">
+
+                <?php
+                $categoryObj = $objectManager->create(\Magento\Catalog\Model\Category::class); /* @var $obj \Magento\Catalog\Model\Category */
+                ?>
+
+                <?php foreach ($categoryObj->load($cat->getId())->getChildrenCategories() as $childCategory) { ?>
+                    <a class="pro_link1"
+                       href="<?php echo $childCategory->getUrl(); ?>"><?php echo $childCategory->getName(); ?></a>
+                    <br/>
+                <?php } ?>
+            </div>
+            <?php $imag = "images/img" . $i . ".jpg"; ?>
+            <div class="pro_img"><img src="<?php echo $this->getViewFileUrl($imag); ?>" width="81px" height="136px"/>
+            </div>
+        </div>
+        <?php $i++;
+    } ?>
+
+    <div class="clear"></div>
+
+</div>
+<!--/Product Box End-->

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="idssoft" translate="label" sortOrder="1000000">
+            <label>IDS</label>
+        </tab>
+        <section id="idsconfigurabletabletier" translate="label" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Configurable table tier</label>
+            <tab>idssoft</tab>
+            <resource>Ids_Configurabletabletier::config_configurabletabletier</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="attribute_sets" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Attribute Sets</label>
+                    <source_model>Ids\Configurabletabletier\Model\Config\Source\AttributeSet</source_model>
+                    <validate>required-entry</validate>
+                    <comment>
+                        <![CDATA[Please select attribute sets]]>
+                    </comment>
+                    <depends>
+                        <field id="idsconfigurabletabletier/general/active">1</field>
+                    </depends>
+                </field>
+                <field id="attributes_to_hide" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Attributes to hide</label>
+                    <source_model>Ids\Configurabletabletier\Model\Config\Source\Attributestohide</source_model>
+                    <validate>required-entry</validate>
+                    <comment>
+                        <![CDATA[Please select attributes that you do not need to show in the table of configurable attributes on the product page]]>
+                    </comment>
+                    <depends>
+                        <field id="idsconfigurabletabletier/general/active">1</field>
+                    </depends>
+                </field>
+                <field id="show_info_window" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Show info window</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="idsconfigurabletabletier/general/active">1</field>
+                    </depends>
+                </field>
+                <field id="btn_text_to_open_info_window" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Text of the button to open the info window</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="idsconfigurabletabletier/general/active">1</field>
+                        <field id="idsconfigurabletabletier/general/show_info_window">1</field>
+                    </depends>
+                </field>
+                <field id="cms_info_window" translate="label" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>CMS Info Window</label>
+                    <source_model>Magento\Catalog\Model\Category\Attribute\Source\Page</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="idsconfigurabletabletier/general/active">1</field>
+                        <field id="idsconfigurabletabletier/general/show_info_window">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

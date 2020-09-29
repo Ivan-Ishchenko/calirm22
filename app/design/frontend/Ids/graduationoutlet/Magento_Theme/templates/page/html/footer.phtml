@@ -1,0 +1,148 @@
+<!--r Boxes Start-->
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+/* TODO Delete Start
+
+$urlManager = $objectManager->get(\Magento\Framework\UrlInterface::class); // @var $urlManager \Magento\Framework\UrlInterface
+
+$current_url = $urlManager->getCurrentUrl();
+$home_url = $urlManager->getBaseUrl();
+
+if ($current_url == $home_url) { ?>
+
+    <div class="footer_box_cont">
+        <div class="footer_box">
+            <h1>Shop Online <br/>
+                and Save</h1>
+            <div class="product_cont"><img src="<?php echo $this->getViewFileUrl('images/gown.png'); ?>"/></div>
+            <div class="product_cont2"><strong>Shiny Red Gown</strong>
+                <p>In stock ready to ship</p>
+                <a href="<?php echo $this->getUrl('shop-now') ?>" class="more_btn">Shop Now</a></div>
+        </div>
+        <div class="footer_box">
+            <h1>Contact Information</h1>
+            <div class="company_info">
+                <div class="info12"><img
+                            src="<?php echo $this->getViewFileUrl('images/tollfree.png'); ?>"/><span><strong>Toll Free:</strong> 1-866-303-3822</span>
+                </div>
+                <div class="info12"><img
+                            src="<?php echo $this->getViewFileUrl('images/call.png'); ?>"/><span><strong>Direct:</strong> 1-973-396-8190</span>
+                </div>
+                <div class="info12"><img
+                            src="<?php echo $this->getViewFileUrl('images/phone.png'); ?>"/><span><strong>Fax:</strong> 1-973-808-9196</span>
+                </div>
+                <div class="info12"><img
+                            src="<?php echo $this->getViewFileUrl('images/email.png'); ?>"/><span><strong>EMail:</strong> GraduationOutlet@gmail.com</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer_box">
+            <h1>Request a Quote</h1>
+            <div class="para_quote"> For further Inquiry please fill the custom
+                quote form
+                <div class="btn_pos"><a href="<?php echo $this->getUrl('get-quote') ?>" class="more_btn">Get
+                        Quote</a></div>
+            </div>
+        </div>
+    </div>
+<?php } else { ?>
+    <div class="footer_box_cont">&nbsp;</div>
+<?php } ?>
+<div class="clear"></div>
+<!--/Footer Boxes End-->
+
+TODO Delete END */ ?>
+
+<!--/Main Container End-->
+
+<!--Footer Start-->
+<div class="footer_cont">
+    <div class="foter_box container">
+        <div class="graduation-type foter_item">
+            <h3 class="foot_space">Shop By Graduation Type</h3>
+            <?php
+            //TODO Delete $_helper = Mage::helper('catalog/category');
+            $_helper = $objectManager->get(\Magento\Catalog\Helper\Category::class); /* @var $_helper \Magento\Catalog\Helper\Category */
+            ?>
+            <?php $_categories = $_helper->getStoreCategories(); ?>
+            <?php
+            if ($_categories && count($_categories) > 0): ?>
+                <ul class="foot_links">
+                    <?php foreach ($_categories as $_category): ?>
+                        <li>
+                            <a href="<?php echo $_helper->getCategoryUrl($_category) ?>"> <?php echo $_category->getName() ?> </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+        </div>
+        <div class="customer-service foter_item">
+            <h3 class="foot_space">Customer Service</h3>
+            <ul class="foot_links">
+                <li><!-- BEGIN Comm100 Live Chat Button Code -->
+                    <script src="https://chatserver.comm100.com/js/LiveChat.js?siteId=139233&amp;planId=237&amp;partnerId=-1"
+                            type="text/javascript"></script>
+                    <script type="text/javascript"
+                            src="https://chatserver.comm100.com/ChatButton.aspx?siteId=139233&amp;planId=237&amp;partnerId=-1"></script>
+                    <!-- End Comm100 Live Chat Button Code --> </li>
+                <li><a href="<?php echo $this->getUrl('returns-policy') ?>">Returns Policy</a></li>
+                <li><a href="<?php echo $this->getUrl('shipping-policy') ?>">Shipping Policy</a></li>
+                <li><a href="<?php echo $this->getUrl('contact') ?>">Contact Us</a></li>
+                <li><a href="<?php echo $this->getUrl('help') ?>">Help</a></li>
+                <li><a href="<?php echo $this->getUrl('faqs') ?>">FAQ</a></li>
+                <!--<li><a href="<?php echo $this->getUrl('feedback') ?>">Send Us Feedback</a></li>-->
+            </ul>
+        </div>
+        <div class="footernewsletter foter_item">
+            <h3 class="foot_space">Company Info</h3>
+            <ul class="foot_links">
+                <!--<li><a target="_self" href="/request-a-catalog.html" title="Request A Catalog">Request a Catalog</a></li>-->
+                <li><a href="<?php echo $this->getUrl('about-us') ?>">About Us</a></li>
+                <li><a href="<?php echo $this->getUrl('privacy-policy') ?>">Privacy Policy</a></li>
+                <li><a href="<?php echo $this->getUrl('terms-conditions') ?>">Terms &amp; Condition</a></li>
+                <!--<li><span style="font-size: 12px;"><strong>Coupons &amp; Exclusive Offers:</strong><br>Sign up to our Email list to receive order discounts, announcements &amp; more!<br></span></li>-->
+            </ul>
+        </div>
+        <div class="footerconnected foter_item">
+            <h3 class="foot_space">Get Connected</h3>
+            <div class="social"><a href="https://www.facebook.com/GraduationOutlet"><img
+                            src="<?php echo $this->getViewFileUrl('images/facebook-icon.png'); ?>"/></a></div>
+            <div class="social"><a href="https://www.instagram.com/gradoutletinsta/"><img
+                            src="<?php echo $this->getViewFileUrl('images/instagran-icon-1.png'); ?>"/></a></div>
+            <div class="social"><a href="https://www.yelp.com/biz/graduation-outlet-fairfield"><img
+                            src="<?php echo $this->getViewFileUrl('images/yelp.png'); ?>"/></a></div>
+            <!--<div class="social"><img src="<?php echo $this->getViewFileUrl('images/youtube.png'); ?>" /> <a href="#">Youtube</a></div>
+        <div class="social"><img src="<?php echo $this->getViewFileUrl('images/twitter.png'); ?>" /> <a href="#">Twitter</a></div>-->
+
+        </div>
+        <div class="fot_boxes foter_item">
+            <div class="payments"><img src="<?php echo $this->getViewFileUrl('images/payments.png'); ?>"/></div>
+            <div class="footer_contact"><strong>Toll Free:</strong> 1-866-303-3822</div>
+            <div class="footer_contact"><strong>Direct:</strong> 1-973-396-8190</div>
+            <div class="footer_contact"><strong>Fax:</strong> 1-973-808-9196</div>
+            <div class="footer_contact"><strong>Email:</strong> <a href="mailto:graduationOutlet@gmail.com"
+                                                                   class="pro_link1">sales@graduationoutlet.com</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<?php /* IDS Commented <div class="footer_cont2"> &copy; Graduation Outlet is a subsidiary of Trim and Tassels LLC. All Rights Reserved.</div> END IDS Commented */ ?>
+
+<!--/Footer End-->
+
+<?php
+//TODO Delete $staticBlock = Mage::getModel('cms/block')->load('popup-content');
+$staticBlock = $objectManager->get('\Magento\Cms\Model\Block')->load('popup-content'); /* @var $staticBlock \Magento\Cms\Model\Block */
+?>
+<?php if ($staticBlock && $staticBlock->getIsActive() == 1) { ?>
+    <div style='display:none;'>
+        <div id='content' style='padding:10px; background:#fff;'>
+            <h2 style="color:#F00"><strong>IMPORTANT: </strong></h2>
+            <p style="font-size:16px;line-height: 20px;">
+                <?php echo $staticBlock->getContent(); ?>
+            </p>
+        </div>
+    </div>
+<?php } ?>

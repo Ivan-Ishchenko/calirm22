@@ -1,0 +1,254 @@
+<?php
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$registry = $objectManager->get('Magento\Framework\Registry');
+
+/**
+ * @var $imageFactory \Magento\Framework\Image\Factory
+ */
+$imageFactory = $objectManager->get(\Magento\Framework\Image\Factory::class);
+
+/**
+ * @var $scopeConfig \Magento\Framework\App\Config\ScopeConfigInterface
+ */
+$scopeConfig = $objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class);
+
+/**
+ * @var $imageFactory \Magento\Catalog\Model\Product\Media\Config
+ */
+$catalogProductMediaConfig = $objectManager->get(\Magento\Catalog\Model\Product\Media\Config::class);
+
+$baseDir = $catalogProductMediaConfig->getBaseMediaPath();
+
+/**
+ * @var $filesystem \Magento\Framework\Filesystem
+ */
+$filesystem = $objectManager->get(\Magento\Framework\Filesystem::class);
+
+/**
+ * @var $mediaDirectory \Magento\Framework\Filesystem\Directory\WriteInterface
+ */
+$mediaDirectory = $filesystem->getDirectoryWrite(Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+
+$watermarkImageTypeName = 'small_image';
+$watermarkImagePathFromConfig = $scopeConfig->getValue(
+    "design/watermark/" . $watermarkImageTypeName . "_image",
+    \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+);
+
+$watermarkImagePositionFromConfig = $scopeConfig->getValue(
+    "design/watermark/" . $watermarkImageTypeName . "_position",
+    \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+);
+
+$watermarkImageOpacityFromConfig = $scopeConfig->getValue(
+    "design/watermark/" . $watermarkImageTypeName . "_imageOpacity",
+    \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+);
+
+$watermarkImageSizeFromConfig = $scopeConfig->getValue(
+    "design/watermark/" . $watermarkImageTypeName . "_size",
+    \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+);
+
+$watermarkImageWidth = 0;
+$watermarkImageHeight = 0;
+$size = explode('x', $watermarkImageSizeFromConfig);
+if (is_array($size) && isset($size[0]) && isset($size[1])) {
+    $watermarkImageWidth = $size[0];
+    $watermarkImageHeight = $size[1];
+}
+
+$watermarkImageFilePath = $baseDir . '/watermark/' . $watermarkImagePathFromConfig;
+
+$watermarkImageFullFilePath = '';
+if ($mediaDirectory->isExist($watermarkImageFilePath)) {
+    $watermarkImageFullFilePath = $mediaDirectory->getAbsolutePath($watermarkImageFilePath);
+}
+
+
+/**
+ * @var $urlManager \Magento\Framework\UrlInterface
+ */
+$urlManager = $objectManager->get(\Magento\Framework\UrlInterface::class);
+
+/**
+ * @var $directory_list \Magento\Framework\App\Filesystem\DirectoryList
+ */
+$directory_list = $objectManager->get(\Magento\Framework\App\Filesystem\DirectoryList::class);
+
+//TODO Delete $currentCat = Mage::registry('current_category');
+/**
+ * @var $currentCat Magento\Catalog\Model\Category
+ */
+$currentCat = $registry->registry('current_category');
+
+if ($currentCat && $currentCat->getId()) {
+    $loadCategory = $currentCat;
+
+    $children = $loadCategory->getChildren();
+
+    $subCategories = explode(',', $loadCategory->getChildren());
+
+    $subCategoriesSorted = array();
+
+    if ($children != "" && $children !== null) {
+
+        foreach ($subCategories as $subCategoryId) {
+
+            $categoryObj = $objectManager->create(\Magento\Catalog\Model\Category::class); /* @var $obj \Magento\Catalog\Model\Category */
+            $cat = $categoryObj->load($subCategoryId);
+
+            if ($cat->getIsActive()) {
+                $subCategoriesSorted[$cat->getPosition()] = $subCategoryId;
+            }
+        }
+
+        ksort($subCategoriesSorted);
+    }
+    ?>
+
+
+    <?php if (count($subCategoriesSorted) > 0): ?>
+
+        <div class="listing_right_cont">
+
+            <?php foreach ($subCategoriesSorted as $subCatId): ?>
+
+                <?php
+                //TODO Delete $subCat = Mage::getModel('catalog/category')->load($subCatId);
+                $categoryObj = $objectManager->create(\Magento\Catalog\Model\Category::class); /* @var $obj \Magento\Catalog\Model\Category */
+                $subCat = $categoryObj->load($subCatId);
+                ?>
+
+                <?php if ($subCat->getIsActive()): ?>
+
+
+                    <div class="listing_prod_cont3">
+
+                        <div class="cate_top_bar">
+                            <?php /* <span><?php echo $subCat->getName(); ?></span>
+                            <a class="view_all" href="<?php echo $subCat->getUrl(); ?>">View All</a> */ ?>
+
+                            <span>
+                                <a href="<?php echo $subCat->getUrl(); ?>"><?php echo $subCat->getName(); ?></a>
+                            </span>
+
+                        </div>
+
+                        <ul class="list_main_cate">
+
+                            <?php
+
+                            foreach ($objectManager->create(\Magento\Catalog\Model\Category::class)->load($subCat->getId())->getChildrenCategories() as $childCategory) { ?>
+
+
+                                <?php
+                                $cur_category = $objectManager->create(\Magento\Catalog\Model\Category::class)->load($childCategory->getId());
+
+                                //$_img = $cur_category->getImageUrl();
+
+                                if ($cur_category->getImageUrl()):
+                                    $imageUrl = $cur_category->getImageUrl();
+
+                                    // get image name
+                                    $imageName = substr(strrchr($imageUrl, "/"), 1);
+
+
+                                    // resized image path (media/catalog/category/resized/IMAGE_NAME)
+
+                                    //TODO Delete $imageResized = Mage::getBaseDir('media') . DIRECTORY_SEPARATOR . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR . "resized" . DIRECTORY_SEPARATOR . $imageName;
+                                    //$imageResized = $directory_list->getPath('media') . DIRECTORY_SEPARATOR . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR . "resized" . DIRECTORY_SEPARATOR . $imageName;
+
+                                    $path = [
+                                        $catalogProductMediaConfig->getBaseMediaPath(),
+                                        'cache',
+                                        'sub_category/resized',
+                                    ];
+
+                                    $relativeImagePath = implode('/', $path) . DIRECTORY_SEPARATOR . $imageName;
+
+                                    // append prepared filename
+                                    $imageResized = $mediaDirectory->getAbsolutePath($relativeImagePath);
+                                    // the $file contains heading slash
+
+
+                                    // changing image url into direct path
+
+                                    //TODO Delete $dirImg = Mage::getBaseDir() . str_replace("/", DIRECTORY_SEPARATOR, strstr($imageUrl, '/media'));
+                                    $dirImg = $directory_list->getPath('pub') . str_replace("/", DIRECTORY_SEPARATOR, strstr($imageUrl, '/media'));
+                                    $imageResizedDir = dirname($imageResized);
+
+                                    if (!file_exists($imageResizedDir))
+                                        mkdir($imageResizedDir, 0777, true);
+
+
+                                    // if resized image doesn't exist, save the resized image to the resized directory
+                                    if (!file_exists($imageResized) && file_exists($dirImg)) {
+                                        /**
+                                         * @var $image \Magento\Framework\Image
+                                         */
+                                        $image = $imageFactory->create($dirImg);
+                                        $image->constrainOnly(true);
+                                        $image->keepAspectRatio(true);
+                                        $image->keepFrame(false);
+                                        $image->keepTransparency(true);
+                                        $image->resize(null, 345);
+                                        /*$image->backgroundColor(array(204, 204, 204));*/
+                                        /*$image->quality(100);*/
+
+                                        if (strlen($watermarkImageFullFilePath) > 0 && file_exists($watermarkImageFullFilePath) && is_file($watermarkImageFullFilePath) && $watermarkImageHeight > 0 && $watermarkImageWidth > 0) {
+                                            $image->setWatermarkPosition($watermarkImagePositionFromConfig);
+                                            $image->setWatermarkImageOpacity($watermarkImageOpacityFromConfig);
+                                            $image->setWatermarkWidth($watermarkImageWidth);
+                                            $image->setWatermarkHeight($watermarkImageHeight);
+                                            $image->watermark($watermarkImageFullFilePath);
+                                        }
+
+                                        $image->save($imageResized);
+                                    }
+
+
+                                    //TODO Delete $newImageUrl = Mage::getBaseUrl('media') . "catalog/category/resized/" . $imageName;
+                                    //TODO $newImageUrl = $urlManager->getUrl('pub') . "/media/catalog/category/resized/" . $imageName;
+                                    $newImageUrl = $urlManager->getUrl('pub') . "/media/" . $relativeImagePath;
+                                    ?>
+
+                                <?php else: ?>
+
+                                    <?php $newImageUrl = $this->getViewFileUrl('images/np_thumb2.gif'); ?>
+
+                                <?php endif; ?>
+
+
+                                <li>
+                                    <div class="cate_img_box">
+                                        <a href="<?php echo $childCategory->getUrl(); ?>">
+                                            <img src="<?php echo $newImageUrl; ?>"/>
+                                        </a>
+                                    </div>
+                                    <h3><?php echo($childCategory->getName()); ?></h3>
+                                    <div class="cate_bt_title">
+                                        <?php /* <p>Click To View More Color Options</p> */ ?>
+                                        <a class="action primary" href="<?php echo $childCategory->getUrl(); ?>">Shop Now</a>
+                                    </div>
+                                    <!--  <div class="cate_bt_h"><img border="0" src="<?php //echo $this->getSkinUrl('images/colors.png');?>"></div> -->
+
+                                </li>
+
+                            <?php } ?>
+
+                        </ul>
+
+                        <div class="clear"></div>
+
+                    </div>
+
+                <?php endif; ?>
+
+            <?php endforeach; ?>
+
+        </div>
+
+    <?php endif; ?>
+<?php } ?>

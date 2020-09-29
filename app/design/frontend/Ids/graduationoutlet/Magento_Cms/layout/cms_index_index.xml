@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <!-- TODO aw_rbslider_widget_{banner_id}-->
+        <referenceBlock name="content">
+
+            <referenceBlock name="rbslider-ajax" remove="true"/>
+
+            <block class="Aheadworks\Rbslider\Block\Widget\Banner"
+                   template="Aheadworks_Rbslider::block.phtml"
+                   name="ids_aw_rbslider_widget_2"
+                   banner_id="2"
+            />
+
+            <!--<block class="Magento\Framework\View\Element\Template"
+                    name="ids.slider.right"
+                    as="ids_slider_right"
+                    after="aw_rbslider_widget_2"
+                    template="Magento_Theme::homepage/slider_right.phtml"/>-->
+
+        </referenceBlock>
+
+
+    </body>
+</page>

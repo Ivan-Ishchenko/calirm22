@@ -1,0 +1,38 @@
+<ul>
+    <li><img src="<?php echo $this->getViewFileUrl('images/before-footer/chat-now.png'); ?>"/></li>
+    <li><strong>NEED HELP?</strong></li>
+    <li>Chat with one of our Graduation Specialists<br />about all of your commencement needs.</strong></li>
+    <li>
+        <button type="button" title="Chat Now" class="action primary">
+            <span>Chat Now</span>
+        </button>
+    </li>
+</ul>
+<ul>
+    <li><img src="<?php echo $this->getViewFileUrl('images/before-footer/latest-news.png'); ?>"/></li>
+    <li><strong>GET THE LATEST NEWS</strong></li>
+    <li>Get the latest information and deals.</li>
+    <li>
+        <?php
+        echo $this->getLayout()
+            ->createBlock('Magento\Newsletter\Block\Subscribe')
+            ->setTemplate('Magento_Newsletter::subscribe.phtml')
+            ->toHtml();
+        /*<block class="Magento\Newsletter\Block\Subscribe" name="form.subscribe" as="subscribe" before="-" template="subscribe.phtml"/>*/
+        ?>
+    </li>
+</ul>
+<ul>
+    <li><img src="<?php echo $this->getViewFileUrl('images/before-footer/payment-methods.png'); ?>"/></li>
+    <li><strong>PAYMENT METHODS</strong></li>
+    <li>We accept all major credit cards.</li>
+    <li>
+        <img src="<?php echo $this->getViewFileUrl('images/before-footer/payment-icon-american-express.png'); ?>"/>
+        <img src="<?php echo $this->getViewFileUrl('images/before-footer/payment-icon-visa.png'); ?>"/>
+        <img src="<?php echo $this->getViewFileUrl('images/before-footer/payment-icon-master-card.png'); ?>"/>
+        <img src="<?php echo $this->getViewFileUrl('images/before-footer/payment-icon-discover.png'); ?>"/>
+        <img src="<?php echo $this->getViewFileUrl('images/before-footer/payment-icon-paypal.png'); ?>"/>
+    </li>
+    <li class="payment-description">To pay by check or money order please:</li>
+    <li><strong><a href="<?php echo $this->getUrl('order-form')?>">Download Our Order Form.</a></strong></li>
+</ul>

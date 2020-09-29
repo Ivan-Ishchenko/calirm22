@@ -1,0 +1,68 @@
+.box-shadow(...) {
+    -webkit-box-shadow: @arguments;
+    -moz-box-shadow: @arguments;
+    box-shadow: @arguments;
+}
+
+
+.custom-transition(...) {
+    -moz-transition: @arguments;
+    -o-transition: @arguments;
+    -webkit-transition: @arguments;
+    transition: @arguments;
+    -ms-transition: @arguments;
+}
+
+
+.custom-transform(...) {
+    -moz-transform: @arguments;
+    -o-transform: @arguments;
+    -ms-transform: @arguments;
+    -webkit-transform: @arguments;
+    transform: @arguments;
+}
+
+.border-radius(...) {
+    -webkit-border-radius: @arguments;
+    -moz-border-radius: @arguments;
+    -ms-border-radius: @arguments;
+    -khtml-border-radius: @arguments;
+    border-radius: @arguments;
+}
+
+.normalize-product-name-home(@min-height: 60px) {
+    min-height: @min-height;
+}
+
+.button-graduation() {
+    background: url(../images/more_btn.png) repeat-x;
+    height: 27px;
+    line-height: 27px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFF;
+    border: 1px solid #000166;
+    padding: 0px 10px 0px 10px;
+    float: right;
+    margin: 10px 10px 0px 0px;
+    text-decoration: none;
+    .box-shadow(none);
+    .border-radius(0);
+}
+
+
+.placeholder(@rules) {
+
+    &::-webkit-input-placeholder {
+        @rules();
+    }
+    &:-moz-placeholder {
+        @rules();
+    }
+    &::-moz-placeholder {
+        @rules();
+    }
+    &:-ms-input-placeholder {
+        @rules();
+    }
+}

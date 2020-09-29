@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_file" xsi:type="string">images/logo.png</argument>
+                <argument name="logo_img_width" xsi:type="number">202</argument>
+                <argument name="logo_img_height" xsi:type="number">60</argument>
+            </arguments>
+        </referenceBlock>
+
+        <!-- Set Custom footer template -->
+        <!--<referenceContainer name="footer">
+            <block class="Magento\Framework\View\Element\Template" name="ids.footer.content" after="-"
+                   template="Magento_Theme::page/html/footer.phtml"/>
+        </referenceContainer>-->
+        <!-- END Set Custom footer template -->
+
+        <!--TODO <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="ids.footer-js.content" after="-"
+                   template="Magento_Theme::page/html/footer-js.phtml"/>
+        </referenceContainer>-->
+
+
+
+
+        <referenceContainer name="page.wrapper">
+            <container name="ids.before.footer.content" htmlTag="div" htmlClass="before-footer-content">
+                <container name="ids.before.footer.content.wrapper.content" htmlTag="div" htmlClass="content">
+                    <!--<block class="Magento\Cms\Block\Block" name="ids.before.footer.content.wrapper">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">before-footer-content</argument>
+                        </arguments>
+                    </block>-->
+                    <block class="Magento\Framework\View\Element\Template" name="ids.before.footer.content.wrapper"
+                           template="Magento_Theme::page/html/before-footer-content.phtml"/>
+                </container>
+            </container>
+        </referenceContainer>
+
+
+
+
+
+        <!-- Set footer cms block -->
+        <referenceContainer name="footer">
+            <block class="Magento\Cms\Block\Block" name="ids.footer.content">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">footer</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <!-- END Set footer cms block -->
+
+        <!-- TODO Remove the header.links block -->
+        <!--<referenceBlock name="header.links" remove="true"/>-->
+        <!-- END Remove the header.links block -->
+
+        <!--<referenceBlock name="authorization-link-login" remove="true" />-->
+
+        <referenceContainer name="header-wrapper">
+            <container name="sign-in-div" htmlTag="div" htmlClass="signin-wrap" after="minicart">
+                <block class="Magento\Customer\Block\Account\AuthorizationLink" name="authorization-link-custom" template="Magento_Theme::account/link/authorization.phtml" />
+            </container>
+        </referenceContainer>
+
+        <!-- Remove the footer_links block -->
+        <referenceBlock name="footer_links" remove="true"/>
+        <!-- END Remove the footer_links block -->
+
+        <!-- Remove the newsletter block -->
+        <referenceBlock name="form.subscribe" remove="true"/>
+        <!-- END Remove the newsletter block -->
+
+        <!-- Remove the copyright block -->
+        <referenceBlock name="copyright" remove="true"/>
+        <!-- END Remove the copyright block -->
+
+        <!--<move element="minicart" destination="header.panel" before="-" />-->
+
+        <!-- Remove the "More Information" tab on product page -->
+        <!--<referenceBlock name="product.attributes" remove="true" />-->
+        <!-- END Remove the "More Information" tab on product page -->
+
+        <!-- Remove compare, wishlist and mailto blocks on product page -->
+        <referenceBlock name="category.product.addto.compare" remove="true"/>
+        <referenceBlock name="catalog.compare.link" remove="true"/><!-- remove link in top menu -->
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="view.addto.compare" remove="true" />
+        <referenceBlock name="view.addto.wishlist" remove="true" />
+        <referenceBlock name="product.info.mailto" remove="true" />
+        <!-- END Remove compare, wishlist and mailto blocks on product page -->
+
+    </body>
+</page>

@@ -1,0 +1,170 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .sorter {
+
+        .sorter-label {
+            display: none;
+        }
+    }
+}
+
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .page-products .sorter {
+        float: left;
+    }
+
+    .toolbar-amount {
+        float: left;
+        color: @color-black;
+        line-height: 50px;
+        margin: 0;
+        padding: 0 0 0 10px;
+    }
+
+
+    .page-products .toolbar .limiter {
+        display: block;
+        margin-left: 40px;
+
+        .label {
+            display: block;
+            float: left;
+            line-height: 50px;
+            margin-right: 10px;
+        }
+
+        .limiter-text {
+            display: none;
+        }
+    }
+
+    .limiter {
+
+        .products.wrapper ~ .toolbar & {
+            display: none;
+        }
+    }
+
+    .toolbar {
+
+        .products.wrapper ~ & .pages {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+
+            .items {
+                margin: 0;
+                padding: 0;
+                display: inline-block;
+                list-style: none;
+                vertical-align: middle;
+
+                .item {
+                    float: left;
+                    margin: 0 10px;
+                    padding: 0 4px;
+                    line-height: 47px;
+                }
+            }
+
+            strong.page {
+                background: none;
+                line-height: inherit;
+            }
+
+            strong.page,
+            a.page {
+                font-size: 16px;
+                vertical-align: middle;
+            }
+
+            .action {
+                border: none;
+                border-radius: 0;
+            }
+        }
+
+        select {
+            margin: 0;
+            height: 50px;
+            .box-shadow(none);
+            border-radius: 0;
+            border: 1px solid @color-mercury;
+
+            &:hover,
+            &:active,
+            &:focus {
+                outline: none;
+                .box-shadow(none);
+            }
+
+        }
+    }
+
+    .modes {
+        margin: 0;
+    }
+
+    .modes-mode {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        margin: 0;
+        line-height: 50px;
+        padding: 0;
+        border: none;
+        background: none;
+        .box-shadow(none);
+
+        &:hover:before {
+            .lib-css(color, @color-cod-gray);
+        }
+
+        &.mode-list {
+            border-left: 1px solid @color-mercury;
+            border-right: none;
+        }
+
+        &.active {
+            .lib-css(color, @color-iron);
+            background: none;
+            .box-shadow(none);
+        }
+
+        &:last-child {
+            .border-radius(0);
+        }
+    }
+
+    a.modes-mode {
+
+        &:before {
+            .lib-css(color, @color-blue-main);
+        }
+    }
+
+    .modes-label + .modes-mode {
+        .border-radius(0);
+    }
+
+    .toolbar-sorter .sorter-action {
+        display: block;
+        float: right;
+        height: 50px;
+        width: 50px;
+        line-height: 50px;
+        margin: 0;
+        padding: 0;
+        border-right:1px solid @color-mercury;
+    }
+}

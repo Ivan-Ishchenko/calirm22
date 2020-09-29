@@ -1,0 +1,23 @@
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .header {
+        &.panel {
+            > .header.links {
+                float: left;
+
+
+                > li {
+                    margin: 0;
+                }
+
+                > li + li {
+                    margin: 0 0 0 15px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,96 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Customer\Block\Account\AuthorizationLink */
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+
+<?php /*
+<li class="authorization-link" data-label="<?php echo $block->escapeHtml(__('or')); ?>">
+    <a <?php echo $block->getLinkAttributes(); ?><?php echo $dataPostParam; ?>>
+        <?php echo $block->escapeHtml($block->getLabel()); ?>
+    </a>
+    <span><?php echo $block->escapeHtml(__('View my account')); ?></span>
+</li> */ ?>
+
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+/* @var \Magento\Customer\Block\Form\Login\Info $loginInfoBlock */
+$loginInfoBlock = $objectManager->get(\Magento\Customer\Block\Form\Login\Info::class);
+?>
+
+<div data-block="authorization" class="authorization-wrapper">
+
+    <div class="action showauthorization" data-bind="scope: 'authorization_content'">
+        <span><?php echo $block->escapeHtml(__('Hello')); ?>,
+            <?php
+            if ($block->isLoggedIn()) {
+                $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                $customerSession = $objectManager->create('Magento\Customer\Model\Session');
+
+                $customerName = '';
+                if ($customerSession->isLoggedIn()) {
+                    $customerName = $customerSession->getCustomer()->getName();  /* get  Full Name */
+                }
+
+                if (strlen($customerName) > 0) {
+                    echo $customerName;
+                } else {
+                    echo $block->escapeHtml($block->getLabel());
+                }
+            } else {
+                echo $block->escapeHtml($block->getLabel());
+            }
+            ?>
+        </span>
+        <span class="authorization-my-account"><?php echo $block->escapeHtml(__('My Account')); ?></span>
+    </div>
+
+
+    <div class="block block-authorization"
+         data-role="dropdownDialog"
+         data-mage-init='{"dropdownDialog":{
+                "appendTo":"[data-block=authorization]",
+                "triggerTarget":".showauthorization",
+                "timeout": "2000",
+                "closeOnMouseLeave": false,
+                "closeOnClickOutside": true,
+                "closeOnEscape": true,
+                "triggerClass":"active",
+                "parentClass":"active",
+                "buttons":[]}}'>
+        <div id="authorization-content-wrapper" data-bind="scope: 'authorization_content'">
+            <ul>
+                <li>
+                    <a <?php echo $block->getLinkAttributes(); ?><?php echo $dataPostParam; ?>>
+                        <?php echo $block->escapeHtml($block->getLabel()); ?>
+                    </a>
+                </li>
+                <?php if (!$block->isLoggedIn()) { ?>
+                    <li>
+                        <span><?php echo $block->escapeHtml(__('View my account')); ?></span>
+                    </li>
+                    <li>
+                        <a href="<?php echo $loginInfoBlock->getCreateAccountUrl(); ?>">
+                            <?php echo $block->escapeHtml(__('Create an Account')); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <span><?php echo $block->escapeHtml(__('Save past orders')); ?></span>
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
+
+    </div>
+
+</div>

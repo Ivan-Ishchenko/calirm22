@@ -1,0 +1,47 @@
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .block.newsletter {
+        width: 100%;
+
+        .form.subscribe {
+            position: relative;
+        }
+
+        .actions {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        input#newsletter {
+            .border-radius(15px);
+            border: @color-blue-main 2px solid;
+        }
+
+        .action.subscribe {
+            background: none;
+            color: @color-blue-main;
+            border: none;
+            height: 32px;
+            padding: 4px 0;
+
+            &:after {
+                content: ' ';
+                background: url("../images/before-footer/newsletter-send-icon.png") no-repeat center;
+                width: 32px;
+                height: 32px;
+                position: absolute;
+                top: 0;
+                right: 4px;
+            }
+
+            span {
+                display: none;
+            }
+        }
+    }
+}

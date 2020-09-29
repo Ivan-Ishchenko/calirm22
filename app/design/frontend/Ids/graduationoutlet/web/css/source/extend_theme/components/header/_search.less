@@ -1,0 +1,95 @@
+//
+//  Common
+//  _____________________________________________
+& when (@media-common = true) {
+
+    .block-search {
+        .custom-transition(all 0.5s ease-out);
+
+        .search-in-selector {
+            position: absolute;
+
+            .search-in-cat {
+                width: 60px;
+                border-radius: 15px 0 0 15px;
+                border: none;
+                background-color: @color-mercury;
+
+                &:focus,
+                &:active {
+                    outline: none;
+                    .box-shadow(none);
+                }
+
+                option {
+                    background-color: #ffffff;
+                }
+            }
+
+            .search-in-cat-tmp-select-width {
+                display: none;
+                width: auto;
+            }
+        }
+
+        input#search {
+            border-radius: 15px;
+            border: none;
+            padding-left: 65px;
+            .placeholder({ color: @color-tundora; });
+        }
+    }
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .block-search {
+        width: 63%;
+        float: left;
+        margin-top: 12px;
+
+        .action.search {
+            right: 0;
+
+            &[disabled] {
+                opacity: 1;
+            }
+
+            &:before {
+                color: @color-blue-main;
+                width: 40px;
+                background: @color-energy-yellow;
+                border-radius: 0 15px 15px 0;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+    .block-search {
+
+        .search-in-selector {
+            display: none;
+        }
+
+        .label.active + .control {
+            position: relative;
+
+            .search-in-selector {
+                display: block;
+                bottom: 15px;
+
+                .search-in-cat,
+                .search-in-cat-tmp-select-width {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

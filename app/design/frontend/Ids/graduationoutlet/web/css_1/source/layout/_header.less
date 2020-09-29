@@ -1,0 +1,51 @@
+& when (@media-common = true) {
+
+}
+
+//Desktop
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .page-header {
+
+        .panel.wrapper {
+            background: @color-gray91;
+            color: @color-gray-darken4;
+        }
+
+        .header.panel {
+            padding-bottom: 2px;
+            padding-top: 0;
+
+            > .header.links {
+
+                > li {
+
+                    > a {
+                        color: @color-gray-darken4;
+                    }
+                }
+            }
+        }
+
+        .header.content {
+            padding: 15px 20px 0;
+        }
+
+        .logo {
+            margin: -8px auto 5px 0;
+        }
+
+        .static-block-1 {
+            display: block;
+            float: left;
+            clear: none;
+            margin-left: 32% !important;
+
+            p {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,188 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .nav-sections,
+    .panel.wrapper {
+        .custom-transition(all 0.5s ease-out);
+    }
+
+    .nav-sections .header.links li.greet.welcome {
+        display: none;
+    }
+
+    .header.panel {
+
+        .static-block-9 {
+            display: block;
+            float: left;
+            width: 100%;
+            clear: none;
+            margin: 0;
+            padding: 0 20px;
+            box-sizing: border-box;
+
+            ul {
+                display: block;
+                float: left;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+
+                li {
+                    display: inline-block;
+                    font-weight: 600;
+                    margin: 0;
+                    padding: 0;
+                    position: relative;
+                    padding-left: 22px;
+                    font-size: 12px;
+
+                    &:before {
+                        content: " ";
+                        width: 18px;
+                        height: 100%;
+                        position: absolute;
+                        float: left;
+                        bottom: 0;
+                        left: 0;
+                    }
+                }
+
+                li + li {
+                    margin-left: 1%;
+                }
+
+                li:nth-of-type(1) {
+
+                    &:before {
+                        background:url(../images/header/phone-call.png) no-repeat left bottom;
+                    }
+                }
+
+                li:nth-of-type(2) {
+
+                    &:before {
+                        background:url(../images/header/communication.png) no-repeat left bottom;
+                    }
+                }
+
+                li:nth-of-type(3) {
+
+                    &:before {
+                        background:url(../images/header/contact.png) no-repeat left bottom;
+                        bottom: 2px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+    .page-header .panel.wrapper {
+        display: block;
+        float: left;
+        padding: 3px 0;
+        width: 100%;
+    }
+
+    .header.panel {
+
+        .static-block-9 {
+
+            ul {
+                text-align: center;
+
+                li {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .page-header .header.panel {
+        padding: 1px 0;
+    }
+
+    .header.panel {
+
+        > .header.links {
+            display: none;
+        }
+
+        .static-block-9 {
+
+            ul {
+                text-align: right;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+
+    .page-header-fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 20;
+
+        &:after {
+            background: @color-blue-main;
+            content: "";
+            display: block;
+            height: 2px;
+            left: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        .panel.wrapper {
+            display: none;
+        }
+
+        .logo {
+            width: 12%;
+        }
+
+        .header.content {
+
+            .signin-wrap {
+                margin-top: 5px;
+            }
+        }
+
+        .block-search {
+            width: 68%;
+            margin-top: 4px;
+        }
+
+        .minicart-wrapper {
+            margin-top: 7px;
+        }
+    }
+
+    /*.header.panel {
+
+        .static-block-9 {
+
+            ul:nth-of-type(2) {
+                width: 55%;
+                text-align: left;
+            }
+        }
+    }*/
+}

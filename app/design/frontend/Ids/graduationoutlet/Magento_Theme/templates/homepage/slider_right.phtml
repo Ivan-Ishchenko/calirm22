@@ -1,0 +1,76 @@
+<div class="right_cont">
+
+    <div class="fax_cont">
+        <div class="fax_head">Order by <span>Fax</span> or <span>Email</span></div>
+        <div class="fax_in"> <a href="<?php echo $this->getUrl('order-form')?>" class="download">Download an Order Form</a>
+            <div class="clear"></div>
+            <div class="email_link"><img src="<?php echo $this->getViewFileUrl('images/email.png');?>" /><a href="mailto:graduationoutlet@gmail.com">GraduationOutlet@gmail.com</a></div>
+            <div class="email_link"><img src="<?php echo $this->getViewFileUrl('images/phone.png');?>" /><span>1-973-808-9196</span></div>
+        </div>
+    </div>
+    <div class="fax_cont2">
+        <div class="fax_blue">
+            <div class="ship_link"><img src="<?php echo $this->getViewFileUrl('images/locate.png');?>" /><span>Located in New Jersey</span></div>
+            <div class="ship_link"><img src="<?php echo $this->getViewFileUrl('images/shipping.png');?>" /><span>Fast Shipping</span></div>
+        </div>
+    </div>
+
+    <?php /* IDS */ ?>
+    <div class="fax_cont3">
+        <div class="fax_yellow">
+            <div class="email_link"><img src="<?php echo $this->getViewFileUrl('images/measuring-tape.png'); ?>"/>
+                <span class="inline det_chart_txt">
+                    <strong>Measuring & Size Instructions</strong>
+                </span>
+                <div style='display:none'>
+                    <div id="inline_content">
+                        <?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('measuring-size-instructions-size-chart')->toHtml();?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        require(
+            [
+                'jquery',
+                'Magento_Ui/js/modal/modal'
+            ],
+            function($, modal) {
+
+                var infoModalContentObj = $('#inline_content');
+                if (typeof infoModalContentObj !== 'undefined' && infoModalContentObj.length > 0) {
+
+                    var options = {
+                        type: 'popup',
+                        responsive: true,
+                        innerScroll: true,
+                        //TODO Set title title: 'popup modal title',
+                        autoOpen: false,
+                        buttons: [],
+                        clickableOverlay: true,
+                        focus: ''
+                        /*buttons: [{
+                         text: $.mage.__('Continue'),
+                         class: '',
+                         click: function () {
+                         this.closeModal();
+                         }
+                         }]*/
+                    };
+
+                    var popup = modal(options, infoModalContentObj);
+
+                    /* Add on click listener to show chart table  */
+                    $('body').delegate('.right_cont .det_chart_txt', 'click', function (e) {
+                        $('#inline_content').modal('openModal');
+                    });
+                    /* END Add on click listener to show chart table  */
+                }
+            }
+        );
+    </script>
+    <?php /* END IDS */ ?>
+
+</div>

@@ -1,0 +1,64 @@
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .compare.wrapper {
+
+        .action.compare {
+
+            &:before {
+                font-family: "FontAwesome";
+                text-indent: initial;
+                color: @header-icons-color;
+                font-size: 22px;
+                vertical-align: top;
+                display: inline-block;
+                .custom-transition(all 0.5s ease-out);
+                content: "\f24e";
+            }
+
+
+            &:hover,
+            &:active {
+                text-decoration: none;
+
+                &::before {
+                    color: @minicart-icons-color-hover;
+                }
+            }
+
+            /*&:active {
+                text-decoration: none;
+
+                &::before {
+                    .lib-css(color, @icon-font__color-hover);
+                }
+            }*/
+
+            .counter.qty {
+                background: @color-blue-main;
+                color: @color-white;
+                height: 24px;
+                line-height: 24px;
+                border-radius: 2px;
+                display: inline-block;
+                margin: 3px 0 0;
+                min-width: 18px;
+                overflow: hidden;
+                padding: 0 3px;
+                text-align: center;
+                white-space: normal;
+
+                &:before {
+                    content: '';
+                }
+
+                &:after {
+                    content: '';
+                }
+            }
+        }
+    }
+}

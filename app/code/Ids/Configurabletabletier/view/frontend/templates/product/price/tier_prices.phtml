@@ -1,0 +1,80 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$registry = $objectManager->get('Magento\Framework\Registry');
+
+/* @var \Magento\Sales\Model\Order $orderModel */
+$orderModel = $objectManager->get(\Magento\Sales\Model\Order::class);
+
+/**
+ * @var $product \Magento\Catalog\Model\Product
+ */
+$product = $registry->registry('current_product');
+?>
+
+<?php if ($product && $product->getId()) { ?>
+
+    <?php
+    /** @var \Magento\Catalog\Pricing\Price\TierPrice $tierPriceModel */
+    $priceInfo = $product->getPriceInfo();
+    $tierPriceModel = $priceInfo->getPrice('tier_price');
+    $_tierPrices = $tierPriceModel->getTierPriceList();
+    ?>
+
+    <?php if (count($_tierPrices)) { ?>
+
+        <?php
+        $liStyle = 'width: calc(100% / ' . (count($_tierPrices) + 2) . ' - 2px)';
+        ?>
+
+        <div class="det_line">
+            <div class="det_qty det_qty1">
+                <ul class="qty_navdet">
+
+                    <li class="qty_value" style="<?php echo $liStyle; ?>"><span>Quantity:</span></li>
+
+                    <li class="qty_value" style="<?php echo $liStyle; ?>">1</li>
+
+                    <?php foreach ($_tierPrices as $key => $value): ?>
+
+                        <?php if ($key == count($_tierPrices) - 1): ?>
+
+                            <li class="qty_values qty_value"
+                                style="<?php echo $liStyle; ?>"><?php echo $_tierPrices[$key]['price_qty']; ?></li>
+
+                        <?php else : ?>
+
+                            <li class="qty_values qty_value"
+                                style="<?php echo $liStyle; ?>"><?php echo $_tierPrices[$key]['price_qty'] . '-' . ($_tierPrices[$key + 1]['price_qty'] - 1); ?></li>
+
+                        <?php endif; ?>
+
+                    <?php endforeach; ?>
+
+                </ul>
+            </div>
+
+            <div class="det_qty det_qty2">
+                <ul class="qty_navdet">
+                    <li class="qty_value" style="<?php echo $liStyle; ?>"><span style="color: #000;">Price:</span></li>
+
+                    <?php
+                    $priceInfo = $product->getPriceInfo();
+                    $configurableProductBasePrice = $priceInfo->getPrice('final_price')->getAmount()->getValue();
+                    ?>
+
+                    <li class="qty_value"
+                        style="<?php echo $liStyle; ?>"><?php echo $orderModel->formatPricePrecision($configurableProductBasePrice, 2); ?></li>
+
+                    <?php foreach ($_tierPrices as $_price): ?>
+                        <?php /* @var $_price ['price'] \Magento\Framework\Pricing\Amount\Base */ ?>
+                        <li class="qty_value"
+                            style="<?php echo $liStyle; ?>"><?php echo $orderModel->formatPricePrecision($_price['price']->getValue(), 2); ?></li>
+                    <?php endforeach; ?>
+
+                </ul>
+            </div>
+        </div>
+
+    <?php }
+} ?>

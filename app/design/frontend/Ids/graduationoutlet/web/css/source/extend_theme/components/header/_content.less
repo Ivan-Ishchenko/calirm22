@@ -1,0 +1,163 @@
+//
+//  Common
+//  _____________________________________________
+& when (@media-common = true) {
+
+    .header.content {
+
+        .signin-wrap {
+            float: left;
+            color: #ffffff;
+
+            .authorization-wrapper.active .block-authorization {
+                display: block;
+                position: absolute;
+            }
+
+            .authorization-wrapper {
+                margin-left: 13px;
+
+                .showauthorization {
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                .authorization-my-account {
+
+                    &:after {
+                        font-family: "FontAwesome";
+                        padding-right: 5px;
+                        font-size: 12px;
+                        float: right;
+                        margin-top: 3px;
+                        margin-left: 5px;
+                        content: "\f0d7";
+                        color: @color-energy-yellow;
+                    }
+                }
+
+                .block-authorization {
+                    margin: 0;
+                    list-style: none none;
+                    background: #fff;
+                    border: 1px solid #bbb;
+                    margin-top: -15px;
+                    /*min-width: 100%;*/
+                    z-index: 100;
+                    box-sizing: border-box;
+                    display: none;
+                    top: 100%;
+                    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+                    color: #333;
+                    padding: 25px 20px;
+                    right: 0;
+                    width: 320px;
+                    .border-radius(10px);
+
+                    ul {
+                        display: block;
+                        margin: 0;
+                        padding: 0;
+                        list-style: none;
+
+                        li {
+                            display: block;
+
+                            > a {
+                                display: block;
+                                width: 100%;
+                                white-space: nowrap;
+                            }
+                        }
+
+                        li:nth-child(odd) {
+                            font-size: 16px;
+                            font-weight: bold;
+                            margin-bottom: 0;
+                        }
+
+                        li:nth-child(odd) {
+                            color: #6d6d6d; //TODO color variable
+                            margin-bottom: 0;
+                        }
+
+                        li:last-of-type {
+                            margin-bottom: 0;
+                        }
+                    }
+
+                    &:before {
+                        font-family: "FontAwesome";
+                        font-size: 26px;
+                        content: "\f0d8";
+                        position: absolute;
+                        top: -23px;
+                        right: 40px;
+                        color: #ffffff;
+                        margin: 0;
+                        padding: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .logo {
+        width: 17%;
+        margin: 0 15px 0 0;
+        .custom-transition(all 0.5s ease-out);
+    }
+
+    .header.content {
+        padding-top: 10px;
+        padding-bottom: 6px;
+
+        .signin-wrap {
+            width: 10%;
+            float: right;
+            margin-left: 15px;
+            margin-top: 11px;
+            .custom-transition(all 0.5s ease-out);
+
+            .authorization-wrapper {
+
+                > div > span {
+                    display: block;
+                    float: right;
+                    clear: both;
+                }
+
+                > div > span:nth-of-type(1) {
+                    font-size: 10px;
+                }
+
+                .block-authorization {
+                    right: 55px;
+                    top: 65px;
+                    width: auto;
+                    min-width: 170px;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+    .header.content {
+        clear: both;
+
+        .signin-wrap {
+            display: none;
+        }
+    }
+}

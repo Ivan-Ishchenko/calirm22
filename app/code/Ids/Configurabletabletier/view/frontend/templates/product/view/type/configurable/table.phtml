@@ -1,0 +1,350 @@
+<?php
+/**
+ * @var $block \Ids\Configurabletabletier\Block\Product\View\Type\Configurable\Table
+ */
+
+/**
+ * @var $_product \Magento\Catalog\Model\Product
+ */
+$_product = $block->getProduct();
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$helper = $objectManager->get(\Ids\Configurabletabletier\Helper\Data::class); /* @var $helper \Ids\Configurabletabletier\Helper\Data */
+$attributeSets = $helper->geAttributeSetsFromConfig();
+$productAttributeSetId = $_product->getAttributeSetId();
+$attributesToHide = $helper->geAttributesToHideFromConfig();
+
+$stockState = $objectManager->get('\Magento\CatalogInventory\Api\StockStateInterface');
+
+
+
+
+/* Prepare qty of simple products from cart */
+$cartQty = array();
+if ($block->getRequest()->getActionName() == 'configure') {
+    $cart = $objectManager->get(\Magento\Checkout\Model\Cart::class);
+    //TODO $cart = $objectManager->get(\Magento\Checkout\Model\Session::class);
+
+    // Extract item and product to configure
+    $id = (int)$block->getRequest()->getParam('id');
+    $productId = (int)$block->getRequest()->getParam('product_id');
+
+
+    /**
+     * @var $quoteItem Magento\Quote\Model\Quote\Item
+     */
+    $quoteItem = null;
+    if ($id) {
+        $quoteItem = $cart->getQuote()->getItemById($id);
+    }
+
+    if ($quoteItem instanceof Magento\Quote\Model\Quote\Item) {
+        if ($quoteItem->getProduct()->getCustomOption('simple_product') && $quoteItem->getProduct()->getCustomOption('simple_product')->getProduct()) {
+            $associatedSimpleProductId = $quoteItem->getProduct()->getCustomOption('simple_product')->getProduct()->getId();
+            $cartQty[$associatedSimpleProductId] = $quoteItem->getQty();
+        }
+    }
+
+    /* TODO Delete
+    if ($items = $cart->getQuote()->getItemsCollection()) {
+        foreach ($items as $item) {
+            // @var $item Magento\Quote\Model\Quote\Item
+
+            if ($item->getParentItem())
+                continue;
+
+            if ($item->getProduct()->getCustomOption('simple_product') && $item->getProduct()->getCustomOption('simple_product')->getProduct()) {
+                $associatedSimpleProductId = $item->getProduct()->getCustomOption('simple_product')->getProduct()->getId();
+                $cartQty[$associatedSimpleProductId] = $item->getQty();
+            }
+        }
+    }*/
+}
+/* END Prepare qty of simple products from cart */
+
+
+$priceInfo = $_product->getPriceInfo();
+$configurableProductBasePrice = $priceInfo->getPrice('final_price')->getAmount()->getValue();
+
+if($helper->isModuleActive() && in_array($productAttributeSetId, $attributeSets)) { ?>
+
+    <div class="ids-configurable-table">
+
+        <?php
+        $btnTextToOpenInfoWindow = $helper->getBtnTextToOpenInfoWindowFromConfig();
+        $cmsBlockIdToShowInInfoWindow = $helper->getCmsBlockIdWithContentToShowInInfoWindowFromConfig();
+        if ($helper->getShowInfoWindowsStatusFromConfig() == 1 && (mb_strlen($btnTextToOpenInfoWindow) > 0)) { ?>
+            <div>
+                <a class="inline det_chart_txt" href="#">
+                    <i class="fa fa-list"></i><span><?php echo $btnTextToOpenInfoWindow; ?></span><i class="fa fa-external-link"></i>
+                </a>
+            </div>
+
+            <div style='display:none'>
+                <div id="inline_content">
+                    <?php if (mb_strlen($cmsBlockIdToShowInInfoWindow) > 0) {
+                        echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($cmsBlockIdToShowInInfoWindow)->toHtml();
+                    } ?>
+                </div>
+            </div>
+        <?php } ?>
+        <div class="sdet_txt_2331"><?php echo __('Enter quantity in boxes below'); ?></div>
+
+
+        <?php
+        /**
+         * @var $_productInstance Magento\ConfigurableProduct\Model\Product\Type\Configurable
+         */
+        $_productInstance = $_product->getTypeInstance();
+
+        $_attributes = $_productInstance->getConfigurableAttributesAsArray($_product);
+        $_subproducts = $_productInstance->getUsedProducts($_product);
+        ?>
+
+        <?php
+        /* @var $eavAttribute \Magento\Catalog\Model\ResourceModel\Eav\Attribute */
+        $eavAttribute = $objectManager->get(\Magento\Catalog\Model\ResourceModel\Eav\Attribute::class);
+
+        $attributesToShowData = array();
+        foreach ($_attributes as $_attr) {
+            $attributeLabel = (isset($_attr['store_label'])) ? $_attr['store_label'] : '';
+            $attributeCode = (isset($_attr['attribute_code'])) ? $_attr['attribute_code'] : '';
+            $attributeId = (isset($_attr['attribute_id'])) ? $_attr['attribute_id'] : '';
+            $attributePosition = (isset($_attr['position'])) ? $_attr['position'] : 0;
+
+            $customAttributeLabel = $block->getCustomAttributeLabel($_product, $attributeCode);
+            if(strlen($customAttributeLabel) > 0) {
+                $attributeLabel = $customAttributeLabel;
+            }
+
+            if (strlen($attributeCode) > 0 && strlen($attributeId) > 0) {
+                $attribute = $eavAttribute->loadByCode(\Magento\Catalog\Model\Product::ENTITY, $attributeCode);
+
+                if ($attribute && !in_array($attributeId, $attributesToHide)) {
+                    $attributesToShowData[$attributeId] = array(
+                        'id' => $attributeId,
+                        'code' => $attributeCode,
+                        'label' => $attributeLabel,
+                        'position' => (int)$attribute->getPosition(),
+                    );
+                }
+            }
+        }
+
+        /* Sort attributes by position */
+        $position = array();
+        foreach ($attributesToShowData as $key => $row) {
+            $position[$key] = $row['position'];
+        }
+        array_multisort($position, SORT_ASC, $attributesToShowData);
+        /* END Sort attributes by position */
+
+
+        if (count($attributesToShowData) > 0) { ?>
+
+            <div id="superattr">
+
+                <?php
+                $modelCurrency = $objectManager->get(\Magento\Directory\Model\Currency::class);
+
+                /* @var $blockOptionsSelect \Magento\Catalog\Block\Product\View\Options\Type\Select */
+                $blockOptionsSelect = $objectManager->get(\Magento\Catalog\Block\Product\View\Options\Type\Select::class);
+
+                $liQtyWidth = 12;
+                $liPriceWidth = 7;
+
+                /* Calculate attributes labels width */
+                $allLabelsLength = 0;
+                foreach ($attributesToShowData as $_attr) {
+                    $attributeLabel = $_attr['label'];
+                    $attributeLabelLength = mb_strlen($attributeLabel, 'UTF-8');
+                    $allLabelsLength += $attributeLabelLength;
+                }
+
+                $countOfColumns = count($attributesToShowData) + 2; /* 2 - price and qty */
+
+                foreach ($attributesToShowData as $_attrKey => $_attr) {
+                    $attributeLabel = $_attr['label'];
+                    $attributeLabelLength = mb_strlen($attributeLabel, 'UTF-8');
+                    $attributeLabelWidth = $attributeLabelLength * (100 - ($countOfColumns) - $liQtyWidth - $liPriceWidth) / $allLabelsLength;
+                    $attributesToShowData[$_attrKey]['width'] = $attributeLabelWidth;
+                }
+                /* END Calculate attributes labels width */
+                ?>
+
+                <div class="btn_cont_det">
+                    <?php
+                    $attributeIterator = 1;
+                    foreach ($attributesToShowData as $_attr) { ?>
+                        <?php
+                        $attributeLabel = $_attr['label'];
+                        $attributeCode = $_attr['code'];
+                        $liWidth = $_attr['width'];
+                        ?>
+
+                        <span <?php /* Style with style="width: <?php echo $liWidth . '%'; ?>" */ ?> class="chart_head chart_head_<?php echo $attributeIterator; ?>"><?php echo $attributeLabel; ?></span>
+
+                        <?php if ($attributeIterator == count($attributesToShowData)) { ?>
+                            <span <?php /* Style with style="width: <?php echo $liPriceWidth . '%'; ?>" */ ?> class="chart_head chart_head_price<?php /* echo $attributeIterator + 1; */ ?>"><?php /* echo $currencysymbol->getCurrencySymbol(); */ ?></span>
+                            <span <?php /* Style with style="width: <?php echo $liQtyWidth . '%'; ?>" */ ?> class="chart_head chart_head_<?php echo $attributeIterator + 1; ?>"><?php echo __('Quantity'); ?></span>
+                        <?php }
+                        $attributeIterator++;
+                    } ?>
+                </div>
+
+                <?php
+                $subProductsData = array();
+                $subProductsDataSorted = array();
+                $attributeCodeToSort = 'gown_size'; //TODO Add attribute to config
+                foreach ($_subproducts as $_sub) { ?>
+
+                    <?php
+                    $_subProductId = $_sub->getId();
+
+                    $subProductQty = (int)$stockState->getStockQty($_subProductId, $_sub->getStore()->getWebsiteId());
+                    if ($subProductQty < 1) {
+                        continue;
+                    }
+
+                    $_subProductPrice = $_sub->getFinalPrice();
+                    $pricingValue = $_subProductPrice - $configurableProductBasePrice;
+                    $pricingValue = ($pricingValue > 0) ? $pricingValue : 0;
+
+                    $_subProductIsSaleable = $_sub->isSaleable();
+
+                    $subProductsData['products'][$_subProductId] = array(
+                        'product_id' => $_subProductId,
+                        'pricing_value' => $pricingValue,
+                        'is_saleable' => $_subProductIsSaleable,
+                    );
+
+                    foreach ($attributesToShowData as $_attr) {
+                        $attributeCode = $_attr['code'];
+                        $liWidth = $_attr['width'];
+                        $attributeValue = $_sub->getResource()->getAttribute($attributeCode)->getFrontend()->getValue($_sub);
+
+                        $subProductsData['attributes'][$attributeCode][$_subProductId] = array(
+                            'product_id' => $_subProductId,
+                            'value' => $attributeValue
+                        );
+
+                        $subProductsData['products'][$_subProductId][$attributeCode] = $attributeValue;
+                    }
+                }
+
+
+                /* Sort by sorted attribute */
+                foreach ($subProductsData['products'] as $key => $row) {
+                    if (isset($row[$attributeCodeToSort])) {
+                        $subProductsDataSorted[$key] = $row[$attributeCodeToSort];
+                    }
+                }
+                array_multisort($subProductsDataSorted, SORT_ASC, $subProductsData['products']);
+                /* END Sort by sorted attribute */
+
+                foreach ($subProductsData['products'] as $_subProductSorted) {
+                    $_subProductId = isset($_subProductSorted['product_id']) ? $_subProductSorted['product_id'] : '';
+                    $pricingValue = isset($_subProductSorted['pricing_value']) ? $_subProductSorted['pricing_value'] : '';
+                    $_subProductIsSaleable = isset($_subProductSorted['is_saleable']) ? $_subProductSorted['is_saleable'] : '';
+                    $_subProductIsDisabled = (!$_subProductIsSaleable || (count($cartQty) > 0 && !isset($cartQty[$_subProductId]))) ? true : false;
+                    ?>
+
+                    <div class="det_qty">
+
+                        <ul class="qty_navdet2">
+
+                            <?php foreach ($attributesToShowData as $_attr) {
+                                $attributeCode = $_attr['code'];
+                                $liWidth = $_attr['width'];
+                                $attributeValue = isset($_subProductSorted[$attributeCode]) ? $_subProductSorted[$attributeCode] : '';
+                                ?>
+                                <li <?php /* Style with style="width: <?php echo $liWidth . '%'; ?>; " */ ?> >
+                                    <?php if($attributeCode == 'gown_size' && $pricingValue > 0) {
+                                        $attributeValue .= '(+' . $modelCurrency->format($pricingValue, array(), false) . ')';
+                                    }?>
+                                    <?php echo $attributeValue; ?>
+                                </li>
+                                <?php
+                            } ?>
+
+                            <li <?php /* Style with style="width: <?php echo $liPriceWidth . '%'; ?>; " */ ?> >
+                                <?php if ($pricingValue > 0) {
+                                    echo '+' . $modelCurrency->format($pricingValue, array(), false);
+                                } ?>
+                            </li>
+
+                            <li <?php /* Style with style="width: <?php echo $liQtyWidth . '%'; ?>; " */ ?>>
+                                <input type="number"
+                                       name="subproduct[<?php echo $_subProductId; ?>][qty]"
+                                       maxlength="12"
+                                       value="<?php echo (isset($cartQty[$_subProductId])) ? $cartQty[$_subProductId] : ''; ?>"
+                                       title="<?php /* @escapeNotVerified */
+                                       echo __('Quantity') ?>"
+                                       class="input-text qty txt"
+                                    <?php /* data-validate="<?php echo $block->escapeHtml(json_encode($qtyValidators)) ?>" */ ?>
+                                    <?php echo ($_subProductIsDisabled) ? 'disabled="disabled"' : ''; ?>
+                                />
+
+                                <div style="display:none;" id="subproduct[<?php echo $_subProductId; ?>][qty]">
+                                    <?php echo $pricingValue; ?>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <?php
+                } ?>
+
+            </div>
+
+            <?php
+        }
+        ?>
+
+    </div>
+
+    <script>
+        require(
+            [
+                'jquery',
+                'Magento_Ui/js/modal/modal'
+            ],
+            function($, modal) {
+
+                var infoModalContentObj = $('#inline_content');
+                if (typeof infoModalContentObj !== 'undefined' && infoModalContentObj.length > 0) {
+
+                    var options = {
+                        type: 'popup',
+                        responsive: true,
+                        innerScroll: true,
+                        //TODO Set title title: 'popup modal title',
+                        autoOpen: false,
+                        buttons: [],
+                        clickableOverlay: true,
+                        focus: ''
+                        /*buttons: [{
+                         text: $.mage.__('Continue'),
+                         class: '',
+                         click: function () {
+                         this.closeModal();
+                         }
+                         }]*/
+                    };
+
+                    var popup = modal(options, infoModalContentObj);
+
+                    /* Add on click listener to show chart table  */
+                    $('body').delegate('.ids-configurable-table .det_chart_txt', 'click', function (e) {
+                        $('#inline_content').modal('openModal');
+                    });
+                    /* END Add on click listener to show chart table  */
+                }
+            }
+        );
+    </script>
+
+    <?php
+} ?>

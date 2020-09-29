@@ -1,0 +1,218 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .mana-filter-block .filter-options-content {
+        display: block !important;
+
+        .items:not(#show_in_main_sidebar-price) .item a {
+            padding-left: 25px;
+            position: relative;
+
+            &:before {
+                content: '';
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                position: absolute;
+                border: 1px solid #959090;
+                left: 5px;
+                top: 4px;
+            }
+        }
+    }
+
+    .filter-options-title:after {
+        display: none;
+    }
+
+    .filter-options-content a:hover {
+        background: none;
+    }
+
+    .filter-options-content .mana-selected.item a:before {
+        background: @color-blue-main;
+    }
+
+    .filter .block-subtitle {
+        display: none;
+    }
+
+    .filter-options-content .mana-selected.mana-tree-item,
+    .filter-options-content .mana-selected.item a,
+    .filter-options-content .mana-selected.item .count,
+    .filter-options-content .mana-selected.item .label {
+        color: @color-blue-main;
+        font-weight: bold;
+    }
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .filter-options-content .mana-selected.mana-tree-item,
+    .filter-options-content .mana-selected.item a,
+    .filter-options-content .mana-selected.item .count,
+    .filter-options-content .mana-selected.item .label {
+        color: @color-blue-main;
+        font-weight: bold;
+    }
+
+    .mana-filter-block {
+        border: 1px solid @color-dusty-gray;
+        padding: 5px 10px;
+    }
+
+    .filter-options {
+
+        .filter-options-item {
+            border-bottom: none;
+            padding-bottom: 0;
+
+            .filter-options-title {
+                border-bottom: 1px solid @color-gray80;
+                padding: 10px 0;
+            }
+
+            .filter-options-content .swatch-attribute {
+                padding: 0;
+            }
+        }
+    }
+
+    .navigation {
+
+        .level0 {
+
+            > .level-top {
+                font-size: 12px;
+            }
+        }
+    }
+
+    .menu > ul > li a {
+        position: relative;
+        color: @color-tundora;
+
+        &:hover,
+        &:active,
+        &:focus {
+            color: @color-blue-main1;
+        }
+
+        &.level-top {
+
+            &:hover,
+            &:active,
+            &:focus {
+                color: @color-black;
+                background: @color-energy-yellow;
+            }
+        }
+    }
+
+    .menu > ul li.active > a {
+        color: @color-blue-main1;
+    }
+
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+    .filter-options-content .mana-selected.mana-tree-item,
+    .filter-options-content .mana-selected.item a,
+    .filter-options-content .mana-selected.item .count,
+    .filter-options-content .mana-selected.item .label {
+        color: @color-blue-main;
+    }
+}
+
+@media only screen and (min-width: 960px) {
+    #om {
+        padding: 0 5px;
+    }
+
+    .menu > ul > li a {
+        padding: 10px 17px;
+        background: @color-white;
+        font-size: 12px;
+        color: @color-tundora;
+    }
+
+    .menu > ul > li > ul > li a {
+        color: @color-tundora;
+    }
+
+    .menu > ul > li > ul > li.level1.parent > a {
+        color: @color-black;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 14px;
+        border-bottom: none;
+    }
+
+    .menu li.level3 {
+        display: none;
+    }
+
+    .menu > ul > li:nth-of-type(2) > ul > li,
+    .menu > ul > li:nth-of-type(3) > ul > li {
+        width: 20%;
+    }
+
+    .menu > ul > li > ul.normal-sub > li a {
+        padding: 0 0 5px;
+    }
+
+    .menu > ul > li > ul > li > ul > li {
+        padding: 0 0 5px;
+    }
+
+    .menu > ul > li > ul {
+        border: 1px solid @color-blue-main1;
+        background: @color-white;
+        .box-shadow(0 3px 10px 0 rgba(0, 0, 0, 0.75));
+    }
+
+    .menu > ul > li {
+
+        > a {
+
+            &.hover:before,
+            &:hover:before {
+                content: ' ';
+                background: url("../images/menu/menu-active-corner.png") no-repeat center 0 transparent;
+                position: absolute;
+                bottom: -1px;
+                left: 50%;
+                width: 10px;
+                height: 10px;
+                margin-left: -5px;
+                line-height: 1;
+                overflow: hidden;
+                z-index: 101;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 959px) {
+
+    .menu {
+        > ul {
+
+            > li {
+
+                a {
+                    width: auto;
+                }
+            }
+        }
+    }
+}
