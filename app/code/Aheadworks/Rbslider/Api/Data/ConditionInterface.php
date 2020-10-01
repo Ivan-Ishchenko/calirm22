@@ -139,18 +139,18 @@ interface ConditionInterface extends \Magento\Framework\Api\ExtensibleDataInterf
      *
      * @return BannerExtensionInterface|null
      */
-     
-     /*
-    public function getExtensionAttributes();
+
+    /**
+    *    public function getExtensionAttributes();
     */
-    
+
     /**
      * Set an extension attributes object.
      *
      * @param BannerExtensionInterface $extensionAttributes
      * @return $this
      */
-     
-     /*
-    public function setExtensionAttributes(BannerExtensionInterface $extensionAttributes);
-    /*
+
+    /**
+    *    public function setExtensionAttributes(BannerExtensionInterface $extensionAttributes);
+    */

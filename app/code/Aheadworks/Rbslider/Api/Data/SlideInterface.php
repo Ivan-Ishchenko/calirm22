@@ -326,18 +326,18 @@ interface SlideInterface extends \Magento\Framework\Api\ExtensibleDataInterface
      *
      * @return BannerExtensionInterface|null
      */
-     
-     /*
-    public function getExtensionAttributes();
-    */
-    
+
+    /**
+     * public function getExtensionAttributes();
+     */
+
     /**
      * Set an extension attributes object.
      *
      * @param BannerExtensionInterface $extensionAttributes
      * @return $this
      */
-     
-     /*
-    public function setExtensionAttributes(BannerExtensionInterface $extensionAttributes);
-    /*
+
+    /**
+     * public function setExtensionAttributes(BannerExtensionInterface $extensionAttributes);
+     */
